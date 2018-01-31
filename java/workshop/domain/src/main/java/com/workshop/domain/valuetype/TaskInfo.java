@@ -4,4 +4,6 @@ public class TaskInfo {
     public String Title;
     public String Description;
 
+    public SubmitInfo SubmitInfo;
+
 }
