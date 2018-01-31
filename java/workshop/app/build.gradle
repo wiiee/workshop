@@ -1,0 +1,6 @@
+dependencies {
+	compile project(":domain")
+
+	compile("com.wiiee.core:web:0.1.0")
+}
+

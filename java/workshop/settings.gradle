@@ -1,0 +1,4 @@
+rootProject.name = "workshop"
+
+include "domain"
+include "app"

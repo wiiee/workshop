@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app_main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app_main.iml" group="app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app_test.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app_test.iml" group="app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/domain.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/domain.iml" group="domain" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/domain_main.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/domain_main.iml" group="domain" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/domain_test.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/domain_test.iml" group="domain" />
+      <module fileurl="file://$PROJECT_DIR$/workshop.iml" filepath="$PROJECT_DIR$/workshop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/workshop_main.iml" filepath="$PROJECT_DIR$/.idea/modules/workshop_main.iml" group="workshop" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/workshop_test.iml" filepath="$PROJECT_DIR$/.idea/modules/workshop_test.iml" group="workshop" />
+    </modules>
+  </component>
+</project>

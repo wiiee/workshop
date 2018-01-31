@@ -1,0 +1,50 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.6.RELEASE")
+        //classpath("org.springframework:springloaded:1.2.0.RELEASE")
+    }
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+
+    compileJava.options.encoding = 'UTF-8'
+
+    group = "com.workshop"
+    version = '0.1.0'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        mavenLocal()
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        mavenCentral()
+    }
+
+    jar {
+        manifest.attributes provider: 'gradle'
+    }
+}
+
+project(':domain') {
+    apply plugin: 'org.springframework.boot'
+
+    bootRepackage {
+        enabled = false
+    }
+}
+
+project(':app') {
+    apply plugin: 'org.springframework.boot'
+}

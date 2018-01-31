@@ -1,0 +1,13 @@
+features:
+  feature1:
+    date: 2017-03-02
+    description: feature1 description
+  feature2:
+    date: 2017-03-15
+    description: feature2 description
+  feature3:
+    date: 2017-04-15
+    description: feature3 description
+  feature4:
+    date: 2017-04-30
+    description: feature4 description
