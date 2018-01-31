@@ -45,6 +45,6 @@ project(':domain') {
     }
 }
 
-project(':app') {
+project(':domain') {
     apply plugin: 'org.springframework.boot'
 }

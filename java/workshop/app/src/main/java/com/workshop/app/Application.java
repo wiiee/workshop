@@ -1,4 +1,4 @@
-package com.workshop.domain;
+package com.workshop.app;
 
 import com.wiiee.core.platform.config.FeatureConfig;
 import org.slf4j.Logger;
@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
  * Created by wang.na on 2016/11/7.
