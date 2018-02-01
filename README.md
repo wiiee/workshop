@@ -7,12 +7,13 @@
 	```
 	git gradle
 	```
-## mongo
+
+## dependencies
+run command in root directory
 ```
-docker pull mongo
-mkdir ~/data
-docker run -d -v ~/data:/data/db mongo
+docker-compose up
 ```
+
 ## mongo client
 ```
 npm install -g mongo-monkey
