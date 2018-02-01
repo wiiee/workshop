@@ -20,6 +20,6 @@
 		<!--</expiry>-->
 	<!--</cache>-->
 
-	<cache alias="history" uses-template="default"></cache>
+	<cache alias="HistoryService" uses-template="default"></cache>
 
 </config>
