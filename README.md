@@ -10,7 +10,8 @@
 ## mongo
 ```
 docker pull mongo
-docker run -d mongo
+mkdir ~/data
+docker run -d -v ~/data:/data/db mongo
 ```
 ## mongo client
 ```
