@@ -1,25 +1,28 @@
-<h1>Log In</h1>
+<h1>Login</h1>
 
 <div class="row">
   <div class="col">
-    <mat-form-field>
-      <input matInput type="text" placeholder="id" [(ngModel)]="user.id" />
-      <button mat-button *ngIf="user.id" matSuffix mat-icon-button aria-label="Clear" (click)="user.id=''">
-        <mat-icon>close</mat-icon>
-      </button>
+    <div class="login-container">
+      <mat-form-field>
+        <input matInput type="text" placeholder="Id" [(ngModel)]="user.id" />
+        <button mat-button *ngIf="user.id" matSuffix mat-icon-button aria-label="Clear" (click)="user.id=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
 
-      <!-- <input matInput type="text" placeholder="password" [(ngModel)]="user.password"/>
-          <button mat-button *ngIf="user.password" matSuffix mat-icon-button aria-label="Clear" (click)="user.password=''">
-            <mat-icon>close</mat-icon>
-          </button>   -->
-    </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'">
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+      </mat-form-field>
+    </div>
   </div>
 </div>
+
 <div class="row">
-    <div class="col">
-        <div class="float-right">
-          <button type="submit" class="btn btn-success">Submit</button>
-          <button type="reset" class="btn btn-default">Reset</button>
-        </div>
-      </div>
+  <div class="col">
+    <div class="float-right">
+      <button type="submit" class="btn btn-success">Submit</button>
+      <button type="reset" class="btn btn-default">Reset</button>
+    </div>
+  </div>
 </div>
