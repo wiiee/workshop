@@ -11,16 +11,15 @@ public enum Level {
     T17(17),
     T18(18),
     T19(19),
-    T20(20),
-    UNKNOWN(-1);
+    T20(20);
 
-    private int level;
+    private int value;
 
-    Level(int level) {
-        this.level = level;
+    Level(int value) {
+        this.value = value;
     }
 
-    public int getLevel() {
-        return level;
+    public int value() {
+        return value;
     }
 }
