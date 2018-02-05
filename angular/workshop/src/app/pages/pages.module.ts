@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgMaterialModule } from '../ng-material.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -8,20 +9,26 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { UserComponent } from './user/user.component';
 import { LayoutComponent } from './layout/layout.component';
+import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
-import { FormsModule } from '@angular/forms';
+import { TaskComponent } from './task/task.component';
+import { TaskDetailComponent } from './task-detail/task-detail.component';
+import { SprintComponent } from './sprint/sprint.component';
+import { SprintDetailComponent } from './sprint-detail/sprint-detail.component';
+
 
 @NgModule({
-  declarations: [HomeComponent, UserComponent, LayoutComponent, LoginComponent, SignupComponent],
+  declarations: [HomeComponent, UserComponent, LayoutComponent, LoginComponent, SignupComponent, TaskComponent, TaskDetailComponent, SprintComponent, SprintDetailComponent],
   imports: [
     BrowserAnimationsModule,
     NgMaterialModule,
     AppRoutingModule,
     NgbModule.forRoot(),
     NgxEchartsModule,
-    FormsModule
+    FormsModule,
+    CommonModule
   ],
-  exports: [HomeComponent, UserComponent, LayoutComponent, LoginComponent, SignupComponent]
+  exports: [LayoutComponent]
 })
 export class PagesModule { }
