@@ -1,5 +1,6 @@
 package com.workshop.app.api;
 
+import com.wiiee.core.platform.util.EnumUtil;
 import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,8 +21,6 @@ public class EnumController {
 
     @RequestMapping(path = "/{name}", method = RequestMethod.GET)
     public List<Pair<String, Object>> getOptions(@PathVariable String name) {
-        List<Pair<String, Object>> pairs = new ArrayList<>();
-        
-        return pairs;
+        return EnumUtil.getOptions(name);
     }
 }

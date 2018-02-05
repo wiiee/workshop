@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { EnumService } from '../../services/enum.service';
 
 @Component({
   selector: 'app-signup',
@@ -8,7 +9,8 @@ import { Component, OnInit } from '@angular/core';
 export class SignupComponent implements OnInit {
   hide: boolean = true;
   user: any;
-  constructor() {
+  genders: any;
+  constructor(private enumService: EnumService) {
     this.user = {
       id: "",
       name: "",
@@ -17,6 +19,13 @@ export class SignupComponent implements OnInit {
       gender: "male",
       password: ""
     };
+
+    enumService.getOptions("com.workshop.domain.constant.Gender").subscribe((res: any) => {
+      this.genders = res;
+      console.log(res);
+    }, err => {
+      console.error("ERROR", err)
+    });
    }
 
   ngOnInit() {

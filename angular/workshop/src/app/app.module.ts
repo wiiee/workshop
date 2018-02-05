@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { PagesModule } from './pages/pages.module';
 import { AuthService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
+import { EnumService } from './services/enum.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
     PagesModule,
     HttpClientModule
   ],
-  providers: [AuthGuard, AuthService, TaskService, Api],
+  providers: [Api, AuthGuard, AuthService, TaskService, EnumService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
