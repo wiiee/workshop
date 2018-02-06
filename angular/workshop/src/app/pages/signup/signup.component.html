@@ -1,55 +1,57 @@
-<h1>Signup</h1>
+<h1>Sign Up</h1>
 
-<div class="row">
-  <div class="col">
-    <div class="signup-container">
-      <mat-form-field>
-        <input matInput type="text" placeholder="Id" [(ngModel)]="user.id" />
-        <button mat-button *ngIf="user.id" matSuffix mat-icon-button aria-label="Clear" (click)="user.id=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
+<form (ngSubmit)="onSubmit()" #formDir="ngForm">
+  <div class="row">
+    <div class="col">
+      <div class="signup-container">
+        <mat-form-field>
+          <input matInput type="text" placeholder="Id" [(ngModel)]="user.id" name="id" />
+          <button mat-button *ngIf="user.id" matSuffix mat-icon-button aria-label="Clear" (click)="user.id=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
 
-      <mat-form-field>
-        <input matInput type="text" placeholder="Name" [(ngModel)]="user.name" />
-        <button mat-button *ngIf="user.name" matSuffix mat-icon-button aria-label="Clear" (click)="user.name=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
+        <mat-form-field>
+          <input matInput type="text" placeholder="Name" [(ngModel)]="user.name" name="name" />
+          <button mat-button *ngIf="user.name" matSuffix mat-icon-button aria-label="Clear" (click)="user.name=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
 
-      <mat-form-field>
-        <input matInput type="text" placeholder="NickName" [(ngModel)]="user.nickName" />
-        <button mat-button *ngIf="user.nickName" matSuffix mat-icon-button aria-label="Clear" (click)="user.nickName=''">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
+        <mat-form-field>
+          <input matInput type="text" placeholder="NickName" [(ngModel)]="user.nickName" name="nickName" />
+          <button mat-button *ngIf="user.nickName" matSuffix mat-icon-button aria-label="Clear" (click)="user.nickName=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
 
-      <mat-form-field>
-        <input matInput type="text" placeholder="MobileNo" [(ngModel)]="user.mobileNo" />
-        <mat-icon matSuffix>phone</mat-icon>
-      </mat-form-field>
+        <mat-form-field>
+          <input matInput type="text" placeholder="MobileNo" [(ngModel)]="user.mobileNo" name="mobileNo" />
+          <mat-icon matSuffix>phone</mat-icon>
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-select placeholder="Gender" [(ngModel)]="user.gender">
-          <mat-option *ngFor="let gender of genders" [value]="gender.value">
-            {{ gender.key }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Gender" [(ngModel)]="user.gender" name="gender" >
+            <mat-option *ngFor="let gender of genders" [value]="gender.value">
+              {{ gender.key }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field>
-        <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'">
-        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-      </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" [(ngModel)]="user.password" name="password" />
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+        </mat-form-field>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="row">
-  <div class="col">
-    <div class="float-right">
-      <button type="submit" class="btn btn-success">Submit</button>
-      <button type="reset" class="btn btn-info">Reset</button>
+  <div class="row">
+    <div class="col">
+      <div class="float-right">
+        <button type="submit" class="btn btn-success" [disabled]="formDir.invalid">Submit</button>
+        <button type="reset" class="btn btn-info" (click)="formDir.resetForm({})">Reset</button>
+      </div>
     </div>
   </div>
-</div>
+</form>

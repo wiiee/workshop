@@ -15,7 +15,6 @@ export class SprintService {
   }
 
   getTask(id: number): Observable<Task> {
-    // Todo: send the message _after_ fetching the hero
     return of();
   }
 }

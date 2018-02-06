@@ -11,7 +11,6 @@ export class EnumService {
   constructor(private api: Api) { }
 
   getOptions(name: string): Observable<ArrayBuffer> {
-    // Todo: send the message _after_ fetching the hero
     return this.api.get("api/enum/" + name);
   }
 }

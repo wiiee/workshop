@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -8,14 +9,22 @@ import { Component, OnInit } from '@angular/core';
 export class LoginComponent implements OnInit {
   user: any;
   hide: boolean = true;
-  constructor() {
-    this.user = {
-      id: "",
-      password: ""
-    };
-   }
+  errorMsg: string;
+  constructor(private authService: AuthService) {
+    this.user = {};
+  }
 
   ngOnInit() {
   }
 
+  onSubmit() {
+    this.errorMsg = null;
+    console.log("Thanks for submitting! Data: " + JSON.stringify(this.user));
+    this.authService.logIn(this.user).subscribe((res: any) => {
+      if (!this.authService.isLoggedIn) {
+        this.user = {};
+        this.errorMsg = <string>res.message;
+      }
+    });
+  }
 }

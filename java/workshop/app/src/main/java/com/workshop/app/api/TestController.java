@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/test")
 public class TestController {
-    private static final Logger log = LoggerFactory.getLogger(TestController.class);
+    private static final Logger _logger = LoggerFactory.getLogger(TestController.class);
 
     @Autowired
     private UserService userService;
@@ -32,7 +32,7 @@ public class TestController {
             return userService.get();
         }
         catch (Exception ex){
-            log.error(ex.getMessage());
+            _logger.error(ex.getMessage());
             return new ArrayList<>();
         }
     }

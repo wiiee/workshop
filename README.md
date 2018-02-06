@@ -5,7 +5,7 @@
 1. run command below to install core jar to local maven repository
 
 	```
-	git gradle
+	gradle install
 	```
 
 ## dependencies

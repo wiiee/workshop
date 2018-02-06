@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { SprintComponent } from './sprint/sprint.component';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
+import { PageNotFoundComponent } from './not-found.component';
 
 const routes: Routes = [
   {
@@ -21,11 +22,12 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     component: UserComponent
   },
-  { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
-  { path: 'task', component: TaskComponent },
+  { path: 'logIn', component: LoginComponent },
+  { path: 'signUp', component: SignupComponent },
+  { path: 'tasks', component: TaskComponent },
   { path: 'task/:id', component: TaskDetailComponent },
-  { path: 'sprint', component: SprintComponent }
+  { path: 'sprints', component: SprintComponent },
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({

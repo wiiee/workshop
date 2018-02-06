@@ -20,7 +20,11 @@ public class User extends BaseData<String> {
     public Level level;
 
     //是否离职
-    private boolean isOff;
+    public boolean isOff;
+
+    public User(){
+
+    }
 
     public User(String id, String password, String name, String nickName, String mobileNo, List<String> pics, Gender gender, Level level, boolean isOff) {
         super(id);
