@@ -22,12 +22,20 @@
           </div>
         </li>
       </ul>
-      <ul class="navbar-nav">
+      <ul class="navbar-nav" *ngIf="!authService.isLoggedIn">
         <li class="nav-item">
           <a class="nav-link" routerLink="/logIn" routerLinkActive="active">Log In</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/signUp" routerLinkActive="active">Sign Up</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav" *ngIf="authService.isLoggedIn">
+        <li class="nav-item">
+            <a class="nav-link">welcome, {{authService.user.id}}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" (click)="logOut()">Log Out</a>
         </li>
       </ul>
     </div>

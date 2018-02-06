@@ -12,6 +12,7 @@ import 'rxjs/add/operator/share';
 @Injectable()
 export class AuthService {
     isLoggedIn = false;
+    user: User;
 
     // store the URL so we can redirect after logging in
     redirectUrl: string;
@@ -19,6 +20,7 @@ export class AuthService {
     constructor(private api: Api, private router: Router) { }
 
     logIn(user: User): Observable<ArrayBuffer> {
+        this.user = null;
         let seq = this.api.post("api/auth/logIn", user).share();
 
         seq.subscribe((res: any) => {
@@ -26,6 +28,7 @@ export class AuthService {
             this.isLoggedIn = res.isSuccessful;
 
             if (this.isLoggedIn) {
+                this.user = user;
                 this.redirect();
             }
         }, err => {
@@ -36,12 +39,14 @@ export class AuthService {
     }
 
     signUp(user: User): Observable<ArrayBuffer> {
+        this.user = null;
         let seq = this.api.post("api/auth/signUp", user).share();
 
         seq.subscribe((res: any) => {
             this.isLoggedIn = res.isSuccessful;
 
             if (this.isLoggedIn) {
+                this.user = user;
                 this.redirect();
             }
         }, err => {
@@ -69,5 +74,6 @@ export class AuthService {
 
     logOut(): void {
         this.isLoggedIn = false;
+        this.router.navigate(['/home']);
     }
 }
