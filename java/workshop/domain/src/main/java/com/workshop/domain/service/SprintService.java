@@ -5,9 +5,9 @@ import com.workshop.domain.entity.project.Sprint;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class SprintService extends BaseService<Sprint, ObjectId> {
     @Autowired
     public SprintService(MongoRepository<Sprint, ObjectId> repository) {

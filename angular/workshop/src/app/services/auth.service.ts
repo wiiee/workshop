@@ -21,7 +21,7 @@ export class AuthService {
 
     logIn(user: User): Observable<ArrayBuffer> {
         this.user = null;
-        let seq = this.api.post("api/auth/logIn", user).share();
+        let seq = this.api.post("api/user/logIn", user).share();
 
         seq.subscribe((res: any) => {
             console.log(res);
@@ -40,7 +40,7 @@ export class AuthService {
 
     signUp(user: User): Observable<ArrayBuffer> {
         this.user = null;
-        let seq = this.api.post("api/auth/signUp", user).share();
+        let seq = this.api.post("api/user/signUp", user).share();
 
         seq.subscribe((res: any) => {
             this.isLoggedIn = res.isSuccessful;

@@ -49,8 +49,8 @@
   <div class="row">
     <div class="col">
       <div class="float-right">
-        <button type="submit" class="btn btn-success" [disabled]="formDir.invalid">Submit</button>
-        <button type="reset" class="btn btn-info" (click)="formDir.resetForm({})">Reset</button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="formDir.invalid">Submit</button>
+        <button type="reset" mat-raised-button (click)="formDir.resetForm({})">Reset</button>
       </div>
     </div>
   </div>

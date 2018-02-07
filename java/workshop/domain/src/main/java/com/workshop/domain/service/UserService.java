@@ -5,17 +5,15 @@ import com.wiiee.core.domain.service.ServiceResult;
 import com.workshop.domain.entity.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-@Component
+@Service
 public class UserService extends BaseService<User, String> {
-    public static ServiceResult INVALID_USERNAME = new ServiceResult(false, "Id is invalid, please check it.");
-    public static ServiceResult INVALID_PWD = new ServiceResult(false, "Password is invalid, please check it.");
-    public static ServiceResult INVALID_USERNAME_OR_PWD = new ServiceResult(false, "Id or password is invalid, please check it.");
-    public static ServiceResult USER_ALREADY_EXIST = new ServiceResult(false, "User is already exist.");
-    public static ServiceResult SUCCESSFUL = new ServiceResult(true, null);
+    public static ServiceResult INVALID_USERNAME = new ServiceResult("Id is invalid, please check it.");
+    public static ServiceResult INVALID_PWD = new ServiceResult("Password is invalid, please check it.");
+    public static ServiceResult INVALID_USERNAME_OR_PWD = new ServiceResult("Id or password is invalid, please check it.");
+    public static ServiceResult USER_ALREADY_EXIST = new ServiceResult("User is already exist.");
 
     @Autowired
     public UserService(MongoRepository<User, String> repository) {
@@ -27,13 +25,13 @@ public class UserService extends BaseService<User, String> {
             return INVALID_USERNAME_OR_PWD;
         }
 
-        User user = get(id);
+        User user = get(id).data;
 
         if (user == null) {
             return INVALID_USERNAME;
         } else {
             if (user.password.equals(password)) {
-                return SUCCESSFUL;
+                return ServiceResult.SUCCESS;
             } else {
                 return INVALID_PWD;
             }
@@ -45,11 +43,11 @@ public class UserService extends BaseService<User, String> {
             return INVALID_USERNAME_OR_PWD;
         }
 
-        User dbUser = get(user.getId());
+        User dbUser = get(user.getId()).data;
 
         if (dbUser == null) {
             create(user);
-            return SUCCESSFUL;
+            return ServiceResult.SUCCESS;
         } else {
             return USER_ALREADY_EXIST;
         }

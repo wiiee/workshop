@@ -6,14 +6,11 @@ import com.workshop.domain.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
-public class AuthController {
+@RequestMapping("/api/user")
+public class UserController {
     private static final Logger _logger = LoggerFactory.getLogger(EnumController.class);
 
     @Autowired
@@ -31,5 +28,10 @@ public class AuthController {
     @PostMapping("/signUp")
     public ServiceResult signUp(@RequestBody User user){
         return userService.signUp(user);
+    }
+
+    @GetMapping
+    public ServiceResult get(){
+        return userService.get();
     }
 }
