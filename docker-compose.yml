@@ -9,6 +9,14 @@ services:
 
   elasticsearch:
     image: elasticsearch
+    volumes:
+      - ~/esdata:/usr/share/elasticsearch/data
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=127.0.0.1
+    ports:
+      - "9200:9200"
+      - "9300:9300"
 
   kibana:
     image: kibana
