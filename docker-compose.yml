@@ -11,12 +11,12 @@ services:
     image: elasticsearch
     volumes:
       - ~/esdata:/usr/share/elasticsearch/data
-    environment:
-      - http.host=0.0.0.0
-      - transport.host=127.0.0.1
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     ports:
       - "9200:9200"
       - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx4096m -Xms1024m"
 
   kibana:
     image: kibana
