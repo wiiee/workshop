@@ -15,6 +15,7 @@ dependency-reduced-pom.xml
 *.sublime-*
 /scratch
 .gradle
+.vscode
 README.html
 .idea
 *.iml
