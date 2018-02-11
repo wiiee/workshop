@@ -26,9 +26,3 @@ ng serve --open
 cd ~/src/workshop/java/workshop
 gradle :app:bootRun
 ```
-
-## mongo client
-```
-npm install -g mongo-monkey
-mongo-monkey
-```

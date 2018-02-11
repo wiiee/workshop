@@ -1,8 +1,6 @@
 package com.workshop.app.api;
 
 import com.wiiee.core.domain.service.ServiceResult;
-import com.workshop.domain.constant.Gender;
-import com.workshop.domain.constant.Level;
 import com.workshop.domain.entity.user.User;
 import com.workshop.domain.service.UserService;
 import org.slf4j.Logger;

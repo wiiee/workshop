@@ -14,12 +14,5 @@
 		<heap unit="entries">200</heap>
 	</cache-template>
 
-	<!--<cache alias="flightService-getSegments" uses-template="default">-->
-		<!--<expiry>-->
-			<!--<ttl unit="hours">600</ttl>-->
-		<!--</expiry>-->
-	<!--</cache>-->
-
 	<cache alias="HistoryService" uses-template="default"></cache>
-
 </config>
