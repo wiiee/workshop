@@ -5,12 +5,11 @@ import com.workshop.domain.entity.user.User;
 import com.workshop.domain.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -21,18 +20,12 @@ import java.util.List;
 public class TestController {
     private static final Logger _logger = LoggerFactory.getLogger(TestController.class);
 
-    @Autowired
+    @Resource
     private UserService userService;
 
     @GetMapping
     public List<User> getItems() {
-        try{
-            ServiceResult result = userService.get();
-            return result.datum;
-        }
-        catch (Exception ex){
-            _logger.error(ex.getMessage());
-            return new ArrayList<>();
-        }
+        ServiceResult<User> result = userService.get();
+        return result.datum;
     }
 }

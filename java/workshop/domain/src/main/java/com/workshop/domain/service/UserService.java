@@ -10,22 +10,24 @@ import org.springframework.util.StringUtils;
 
 @Service
 public class UserService extends BaseService<User, String> {
-    public static ServiceResult INVALID_USERNAME = new ServiceResult("Id is invalid, please check it.");
-    public static ServiceResult INVALID_PWD = new ServiceResult("Password is invalid, please check it.");
-    public static ServiceResult INVALID_USERNAME_OR_PWD = new ServiceResult("Id or password is invalid, please check it.");
-    public static ServiceResult USER_ALREADY_EXIST = new ServiceResult("User is already exist.");
+    public static ServiceResult<User> INVALID_USERNAME = new ServiceResult<>("Id is invalid, please check it.");
+    public static ServiceResult<User> INVALID_PWD = new ServiceResult<>("Password is invalid, please check it.");
+    public static ServiceResult<User> INVALID_USERNAME_OR_PWD = new ServiceResult<>("Id or password is invalid, please check it.");
+    public static ServiceResult<User> USER_ALREADY_EXIST = new ServiceResult<>("User is already exist.");
 
     @Autowired
     public UserService(MongoRepository<User, String> repository) {
         super(repository, User.class);
     }
 
-    public ServiceResult logIn(String id, String password) {
+    public ServiceResult<User> logIn(String id, String password) {
         if (StringUtils.isEmpty(id) || StringUtils.isEmpty(password)) {
             return INVALID_USERNAME_OR_PWD;
         }
 
-        User user = get(id).data;
+        ServiceResult<User> result = get(id);
+
+        User user = result.data;
 
         if (user == null) {
             return INVALID_USERNAME;
@@ -38,12 +40,14 @@ public class UserService extends BaseService<User, String> {
         }
     }
 
-    public ServiceResult signUp(User user) {
+    public ServiceResult<User> signUp(User user) {
         if (user == null || StringUtils.isEmpty(user.getId()) || StringUtils.isEmpty(user.password)) {
             return INVALID_USERNAME_OR_PWD;
         }
 
-        User dbUser = get(user.getId()).data;
+        ServiceResult<User> result = get(user.getId());
+
+        User dbUser = result.data;
 
         if (dbUser == null) {
             create(user);
