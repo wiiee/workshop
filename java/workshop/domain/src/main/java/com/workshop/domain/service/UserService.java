@@ -15,11 +15,6 @@ import static java.util.Collections.emptyList;
 
 @Service
 public class UserService extends BaseService<User, String> implements UserDetailsService {
-    private static ServiceResult<User> INVALID_USERNAME = new ServiceResult<>(100, "Id is invalid, please check it.");
-    private static ServiceResult<User> INVALID_PWD = new ServiceResult<>(101, "Password is invalid, please check it.");
-    private static ServiceResult<User> INVALID_USERNAME_OR_PWD = new ServiceResult<>(102, "Id or password is invalid, please check it.");
-    private static ServiceResult<User> USER_ALREADY_EXIST = new ServiceResult<>(103, "User is already exist.");
-
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserService(MongoRepository<User, String> repository, BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -30,7 +25,7 @@ public class UserService extends BaseService<User, String> implements UserDetail
 
     public ServiceResult<User> signUp(User user) {
         if (user == null || StringUtils.isEmpty(user.getId()) || StringUtils.isEmpty(user.password)) {
-            return INVALID_USERNAME_OR_PWD;
+            return ServiceResult.INVALID_USERNAME_OR_PWD;
         }
 
         ServiceResult<User> result = get(user.getId());
@@ -42,7 +37,7 @@ public class UserService extends BaseService<User, String> implements UserDetail
             create(user);
             return ServiceResult.SUCCESS;
         } else {
-            return USER_ALREADY_EXIST;
+            return ServiceResult.USER_ALREADY_EXIST;
         }
     }
 

@@ -21,10 +21,10 @@ export class LoginComponent implements OnInit {
     this.errorMsg = null;
     console.log("Thanks for submitting! Data: " + JSON.stringify(this.user));
     this.authService.logIn(this.user).subscribe((res: any) => {
-      if (!this.authService.isLoggedIn) {
-        this.user = {};
-        this.errorMsg = <string>res.message;
-      }
+
+    }, err => {
+      err.error.errorCode === 100 ? this.user.id = null : this.user.password = null;
+      this.errorMsg = err.error.errorMsg;
     });
   }
 }

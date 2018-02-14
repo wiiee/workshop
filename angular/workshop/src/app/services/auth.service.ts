@@ -37,7 +37,7 @@ export class AuthService {
                 this.redirect();
             }
         }, err => {
-            console.error("ERROR", err);
+            console.error("logIn error: " + err.error.errorMsg);
         });
 
         return seq;
