@@ -1,3 +1,5 @@
 export class User {
-    constructor(id: string, password: string, name: string, nickName: string, mobileNo: string, pics: string[], gender: any, level: any, isOff: boolean){}
+    constructor(public id: string, public password: string, public name: string, 
+        public nickName: string, public mobileNo: string, public pics: string[], public gender: any, 
+        public level: any, public isOff: boolean){}
 }

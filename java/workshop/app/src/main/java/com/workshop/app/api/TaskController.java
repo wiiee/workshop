@@ -6,16 +6,15 @@ import com.workshop.domain.service.TaskService;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/api/task")
 public class TaskController {
     private static final Logger _logger = LoggerFactory.getLogger(TaskController.class);
 
-    @Resource
+    @Autowired
     private TaskService taskService;
 
     @GetMapping

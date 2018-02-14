@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 /**
@@ -7,16 +7,14 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class Api {
   url: string = 'http://localhost:8080';
+  authHeader: string = "Authorization";
+  token: string;
 
   constructor(public http: HttpClient) {
   }
 
   get(endpoint: string, params?: any, reqOpts?: any) {
-    if (!reqOpts) {
-      reqOpts = {
-        params: new HttpParams()
-      };
-    }
+    reqOpts = reqOpts || {};
 
     // Support easy query params for GET requests
     if (params) {
@@ -30,6 +28,11 @@ export class Api {
   }
 
   post(endpoint: string, body: any, reqOpts?: any) {
+    if(this.token) {
+      reqOpts = reqOpts || {};
+      reqOpts.headers = new HttpHeaders().append(this.authHeader, this.token)
+    }
+
     return this.http.post(this.url + '/' + endpoint, body, reqOpts);
   }
 

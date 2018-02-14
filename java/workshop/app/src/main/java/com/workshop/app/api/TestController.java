@@ -5,11 +5,11 @@ import com.workshop.domain.entity.user.User;
 import com.workshop.domain.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -20,7 +20,7 @@ import java.util.List;
 public class TestController {
     private static final Logger _logger = LoggerFactory.getLogger(TestController.class);
 
-    @Resource
+    @Autowired
     private UserService userService;
 
     @GetMapping

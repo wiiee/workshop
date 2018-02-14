@@ -13,21 +13,26 @@ import 'rxjs/add/operator/share';
 export class AuthService {
     isLoggedIn = false;
     user: User;
+    token: any;
 
     // store the URL so we can redirect after logging in
     redirectUrl: string;
 
     constructor(private api: Api, private router: Router) { }
 
-    logIn(user: User): Observable<ArrayBuffer> {
+    logIn(user: User): Observable<any> {
         this.user = null;
-        let seq = this.api.post("api/user/logIn", user).share();
+        let seq = this.api.post("login", {
+            username: user.id,
+            password: user.password
+        }, {observe: 'response'}).share();
 
         seq.subscribe((res: any) => {
-            console.log(res);
-            this.isLoggedIn = res.isSuccessful;
+            if(res.status === 200){
+                this.api.token = res.headers.get(this.api.authHeader);
 
-            if (this.isLoggedIn) {
+                console.log(res);
+                this.isLoggedIn = true;
                 this.user = user;
                 this.redirect();
             }

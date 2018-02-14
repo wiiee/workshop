@@ -1,3 +1,4 @@
+import { Api } from './../../services/api';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
