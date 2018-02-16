@@ -8,9 +8,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SprintService extends BaseService<Sprint, ObjectId> {
+public class SprintService extends BaseService<Sprint, String> {
     @Autowired
-    public SprintService(MongoRepository<Sprint, ObjectId> repository) {
+    public SprintService(MongoRepository<Sprint, String> repository) {
         super(repository, Sprint.class);
     }
 }

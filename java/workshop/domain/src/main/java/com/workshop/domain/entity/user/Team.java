@@ -1,22 +1,23 @@
 package com.workshop.domain.entity.user;
 
 import com.wiiee.core.platform.data.BaseData;
-import org.bson.types.ObjectId;
 
 import java.util.Set;
 
-public class Team extends BaseData<ObjectId> {
-    public String Name;
-    public Set<String> UserIds;
-    public Set<String> OwnerIds;
+public class Team extends BaseData<String> {
+    //Id为团队Id
 
-    public String ParentId;
+    public String name;
+    public Set<String> ownerIds;
+    public Set<String> userIds;
 
-    public Team(ObjectId id, String name, Set<String> userIds, Set<String> ownerIds, String parentId) {
+    public String parentId;
+
+    public Team(String id, String name, Set<String> ownerIds, Set<String> userIds, String parentId) {
         super(id);
-        Name = name;
-        UserIds = userIds;
-        OwnerIds = ownerIds;
-        ParentId = parentId;
+        this.name = name;
+        this.userIds = userIds;
+        this.ownerIds = ownerIds;
+        this.parentId = parentId;
     }
 }

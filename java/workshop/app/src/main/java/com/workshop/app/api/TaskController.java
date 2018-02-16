@@ -3,7 +3,6 @@ package com.workshop.app.api;
 import com.wiiee.core.domain.service.ServiceResult;
 import com.workshop.domain.entity.project.Task;
 import com.workshop.domain.service.TaskService;
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public ServiceResult<Task> getById(@PathVariable ObjectId id){
+    public ServiceResult<Task> getById(@PathVariable String id){
         return taskService.get(id);
     }
 

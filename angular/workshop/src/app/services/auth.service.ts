@@ -79,6 +79,8 @@ export class AuthService {
 
     logOut(): void {
         this.isLoggedIn = false;
+        this.user = null;
+        this.token = null;
         this.router.navigate(['/home']);
     }
 }

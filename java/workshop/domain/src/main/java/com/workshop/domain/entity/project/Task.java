@@ -1,22 +1,42 @@
 package com.workshop.domain.entity.project;
 
-import com.wiiee.core.domain.valuetype.DateRange;
 import com.wiiee.core.platform.data.BaseData;
-import com.workshop.domain.valuetype.TaskInfo;
-import org.bson.types.ObjectId;
 
-public class Task extends BaseData<ObjectId> {
-    public DateRange DateRange;
-    public String ReporterId;
-    public String AssigneeId;
+import java.time.LocalDateTime;
+import java.util.List;
 
-    public TaskInfo TaskInfo;
+public class Task extends BaseData<String> {
+    //开始结束时间
+    public LocalDateTime startDate;
+    public LocalDateTime endDate;
 
-    public Task(ObjectId objectId, com.wiiee.core.domain.valuetype.DateRange dateRange, String reporterId, String assigneeId, TaskInfo taskInfo) {
-        super(objectId);
-        DateRange = dateRange;
-        ReporterId = reporterId;
-        AssigneeId = assigneeId;
-        TaskInfo = taskInfo;
+    //Task的创建者、工作者
+    public String reporterId;
+    public String assigneeId;
+
+    //标题和描述
+    public String title;
+    public String description;
+
+    //分值，类似于story point
+    public int value;
+
+    //评论
+    public List<Comment> comments;
+
+    //代码提交信息
+    public List<Code> codes;
+
+    //是否被Review过
+    public boolean isReviewed;
+
+    public List<PhaseItem> phaseItems;
+
+    public Task(String id, LocalDateTime startDate, String reporterId, String title, String description) {
+        super(id);
+        this.startDate = startDate;
+        this.reporterId = reporterId;
+        this.title = title;
+        this.description = description;
     }
 }

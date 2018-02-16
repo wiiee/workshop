@@ -8,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
   chartOption: any;
-  constructor() {
+  constructor(public api: Api) {
+    this.api.post("api/test", "bill", { responseType: 'text' }).subscribe((res: any) => console.log(res));
+
     this.chartOption = {
       "title": {
         "text": "组织结构图"
