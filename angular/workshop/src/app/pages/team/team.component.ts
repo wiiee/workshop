@@ -1,27 +1,27 @@
-import { UserService } from './../../services/user.service';
+import { TeamService } from './../../services/team.service';
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { User } from '../../entity/user';
+import { Team } from '../../entity/team';
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  selector: 'app-team',
+  templateUrl: './team.component.html',
+  styleUrls: ['./team.component.css']
 })
-export class UserComponent implements OnInit {
-  displayedColumns = ['id', 'name', 'nickName', 'mobileNo'];
-  dataSource: MatTableDataSource<User>;
+export class TeamComponent implements OnInit {
+  displayedColumns = ['id', 'name', 'ownerIds', 'userIds'];
+  dataSource: MatTableDataSource<Team>;
 
-  users: User[];
+  teams: Team[];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  constructor(private userService: UserService) {
-    this.userService.getUsers().subscribe(res => {
+  constructor(private teamService: TeamService) {
+    this.teamService.getTeams().subscribe(res => {
       console.log(res);
-      this.users = res.datum;
+      this.teams = res.datum;
           // Assign the data to the data source for the table to render
-      this.dataSource = new MatTableDataSource(this.users);
+      this.dataSource = new MatTableDataSource(this.teams);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });

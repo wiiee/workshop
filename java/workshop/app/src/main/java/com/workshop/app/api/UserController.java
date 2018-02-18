@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
-@SessionAttributes("userId")
 public class UserController {
     private static final Logger _logger = LoggerFactory.getLogger(UserController.class);
 
@@ -41,5 +40,10 @@ public class UserController {
     @GetMapping
     public ServiceResult<User> get() {
         return userService.get();
+    }
+
+    @GetMapping("/{id}")
+    public ServiceResult<User> get(@PathVariable String id){
+        return userService.get(id);
     }
 }

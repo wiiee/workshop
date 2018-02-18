@@ -1,35 +1,36 @@
+import { ServiceResult } from './../entity/service-result';
+import { HttpClient } from '@angular/common/http';
 import { User } from './../entity/user';
 import { Api } from './api';
 import { Injectable } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/share';
 
 @Injectable()
-export class AuthService {
-    isLoggedIn = false;
-    user: User;
-    token: any;
+export class UserService {
+    public isLoggedIn: boolean = false;
+    public authorizationToken: string;
+
+    //当前登录用户
+    public user: User;
 
     // store the URL so we can redirect after logging in
-    redirectUrl: string;
+    public redirectUrl: string;
 
-    constructor(private api: Api, private router: Router) { }
+    constructor(private api: Api, private httpClient: HttpClient, private router: Router) { }
 
-    logIn(user: User): Observable<any> {
+    logIn(user: User): Observable<ArrayBuffer> {
         this.user = null;
         let seq = this.api.post("login", {
             username: user.id,
             password: user.password
-        }, {observe: 'response'}).share();
+        }, { observe: 'response' }).share();
 
         seq.subscribe((res: any) => {
-            if(res.status === 200){
-                this.api.token = res.headers.get(this.api.authHeader);
+            if (res.status === 200) {
+                this.api.authorizationToken = res.headers.get(this.api.authHeader);
 
                 console.log(res);
                 this.isLoggedIn = true;
@@ -80,7 +81,16 @@ export class AuthService {
     logOut(): void {
         this.isLoggedIn = false;
         this.user = null;
-        this.token = null;
+        this.authorizationToken = null;
         this.router.navigate(['/home']);
+    }
+
+    getUsers(): Observable<ServiceResult<User>> {
+        console.log(this.api.url);
+        return this.httpClient.get<ServiceResult<User>>(this.api.url + "/api/user");
+    }
+
+    getUser(id: string): Observable<ServiceResult<User>> {
+        return this.httpClient.get<ServiceResult<User>>(this.api.url + "/api/user/" + id);
     }
 }

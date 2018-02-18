@@ -17,6 +17,9 @@ import { TaskDetailComponent } from './task-detail/task-detail.component';
 import { SprintComponent } from './sprint/sprint.component';
 import { SprintDetailComponent } from './sprint-detail/sprint-detail.component';
 import { PageNotFoundComponent } from './not-found.component';
+import { TeamComponent } from './team/team.component';
+import { TeamDetailComponent } from './team-detail/team-detail.component';
+import { UserDetailComponent } from './user-detail/user-detail.component';
 
 
 @NgModule({
@@ -30,7 +33,10 @@ import { PageNotFoundComponent } from './not-found.component';
     TaskDetailComponent,
     SprintComponent,
     SprintDetailComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    TeamComponent,
+    TeamDetailComponent,
+    UserDetailComponent
   ],
   imports: [
     BrowserAnimationsModule,

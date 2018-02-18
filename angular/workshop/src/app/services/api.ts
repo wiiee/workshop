@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 export class Api {
   url: string = 'http://localhost:8080';
   authHeader: string = "Authorization";
-  token: string;
+  authorizationToken: string;
 
   constructor(public http: HttpClient) {
   }
@@ -28,9 +28,9 @@ export class Api {
   }
 
   post(endpoint: string, body: any, reqOpts?: any) {
-    if(this.token) {
+    if(this.authorizationToken) {
       reqOpts = reqOpts || {};
-      reqOpts.headers = new HttpHeaders().append(this.authHeader, this.token)
+      reqOpts.headers = new HttpHeaders().append(this.authHeader, this.authorizationToken)
     }
 
     return this.http.post(this.url + '/' + endpoint, body, reqOpts);

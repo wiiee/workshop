@@ -14,7 +14,7 @@ export class TaskService {
     return of([]);
   }
 
-  getTask(id: number): Observable<Task> {
+  getTask(id: string): Observable<Task> {
     // Todo: send the message _after_ fetching the hero
     return of();
   }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EnumService } from '../../services/enum.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
 import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
@@ -15,7 +15,7 @@ export class SignupComponent implements OnInit {
   genders: any;
   signUpForm: FormGroup;
   errorMsg: string;
-  constructor(private enumService: EnumService, private authService: AuthService, private router: Router) {
+  constructor(private enumService: EnumService, private userService: UserService, private router: Router) {
     this.user = {
     };
 
@@ -32,8 +32,8 @@ export class SignupComponent implements OnInit {
   onSubmit() {
     this.errorMsg = null;
     console.log("Thanks for submitting! Data: " + JSON.stringify(this.user));
-    this.authService.signUp(this.user).subscribe((res: any) => {
-      if (!this.authService.isLoggedIn) {
+    this.userService.signUp(this.user).subscribe((res: any) => {
+      if (!this.userService.isLoggedIn) {
         this.user = {};
         this.errorMsg = <string>res.message;
       }

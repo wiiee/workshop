@@ -11,18 +11,22 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/user" routerLinkActive="active">User</a>
+        <li class="nav-item dropdown" ngbDropdown>
+          <a class="nav-link dropdown-toggle" id="layout_organization" ngbDropdownToggle>Organization</a>
+          <div class="dropdown-menu" aria-labelledby="layout_organization" ngbDropdownMenu>
+            <a class="dropdown-item" routerLink="/user" routerLinkActive="active">User</a>
+            <a class="dropdown-item" routerLink="/team" routerLinkActive="active">Team</a>
+          </div>
         </li>
         <li class="nav-item dropdown" ngbDropdown>
-          <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle>Work</a>
-          <div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>
-            <a class="dropdown-item" routerLink="/sprints" routerLinkActive="active">Sprint</a>
-            <a class="dropdown-item" routerLink="/tasks" routerLinkActive="active">Task</a>
+          <a class="nav-link dropdown-toggle" id="layout_work" ngbDropdownToggle>Work</a>
+          <div class="dropdown-menu" aria-labelledby="layout_work" ngbDropdownMenu>
+            <a class="dropdown-item" routerLink="/task" routerLinkActive="active">Task</a>
+            <a class="dropdown-item" routerLink="/sprint" routerLinkActive="active">Sprint</a>
           </div>
         </li>
       </ul>
-      <ul class="navbar-nav" *ngIf="!authService.isLoggedIn">
+      <ul class="navbar-nav" *ngIf="!userService.isLoggedIn">
         <li class="nav-item">
           <a class="nav-link" routerLink="/logIn" routerLinkActive="active">Log In</a>
         </li>
@@ -30,9 +34,9 @@
           <a class="nav-link" routerLink="/signUp" routerLinkActive="active">Sign Up</a>
         </li>
       </ul>
-      <ul class="navbar-nav" *ngIf="authService.isLoggedIn">
+      <ul class="navbar-nav" *ngIf="userService.isLoggedIn">
         <li class="nav-item">
-            <a class="nav-link">welcome, {{authService.user.id}}</a>
+            <a class="nav-link">welcome, {{userService.user.id}}</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" (click)="logOut()">Log Out</a>

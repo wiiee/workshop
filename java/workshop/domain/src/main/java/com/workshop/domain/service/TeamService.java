@@ -27,6 +27,9 @@ public class TeamService extends BaseService<Team, String> implements IAccessCtr
     //各个成员的高度
     private Map<String, Integer> heights;
 
+    //下属名单
+    private Map<String, Set<String>> subordinates;
+
     @Autowired
     public TeamService(MongoRepository<Team, String> repository) {
         super(repository, Team.class);
@@ -36,6 +39,8 @@ public class TeamService extends BaseService<Team, String> implements IAccessCtr
 
         teamIds = new HashSet<>();
         heights = new HashMap<>();
+
+        subordinates = new HashMap<>();
     }
 
     @PostConstruct
@@ -64,6 +69,40 @@ public class TeamService extends BaseService<Team, String> implements IAccessCtr
                 heights.put(p, o.getHeight(leaves, p));
             });
         });
+
+        rootMemberIds.forEach(o -> {
+            Set<String> parents = new HashSet<>();
+            buildSubordinates(parents, o);
+        });
+    }
+
+    private void buildSubordinates(Set<String> parents, Node<String> node){
+        if(node.getChildren().isEmpty()){
+            return;
+        }
+        else{
+            //保存当前父节点
+            Set<String> rawParents = new HashSet<>(parents);
+
+            for(Node<String> child : node.getChildren()){
+                //恢复当前父节点
+                parents = new HashSet<>(rawParents);
+
+                //所有子节点加入当前父节点的儿子
+                parents.add(node.getData());
+                parents.forEach(o -> {
+                    if(subordinates.containsKey(o)){
+                        subordinates.get(o).add(child.getData());
+                    }
+                    else{
+                        subordinates.put(o, new HashSet<>(Arrays.asList(child.getData())));
+                    }
+                });
+
+                //递归计算子节点
+                buildSubordinates(parents, child);
+            }
+        }
     }
 
     public int getHeight(String memberId){
@@ -76,39 +115,11 @@ public class TeamService extends BaseService<Team, String> implements IAccessCtr
 
     //id1是否为id2的上级
     public boolean isBoss(String id1, String id2) {
-        for(Node<String> root : rootMemberIds){
-            if(find(root, id1, id2, false)){
-                return true;
-            }
+        if(StringUtils.isEmpty(id1) || StringUtils.isEmpty(id2)){
+            return false;
         }
 
-        return false;
-    }
-
-    //id1, id2是否在同一条路径下面
-    private boolean find(Node<String> node, String id1, String id2, boolean isFind1){
-        //id1已经找着了，又找到了id2，表示在同一条路径下面
-        if(isFind1 && node.getData().equals(id2)){
-            return true;
-        }
-
-        //找着了id1，标记为true
-        if(node.getData().equals(id1)){
-            isFind1 = true;
-        }
-
-        //已经到了叶子节点，没有找到id2，重置isFind1为false
-        if(node.getChildren() == null){
-            isFind1 = false;
-        }
-
-        for(Node<String> child : node.getChildren()){
-            if(find(child, id1, id2, isFind1)){
-                return true;
-            }
-        }
-
-        return false;
+        return subordinates.containsKey(id1) && subordinates.get(id1).contains(id2);
     }
 
     //parent为员工父节点，node为部门节点

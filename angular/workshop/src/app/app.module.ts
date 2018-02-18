@@ -1,3 +1,5 @@
+import { TeamService } from './services/team.service';
+import { HttpInterceptorProviders } from './services/http-interceptors/index';
 import { Api } from './services/api';
 import { TaskService } from './services/task.service';
 import { AuthGuard } from './services/auth-guard.service';
@@ -6,9 +8,10 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { PagesModule } from './pages/pages.module';
-import { AuthService } from './services/auth.service';
+import { UserService } from './services/user.service';
 import { HttpClientModule } from '@angular/common/http';
 import { EnumService } from './services/enum.service';
+import { RequestCache, RequestCacheWithMap } from './services/request-cache.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,15 @@ import { EnumService } from './services/enum.service';
     PagesModule,
     HttpClientModule
   ],
-  providers: [Api, AuthGuard, AuthService, TaskService, EnumService],
+  providers: [
+    Api,
+    AuthGuard,
+    UserService,
+    TaskService,
+    TeamService,
+    EnumService,
+    { provide: RequestCache, useClass: RequestCacheWithMap },
+    HttpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

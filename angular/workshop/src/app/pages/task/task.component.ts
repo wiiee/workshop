@@ -38,7 +38,6 @@ export class TaskComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }
 /** Builds and returns a new User. */
 function createNewUser(id: number): UserData {

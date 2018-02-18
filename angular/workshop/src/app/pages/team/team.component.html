@@ -1,4 +1,4 @@
-<h1>User</h1>
+<h1>Team</h1>
 
 <div class="example-header">
   <mat-form-field>
@@ -7,7 +7,9 @@
 </div>
 
 <div class="example-container mat-elevation-z8">
+
   <mat-table [dataSource]="dataSource" matSort>
+
     <!-- Id Column -->
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
@@ -22,16 +24,16 @@
       <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
     </ng-container>
 
-    <!-- NickName Column -->
-    <ng-container matColumnDef="nickName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Nick Name</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.nickName}} </mat-cell>
+    <!-- OwnerIds Column -->
+    <ng-container matColumnDef="ownerIds">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Owner Ids</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.ownerIds}} </mat-cell>
     </ng-container>
 
-    <!-- MobileNo Column -->
-    <ng-container matColumnDef="mobileNo">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Mobile No</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.mobileNo}} </mat-cell>
+    <!-- UserIds Column -->
+    <ng-container matColumnDef="userIds">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>User Ids</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.userIds}} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
