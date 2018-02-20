@@ -1,19 +1,16 @@
-import { UserService } from './../user.service';
+import { Api } from './../api';
 import { Injectable } from '@angular/core';
 import {
-    HttpEvent, HttpInterceptor, HttpHandler, HttpRequest
+    HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpHeaders
 } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-    constructor(private UserService: UserService) { }
+    constructor(private api: Api) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler) {
-        // Get the auth token from the service.
-        const authToken = this.UserService.authorizationToken;
-
         /*
         * The verbose way:
         // Clone the request and replace the original headers with
@@ -23,9 +20,16 @@ export class AuthInterceptor implements HttpInterceptor {
         });
         */
         // Clone the request and set the new header in one step.
-        const authReq = req.clone({ setHeaders: { Authorization: authToken } });
+        if (this.api.authorizationToken) {
+            // const authReq = req.clone({
+            //     headers: new HttpHeaders().append(Api.AUTH_HEADER, this.api.authorizationToken)
+            // });
+            const authReq = req.clone({
+                headers: req.headers.set(Api.AUTH_HEADER, this.api.authorizationToken)
+            });
+            return next.handle(authReq);
+        }
 
-        // send cloned request with header to the next handler.
-        return next.handle(authReq);
+        return next.handle(req);
     }
 }

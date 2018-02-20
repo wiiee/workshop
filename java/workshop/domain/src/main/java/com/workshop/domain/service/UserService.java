@@ -3,10 +3,10 @@ package com.workshop.domain.service;
 import com.wiiee.core.domain.service.BaseService;
 import com.wiiee.core.domain.service.ServiceResult;
 import com.workshop.domain.entity.user.User;
+import com.workshop.domain.helper.AuthHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,7 +21,7 @@ public class UserService extends BaseService<User, String> implements UserDetail
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private TeamService teamService;
+    private AuthHelper authHelper;
 
     public UserService(MongoRepository<User, String> repository, PasswordEncoder passwordEncoder) {
         super(repository, User.class);
@@ -40,8 +39,7 @@ public class UserService extends BaseService<User, String> implements UserDetail
 
         if (dbUser == null) {
             user.password = passwordEncoder.encode(user.password);
-            create(user);
-            return ServiceResult.SUCCESS;
+            return create(user);
         } else {
             return ServiceResult.USER_ALREADY_EXIST;
         }
@@ -55,7 +53,7 @@ public class UserService extends BaseService<User, String> implements UserDetail
             throw new UsernameNotFoundException(username);
         }
 
-        List<GrantedAuthority> authorities = getAuthorities(username);
+        List<GrantedAuthority> authorities = authHelper.getAuthorities(username);
 
         return new org.springframework.security.core.userdetails.User(user.getId(), user.password, authorities);
     }
@@ -68,12 +66,5 @@ public class UserService extends BaseService<User, String> implements UserDetail
 
         entity.password = passwordEncoder.encode(entity.password);
         return super.create(entity);
-    }
-
-    private List<GrantedAuthority> getAuthorities(String id){
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(String.valueOf(teamService.getHeight(id))));
-
-        return authorities;
     }
 }

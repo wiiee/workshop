@@ -10,6 +10,7 @@ import { User } from '../../entity/user';
 })
 export class UserDetailComponent implements OnInit {
   user: User;
+  text: string;
   constructor(private route: ActivatedRoute, private userService: UserService) { 
 
   }
@@ -23,6 +24,7 @@ export class UserDetailComponent implements OnInit {
     this.userService.getUser(id).subscribe(res => {
       console.log(res);
       this.user = res.data;
+      this.text = JSON.stringify(this.user);
     });
   }
 }

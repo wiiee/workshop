@@ -1,20 +1,14 @@
 package com.workshop.app.api;
 
-import com.wiiee.core.domain.service.ServiceResult;
 import com.workshop.domain.entity.user.Team;
-import com.workshop.domain.entity.user.User;
 import com.workshop.domain.service.TeamService;
 import com.workshop.domain.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDecisionManager;
-import org.springframework.security.access.intercept.AbstractSecurityInterceptor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * Created by wiiee on 1/31/2018.
@@ -69,5 +63,10 @@ public class TestController {
         System.out.println("Michael->a: " + teamService.isBoss("Michael", "a"));
 
         return teamService.get().datum;
+    }
+
+    @PostMapping
+    public String hello(@RequestBody String name) throws Exception {
+        return "hello, world " + name;
     }
 }

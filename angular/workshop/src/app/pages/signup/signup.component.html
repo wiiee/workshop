@@ -1,5 +1,9 @@
 <h1>Sign Up</h1>
 
+<div class="alert alert-danger" role="alert" *ngIf="errorMsg">
+  {{errorMsg}}
+</div>
+
 <form (ngSubmit)="onSubmit()" #formDir="ngForm">
   <div class="row">
     <div class="col">

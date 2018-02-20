@@ -1,5 +1,5 @@
 import { TeamService } from './services/team.service';
-import { HttpInterceptorProviders } from './services/http-interceptors/index';
+import { httpInterceptorProviders } from './services/http-interceptors/index';
 import { Api } from './services/api';
 import { TaskService } from './services/task.service';
 import { AuthGuard } from './services/auth-guard.service';
@@ -30,7 +30,7 @@ import { RequestCache, RequestCacheWithMap } from './services/request-cache.serv
     TeamService,
     EnumService,
     { provide: RequestCache, useClass: RequestCacheWithMap },
-    HttpInterceptorProviders],
+    httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

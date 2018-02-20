@@ -1,5 +1,5 @@
+import { HttpResponse } from '@angular/common/http';
 import { ServiceResult } from './../entity/service-result';
-import { HttpClient } from '@angular/common/http';
 import { User } from './../entity/user';
 import { Api } from './api';
 import { Injectable } from '@angular/core';
@@ -19,47 +19,58 @@ export class UserService {
     // store the URL so we can redirect after logging in
     public redirectUrl: string;
 
-    constructor(private api: Api, private httpClient: HttpClient, private router: Router) { }
+    constructor(private api: Api, private router: Router) { }
 
-    logIn(user: User): Observable<ArrayBuffer> {
-        this.user = null;
-        let seq = this.api.post("login", {
+    logIn(user: User): Observable<HttpResponse<Object>> {
+        this.resetAuth();
+
+        let seq = this.api.httpClient.post(Api.SERVER_URL + "/api/user/logIn", {
             username: user.id,
             password: user.password
-        }, { observe: 'response' }).share();
+        }, { observe: "response" }).share();
 
-        seq.subscribe((res: any) => {
+        seq.subscribe(res => {
             if (res.status === 200) {
-                this.api.authorizationToken = res.headers.get(this.api.authHeader);
+                this.api.authorizationToken = res.headers.get(Api.AUTH_HEADER);
 
-                console.log(res);
                 this.isLoggedIn = true;
                 this.user = user;
                 this.redirect();
             }
         }, err => {
-            console.error("logIn error: " + err.error.errorMsg);
+            console.error("error: " + JSON.stringify(err.error));
         });
 
         return seq;
     }
 
-    signUp(user: User): Observable<ArrayBuffer> {
-        this.user = null;
-        let seq = this.api.post("api/user/signUp", user).share();
+    signUp(user: User): Observable<HttpResponse<ServiceResult<User>>> {
+        this.resetAuth();
 
-        seq.subscribe((res: any) => {
-            this.isLoggedIn = res.isSuccessful;
+        let seq = this.api.httpClient.post<ServiceResult<User>>(
+            Api.SERVER_URL + "/api/user/signUp",
+            user, 
+            { observe: "response" }).share();
 
-            if (this.isLoggedIn) {
+        seq.subscribe(res => {
+            if (res.body.isSuccessful) {
+                this.api.authorizationToken = res.headers.get(Api.AUTH_HEADER);
+
+                this.isLoggedIn = true;
                 this.user = user;
                 this.redirect();
             }
         }, err => {
-            console.error("ERROR", err);
+            console.error("error: " + JSON.stringify(err.error));
         });
 
         return seq;
+    }
+
+    private resetAuth(): void {
+        this.user = null;
+        this.api.authorizationToken = null;
+        this.isLoggedIn = false;
     }
 
     private redirect(): void {
@@ -86,11 +97,10 @@ export class UserService {
     }
 
     getUsers(): Observable<ServiceResult<User>> {
-        console.log(this.api.url);
-        return this.httpClient.get<ServiceResult<User>>(this.api.url + "/api/user");
+        return this.api.httpClient.get<ServiceResult<User>>(Api.SERVER_URL + "/api/user");
     }
 
     getUser(id: string): Observable<ServiceResult<User>> {
-        return this.httpClient.get<ServiceResult<User>>(this.api.url + "/api/user/" + id);
+        return this.api.httpClient.get<ServiceResult<User>>(Api.SERVER_URL + "/api/user/" + id);
     }
 }

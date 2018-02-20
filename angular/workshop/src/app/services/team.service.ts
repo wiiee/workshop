@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 import { Api } from './api';
 import { Team } from './../entity/team';
@@ -9,14 +8,13 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class TeamService {
-  constructor(private api: Api, private httpClient: HttpClient) { }
+  constructor(private api: Api) { }
 
   getTeams(): Observable<ServiceResult<Team>> {
-    console.log(this.api.url);
-    return this.httpClient.get<ServiceResult<Team>>(this.api.url + "/api/team");
+    return this.api.httpClient.get<ServiceResult<Team>>(Api.SERVER_URL + "/api/team");
   }
 
   getTeam(id: string): Observable<ServiceResult<Team>> {
-    return this.httpClient.get<ServiceResult<Team>>(this.api.url + "/api/team/" + id);
+    return this.api.httpClient.get<ServiceResult<Team>>(Api.SERVER_URL + "/api/team/" + id);
   }
 }

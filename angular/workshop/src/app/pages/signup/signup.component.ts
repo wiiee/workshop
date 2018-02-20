@@ -22,7 +22,7 @@ export class SignupComponent implements OnInit {
     enumService.getOptions("com.workshop.domain.constant.Gender").subscribe((res: any) => {
       this.genders = res;
     }, err => {
-      console.error("ERROR", err)
+      console.error("error: ", JSON.stringify(err.error));
     });
   }
 
@@ -32,10 +32,9 @@ export class SignupComponent implements OnInit {
   onSubmit() {
     this.errorMsg = null;
     console.log("Thanks for submitting! Data: " + JSON.stringify(this.user));
-    this.userService.signUp(this.user).subscribe((res: any) => {
-      if (!this.userService.isLoggedIn) {
-        this.user = {};
-        this.errorMsg = <string>res.message;
+    this.userService.signUp(this.user).subscribe(res => {
+      if (!res.body.isSuccessful) {
+        this.errorMsg = res.body.errorMsg;
       }
     });
   }
