@@ -11,10 +11,10 @@ export class TeamService {
   constructor(private api: Api) { }
 
   getTeams(): Observable<ServiceResult<Team>> {
-    return this.api.httpClient.get<ServiceResult<Team>>(Api.SERVER_URL + "/api/team");
+    return this.api.get<ServiceResult<Team>>("/api/team");
   }
 
   getTeam(id: string): Observable<ServiceResult<Team>> {
-    return this.api.httpClient.get<ServiceResult<Team>>(Api.SERVER_URL + "/api/team/" + id);
+    return this.api.get<ServiceResult<Team>>("/api/team/" + id);
   }
 }

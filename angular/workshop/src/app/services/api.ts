@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
@@ -10,50 +11,84 @@ export class Api {
   public static readonly SERVER_URL: string = 'http://localhost:8080';
   public static readonly AUTH_HEADER: string = "Authorization";
 
-  public static JSON_HTTP_OPTIONS = {
-    headers: new HttpHeaders({
-      'Content-Type':  'application/json'
-    })
-  };
-  
   public authorizationToken: string;
 
   constructor(public httpClient: HttpClient) {
   }
 
-  get(endpoint: string, params?: any, reqOpts?: any) {
-    reqOpts = reqOpts || {};
-
-    // Support easy query params for GET requests
-    if (params) {
-      reqOpts.params = new HttpParams();
-      for (let k in params) {
-        reqOpts.params = reqOpts.params.set(k, params[k]);
-      }
-    }
-
-    return this.httpClient.get(Api.SERVER_URL + '/' + endpoint, reqOpts);
+  get<T>(endpoint: string, options?: {
+    headers?: HttpHeaders | {
+      [header: string]: string | string[];
+    };
+    observe?: 'body';
+    params?: HttpParams | {
+      [param: string]: string | string[];
+    };
+    reportProgress?: boolean;
+    responseType?: 'json';
+    withCredentials?: boolean;
+  }): Observable<T> {
+    return this.httpClient.get<T>(Api.SERVER_URL + endpoint, options);
   }
 
-  post(endpoint: string, body: any, reqOpts?: any) {
-    if (this.authorizationToken) {
-      reqOpts = reqOpts || {};
-      reqOpts.headers = new HttpHeaders().append(Api.SERVER_URL, this.authorizationToken)
-    }
-
-    return this.httpClient.post(Api.SERVER_URL + '/' + endpoint, body, reqOpts);
+  post<T>(endpoint: string, body: any | null, options?: {
+    headers?: HttpHeaders | {
+      [header: string]: string | string[];
+    };
+    observe?: 'body';
+    params?: HttpParams | {
+      [param: string]: string | string[];
+    };
+    reportProgress?: boolean;
+    responseType?: 'json';
+    withCredentials?: boolean;
+  }): Observable<T> {
+    return this.httpClient.post<T>(Api.SERVER_URL + endpoint, body, options);
   }
 
-  put(endpoint: string, body: any, reqOpts?: any) {
-    return this.httpClient.put(Api.SERVER_URL + '/' + endpoint, body, reqOpts);
+  put<T>(endpoint: string, body: any | null, options?: {
+    headers?: HttpHeaders | {
+      [header: string]: string | string[];
+    };
+    observe?: 'body';
+    params?: HttpParams | {
+      [param: string]: string | string[];
+    };
+    reportProgress?: boolean;
+    responseType?: 'json';
+    withCredentials?: boolean;
+  }): Observable<T> {
+    return this.httpClient.put<T>(Api.SERVER_URL + endpoint, body, options);
   }
 
-  delete(endpoint: string, reqOpts?: any) {
-    return this.httpClient.delete(Api.SERVER_URL + '/' + endpoint, reqOpts);
+  delete<T>(endpoint: string, options?: {
+    headers?: HttpHeaders | {
+      [header: string]: string | string[];
+    };
+    observe?: 'body';
+    params?: HttpParams | {
+      [param: string]: string | string[];
+    };
+    reportProgress?: boolean;
+    responseType?: 'json';
+    withCredentials?: boolean;
+  }): Observable<T> {
+    return this.httpClient.delete<T>(Api.SERVER_URL + endpoint, options);
   }
 
-  patch(endpoint: string, body: any, reqOpts?: any) {
-    return this.httpClient.put(Api.SERVER_URL + '/' + endpoint, body, reqOpts);
+  patch<T>(endpoint: string, body: any | null, options?: {
+    headers?: HttpHeaders | {
+      [header: string]: string | string[];
+    };
+    observe?: 'body';
+    params?: HttpParams | {
+      [param: string]: string | string[];
+    };
+    reportProgress?: boolean;
+    responseType?: 'json';
+    withCredentials?: boolean;
+  }): Observable<T> {
+    return this.httpClient.patch<T>(Api.SERVER_URL + endpoint, body, options);
   }
 
   public handleError(error: HttpErrorResponse): ErrorObservable {

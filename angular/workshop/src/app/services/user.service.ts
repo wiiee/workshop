@@ -97,10 +97,10 @@ export class UserService {
     }
 
     getUsers(): Observable<ServiceResult<User>> {
-        return this.api.httpClient.get<ServiceResult<User>>(Api.SERVER_URL + "/api/user");
+        return this.api.get<ServiceResult<User>>("/api/user");
     }
 
     getUser(id: string): Observable<ServiceResult<User>> {
-        return this.api.httpClient.get<ServiceResult<User>>(Api.SERVER_URL + "/api/user/" + id);
+        return this.api.get<ServiceResult<User>>("/api/user/" + id);
     }
 }
