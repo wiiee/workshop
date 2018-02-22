@@ -1,1 +1,90 @@
-{{text}}
+<h1>User Detail</h1>
+
+<div class="goBack">
+    <button mat-fab (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+</div>
+
+<div class="clearfix"></div>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/home" routerLinkActive="active">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a routerLink="/user" routerLinkActive="active">User</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">User Detail</li>
+    </ol>
+</nav>
+
+<div class="alert alert-success" role="alert" *ngIf="successMsg">
+    {{successMsg}}
+</div>
+
+<div class="alert alert-danger" role="alert" *ngIf="errorMsg">
+    {{errorMsg}}
+</div>
+
+<form (ngSubmit)="onSubmit()" #formDir="ngForm">
+    <div class="row">
+        <div class="col">
+            <div class="container">
+                <mat-form-field>
+                    <input matInput type="text" placeholder="Id" [(ngModel)]="user.id" name="id" [disabled]="isUpdate" />
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type="text" placeholder="Name" [(ngModel)]="user.name" name="name" />
+                    <button mat-button *ngIf="user.name" matSuffix mat-icon-button aria-label="Clear" (click)="user.name=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type="text" placeholder="NickName" [(ngModel)]="user.nickName" name="nickName" />
+                    <button mat-button *ngIf="user.nickName" matSuffix mat-icon-button aria-label="Clear" (click)="user.nickName=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type="text" placeholder="MobileNo" [(ngModel)]="user.mobileNo" name="mobileNo" />
+                    <mat-icon matSuffix>phone</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-select placeholder="Gender" [(ngModel)]="user.gender" name="gender">
+                        <mat-option *ngFor="let gender of genders" [value]="gender.value">
+                            {{ gender.key }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-select placeholder="Role" [(ngModel)]="user.role" name="role">
+                        <mat-option *ngFor="let role of roles" [value]="role.value">
+                            {{ role.key }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="!isUpdate">
+                    <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" [(ngModel)]="user.password" name="password" />
+                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="float-right">
+                <button type="submit" mat-raised-button color="primary" [disabled]="formDir.invalid">Submit</button>
+                <button type="button" mat-raised-button (click)="resetForm()">Reset</button>
+            </div>
+        </div>
+    </div>
+</form>

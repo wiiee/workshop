@@ -1,3 +1,4 @@
+import { Task } from './../../entity/task';
 import { TaskService } from './../../services/task.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { Location } from '@angular/common';
@@ -9,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./task-detail.component.css']
 })
 export class TaskDetailComponent implements OnInit {
-  @Input() task: any;
+  task: Task;
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -23,7 +24,9 @@ export class TaskDetailComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
 
     this.taskService.getTask(id)
-      .subscribe(task => this.task = task);
+      .subscribe(task => {
+        this.task = task;
+      });
   }
 
   goBack(): void {

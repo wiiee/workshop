@@ -21,6 +21,9 @@ public class Task extends BaseData<String> {
     //分值，类似于story point
     public int value;
 
+    //哪个Team的
+    public String teamId;
+
     //评论
     public List<Comment> comments;
 

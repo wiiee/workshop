@@ -1,8 +1,8 @@
-.signup-container {
+.container {
     display: flex;
     flex-direction: column;
-  }
+}
   
-.signup-container > * {
+.container > * {
     width: 100%;
-  }
+}

@@ -11,6 +11,6 @@ export class EnumService {
   constructor(private api: Api) { }
 
   getOptions(name: string): Observable<ArrayBuffer> {
-    return this.api.get("api/enum/" + name);
+    return this.api.get("/api/enum/" + name);
   }
 }

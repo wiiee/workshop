@@ -7,7 +7,7 @@
 <form (ngSubmit)="onSubmit()" #formDir="ngForm">
   <div class="row">
     <div class="col">
-      <div class="login-container">
+      <div class="container">
         <mat-form-field>
           <input matInput type="text" placeholder="Id" [(ngModel)]="user.id" name="id" />
           <button mat-button *ngIf="user.id" matSuffix mat-icon-button aria-label="Clear" (click)="user.id=''">

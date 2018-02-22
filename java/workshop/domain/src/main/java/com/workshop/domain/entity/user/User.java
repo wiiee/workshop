@@ -3,6 +3,7 @@ package com.workshop.domain.entity.user;
 import com.wiiee.core.platform.data.BaseData;
 import com.workshop.domain.constant.Gender;
 import com.workshop.domain.constant.Level;
+import com.workshop.domain.constant.Role;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class User extends BaseData<String> {
 
     public Gender gender;
     public Level level;
+    public Role role;
 
     //是否离职
     public boolean isOff;
@@ -26,7 +28,7 @@ public class User extends BaseData<String> {
 
     }
 
-    public User(String id, String password, String name, String nickName, String mobileNo, List<String> pics, Gender gender, Level level, boolean isOff) {
+    public User(String id, String password, String name, String nickName, String mobileNo, List<String> pics, Gender gender, Level level, Role role, boolean isOff) {
         super(id);
         this.password = password;
         this.name = name;
@@ -35,6 +37,7 @@ public class User extends BaseData<String> {
         this.pics = pics;
         this.gender = gender;
         this.level = level;
+        this.role = role;
         this.isOff = isOff;
     }
 }

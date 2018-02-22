@@ -39,7 +39,7 @@ public class UserService extends BaseService<User, String> implements UserDetail
 
         if (dbUser == null) {
             user.password = passwordEncoder.encode(user.password);
-            return create(user);
+            return super.create(user);
         } else {
             return ServiceResult.USER_ALREADY_EXIST;
         }
@@ -66,5 +66,22 @@ public class UserService extends BaseService<User, String> implements UserDetail
 
         entity.password = passwordEncoder.encode(entity.password);
         return super.create(entity);
+    }
+
+    //密码不改变
+    @Override
+    public ServiceResult<User> update(User entity){
+        if (entity == null || StringUtils.isEmpty(entity.getId())) {
+            //ToDo: define exception
+            return ServiceResult.INVALID_USERNAME_OR_PWD;
+        }
+
+        ServiceResult<User> result = get(entity.getId());
+
+        if(result.isSuccessful && result.data.getId().equals(entity.getId()));
+
+        entity.password = passwordEncoder.encode(entity.password);
+
+        return super.update(entity);
     }
 }

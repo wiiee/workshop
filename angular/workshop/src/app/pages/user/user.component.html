@@ -1,12 +1,22 @@
 <h1>User</h1>
 
-<div class="example-header">
+<div class="float-right">
+    <a routerLink="/user/null" routerLinkActive="active">
+      <button mat-fab>
+          <mat-icon>person_add</mat-icon>
+      </button>
+    </a>
+</div>
+
+<div class="clearfix"></div>
+
+<div>
   <mat-form-field>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
 </div>
 
-<div class="example-container mat-elevation-z8">
+<div class="mat-elevation-z8">
   <mat-table [dataSource]="dataSource" matSort>
     <!-- Id Column -->
     <ng-container matColumnDef="id">

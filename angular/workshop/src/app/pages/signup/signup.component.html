@@ -7,7 +7,7 @@
 <form (ngSubmit)="onSubmit()" #formDir="ngForm">
   <div class="row">
     <div class="col">
-      <div class="signup-container">
+      <div class="container">
         <mat-form-field>
           <input matInput type="text" placeholder="Id" [(ngModel)]="user.id" name="id" />
           <button mat-button *ngIf="user.id" matSuffix mat-icon-button aria-label="Clear" (click)="user.id=''">
@@ -38,6 +38,14 @@
           <mat-select placeholder="Gender" [(ngModel)]="user.gender" name="gender" >
             <mat-option *ngFor="let gender of genders" [value]="gender.value">
               {{ gender.key }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Role" [(ngModel)]="user.role" name="role" >
+            <mat-option *ngFor="let role of roles" [value]="role.value">
+              {{ role.key }}
             </mat-option>
           </mat-select>
         </mat-form-field>

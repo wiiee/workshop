@@ -9,11 +9,11 @@ import { User } from '../../entity/user';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  user: any;
+  user: User;
   hide: boolean = true;
   errorMsg: string;
   constructor(private userService: UserService) {
-    this.user = {};
+    this.user = new User();
   }
 
   ngOnInit() {
@@ -25,8 +25,14 @@ export class LoginComponent implements OnInit {
     this.userService.logIn(this.user).subscribe(res => {
     }, err => {
       let serviceResult: ServiceResult<User> = err.error as ServiceResult<User>;
-      this.errorMsg = serviceResult.errorMsg;;
-      serviceResult.errorCode === 100 ? this.user.id = null : this.user.password = null;
+      this.errorMsg = serviceResult.errorMsg;
+
+      if (serviceResult.errorCode === 100) {
+        this.user.id = null;
+      }
+      else if (serviceResult.errorCode = 101) {
+        this.user.password = null;
+      }
     });
   }
 }

@@ -1,8 +1,8 @@
-.login-container {
+.container {
     display: flex;
     flex-direction: column;
   }
   
-.login-container > * {
+.container > * {
     width: 100%;
   }

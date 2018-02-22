@@ -1,3 +1,45 @@
-<p>
-  team-detail works!
-</p>
+<h1>Team Detail</h1>
+
+<form (ngSubmit)="onSubmit()" #formDir="ngForm">
+    <div class="row">
+        <div class="col">
+            <div class="container">
+                <mat-form-field>
+                    <input matInput type="text" placeholder="Id" [(ngModel)]="team.id" name="id" [disabled]="team.id" />
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type="text" placeholder="Name" [(ngModel)]="team.name" name="name" />
+                    <button mat-button *ngIf="team.name" matSuffix mat-icon-button aria-label="Clear" (click)="team.name=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-select placeholder="OwnerIds" [(ngModel)]="team.ownerIds" name="ownerIds" multiple>
+                        <mat-option *ngFor="let pair of ownerPairs" [value]="pair.key">
+                            {{ pair.value }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-select placeholder="UserIds" [(ngModel)]="team.userIds" name="userIds" multiple>
+                        <mat-option *ngFor="let pair of userPairs" [value]="pair.key">
+                            {{ pair.value }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="float-right">
+                <button type="submit" mat-raised-button color="primary" [disabled]="formDir.invalid">Submit</button>
+                <button type="reset" mat-raised-button (click)="formDir.resetForm({})">Reset</button>
+            </div>
+        </div>
+    </div>
+</form>

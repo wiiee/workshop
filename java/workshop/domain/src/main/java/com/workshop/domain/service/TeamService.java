@@ -189,6 +189,10 @@ public class TeamService extends BaseService<Team, String> implements IAccessCtr
             return false;
         }
 
+        if(authUserId.equals(opUserId)){
+            return true;
+        }
+
         return isBoss(authUserId, opUserId);
     }
 }
