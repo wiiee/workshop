@@ -1,7 +1,8 @@
 package com.workshop.app.api;
 
+import com.wiiee.core.domain.security.SecurityUtil;
 import com.wiiee.core.domain.service.ServiceResult;
-import com.wiiee.core.web.security.SecurityUtil;
+import com.wiiee.core.web.security.WebSecurityUtil;
 import com.workshop.domain.entity.user.User;
 import com.workshop.domain.helper.AuthHelper;
 import com.workshop.domain.service.UserService;
@@ -36,7 +37,7 @@ public class UserController extends BaseController<String, User, UserService> {
         //注册成功后自动登录
         if(result.isSuccessful){
             Authentication authentication = SecurityUtil.authenticate(user.getId(), user.password, authHelper.getAuthorities(user.getId()));
-            SecurityUtil.setHeaderToken(response, authentication);
+            WebSecurityUtil.setHeaderToken(response, authentication);
         }
 
         return result;

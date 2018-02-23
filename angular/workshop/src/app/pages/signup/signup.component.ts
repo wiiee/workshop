@@ -1,8 +1,10 @@
+import { Pair } from './../../entity/pair';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { EnumService } from '../../services/enum.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from '../../entity/user';
+import { Constant } from '../../entity/constant';
 
 @Component({
   selector: 'app-signup',
@@ -12,17 +14,22 @@ import { User } from '../../entity/user';
 export class SignupComponent implements OnInit {
   hide: boolean = true;
   user: User;
-  genders: any;
-  roles: any;
+
+  genders: Pair<string, string>[];
+  roles: Pair<string, string>[];
+
   signUpForm: FormGroup;
   errorMsg: string;
   constructor(private enumService: EnumService, private authService: AuthService) {
     this.user = new User();
+    this.user.role = "User";
   }
 
   ngOnInit() {
     this.enumService.getOptions("com.workshop.domain.constant.Gender").subscribe(res => this.genders = res);
-    this.enumService.getOptions("com.workshop.domain.constant.Role").subscribe(res => this.roles = res);
+    this.enumService.getOptions("com.workshop.domain.constant.Role").subscribe(res => {
+      this.roles = res.filter(o => o.key !== Constant.ADMIN);
+    });
   }
 
   onSubmit() {

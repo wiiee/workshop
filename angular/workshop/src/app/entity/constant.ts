@@ -5,4 +5,6 @@ export abstract class Constant {
     //LocalStorage key
     public static readonly USER: string = "user";
     public static readonly AUTHORIZATION_TOKEN: string = "authorizationToken";
+
+    public static readonly ADMIN: string = "Admin";
 }

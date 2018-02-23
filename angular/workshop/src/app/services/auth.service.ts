@@ -1,3 +1,4 @@
+import { UserService } from './user.service';
 import { LocalStorageService } from './local-storage.service';
 import { HttpResponse } from '@angular/common/http';
 import { ServiceResult } from './../entity/service-result';
@@ -20,6 +21,7 @@ export class AuthService {
 
     constructor(private api: Api,
         private router: Router,
+        private userService: UserService,
         private localStorageService: LocalStorageService) { }
 
     logIn(user: User): Observable<HttpResponse<Object>> {
@@ -32,7 +34,10 @@ export class AuthService {
 
         seq.subscribe(res => {
             if (res.status === 200) {
-                this.successAuthorization(user, res.headers.get(Constant.AUTHORIZATION_HEADER));
+                this.userService.getUser(user.id).subscribe(result => {
+                    this.user = result.data;
+                    this.successAuthorization(this.user, res.headers.get(Constant.AUTHORIZATION_HEADER));
+                });
             }
         }, err => {
             console.error("error: " + JSON.stringify(err.error));
@@ -90,7 +95,7 @@ export class AuthService {
     }
 
     logOut(): void {
-        this.localStorageService.clear();
+        this.clearAuthorization();
         this.router.navigate(['/home']);
     }
 

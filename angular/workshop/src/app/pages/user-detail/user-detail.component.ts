@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { Location } from '@angular/common';
 import { EnumService } from './../../services/enum.service';
 import { FormGroup } from '@angular/forms';
@@ -31,14 +32,22 @@ export class UserDetailComponent implements OnInit {
     private router: Router,
     private location: Location,
     private userService: UserService,
-    private enumService: EnumService) {
+    private enumService: EnumService,
+    private authService: AuthService) {
     this.user = new User();
   }
 
   ngOnInit() {
     this.enumService.getOptions("com.workshop.domain.constant.Gender").subscribe(res => this.genders = res);
     this.enumService.getOptions("com.workshop.domain.constant.Level").subscribe(res => this.levels = res);
-    this.enumService.getOptions("com.workshop.domain.constant.Role").subscribe(res => this.roles = res);
+    this.enumService.getOptions("com.workshop.domain.constant.Role").subscribe(res => {
+      if(this.authService.isLoggedIn && this.authService.user.role === Constant.ADMIN){
+        this.roles = res;
+      }
+      else{
+        this.roles = res.filter(o => o.key !== Constant.ADMIN);
+      }
+    });
     this.getUser();
   }
 
