@@ -1,0 +1,11 @@
+.header {
+    margin-bottom: 65px;
+}
+
+.footer {
+    position: fixed;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 5px;
+}

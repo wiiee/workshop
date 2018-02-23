@@ -1,5 +1,5 @@
+import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
 import { ServiceResult } from '../../entity/service-result';
 import { User } from '../../entity/user';
 
@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
   user: User;
   hide: boolean = true;
   errorMsg: string;
-  constructor(private userService: UserService) {
+  constructor(private authService: AuthService) {
     this.user = new User();
   }
 
@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.errorMsg = null;
     console.log("Thanks for submitting! Data: " + JSON.stringify(this.user));
-    this.userService.logIn(this.user).subscribe(res => {
+    this.authService.logIn(this.user).subscribe(res => {
     }, err => {
       let serviceResult: ServiceResult<User> = err.error as ServiceResult<User>;
       this.errorMsg = serviceResult.errorMsg;

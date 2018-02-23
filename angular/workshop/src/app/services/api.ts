@@ -9,9 +9,6 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 @Injectable()
 export class Api {
   public static readonly SERVER_URL: string = 'http://localhost:8080';
-  public static readonly AUTH_HEADER: string = "Authorization";
-
-  public authorizationToken: string;
 
   constructor(public httpClient: HttpClient) {
   }

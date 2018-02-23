@@ -1,3 +1,4 @@
+import { LocalStorageService } from './services/local-storage.service';
 import { TeamService } from './services/team.service';
 import { httpInterceptorProviders } from './services/http-interceptors/index';
 import { Api } from './services/api';
@@ -12,6 +13,7 @@ import { UserService } from './services/user.service';
 import { HttpClientModule } from '@angular/common/http';
 import { EnumService } from './services/enum.service';
 import { RequestCache, RequestCacheWithMap } from './services/request-cache.service';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -24,11 +26,13 @@ import { RequestCache, RequestCacheWithMap } from './services/request-cache.serv
   ],
   providers: [
     Api,
+    AuthService,
     AuthGuard,
     UserService,
     TaskService,
     TeamService,
     EnumService,
+    LocalStorageService,
     { provide: RequestCache, useClass: RequestCacheWithMap },
     httpInterceptorProviders],
   bootstrap: [AppComponent]
