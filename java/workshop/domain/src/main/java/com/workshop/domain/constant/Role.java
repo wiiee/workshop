@@ -2,8 +2,9 @@ package com.workshop.domain.constant;
 
 public enum Role {
     User(0),
-    Leader(1),
-    Manager(2);
+    Leader(4),
+    Manager(16),
+    Admin(64);
 
     private int value;
 

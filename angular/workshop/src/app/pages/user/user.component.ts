@@ -9,7 +9,7 @@ import { User } from '../../entity/user';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  displayedColumns = ['id', 'name', 'nickName', 'mobileNo'];
+  displayedColumns = ['id', 'name', 'nickName', 'mobileNo', 'level', 'role'];
   dataSource: MatTableDataSource<User>;
 
   users: User[];

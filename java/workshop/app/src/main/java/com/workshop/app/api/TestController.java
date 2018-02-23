@@ -6,6 +6,7 @@ import com.workshop.domain.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,9 @@ public class TestController {
 
     @Autowired
     private TeamService teamService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping
     public List<Team> getItems() {
@@ -62,11 +66,17 @@ public class TestController {
         System.out.println("a->Michael: " + teamService.isBoss("a", "Michael"));
         System.out.println("Michael->a: " + teamService.isBoss("Michael", "a"));
 
+        System.out.println("12345: " + passwordEncoder.encode("12345"));
+        System.out.println("123: " + passwordEncoder.encode("123"));
         return teamService.get().datum;
     }
 
     @PostMapping
     public String hello(@RequestBody String name) throws Exception {
+        String test = "12345";
+
+        System.out.println(passwordEncoder.encode(test));
+
         return "hello, world " + name;
     }
 }

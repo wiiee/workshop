@@ -78,9 +78,9 @@ public class UserService extends BaseService<User, String> implements UserDetail
 
         ServiceResult<User> result = get(entity.getId());
 
-        if(result.isSuccessful && result.data.getId().equals(entity.getId()));
-
-        entity.password = passwordEncoder.encode(entity.password);
+        if(result.isSuccessful && result.data.getId().equals(entity.getId())){
+            entity.password = result.data.password;
+        }
 
         return super.update(entity);
     }

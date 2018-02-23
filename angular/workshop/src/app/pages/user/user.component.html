@@ -1,11 +1,11 @@
 <h1>User</h1>
 
 <div class="float-right">
-    <a routerLink="/user/null" routerLinkActive="active">
-      <button mat-fab>
-          <mat-icon>person_add</mat-icon>
-      </button>
-    </a>
+  <a routerLink="/user/null" routerLinkActive="active">
+    <button mat-fab>
+      <mat-icon>person_add</mat-icon>
+    </button>
+  </a>
 </div>
 
 <div class="clearfix"></div>
@@ -42,6 +42,18 @@
     <ng-container matColumnDef="mobileNo">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Mobile No</mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.mobileNo}} </mat-cell>
+    </ng-container>
+
+    <!-- Level Column -->
+    <ng-container matColumnDef="level">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Level</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.level}} </mat-cell>
+    </ng-container>
+
+    <!-- Role Column -->
+    <ng-container matColumnDef="role">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.role}} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

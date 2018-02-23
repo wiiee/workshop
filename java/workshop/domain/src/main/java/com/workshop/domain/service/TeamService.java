@@ -3,6 +3,7 @@ package com.workshop.domain.service;
 import com.wiiee.core.domain.security.IAccessCtrl;
 import com.wiiee.core.domain.service.BaseService;
 import com.wiiee.core.platform.util.tree.Node;
+import com.workshop.domain.constant.Role;
 import com.workshop.domain.entity.user.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -29,6 +30,9 @@ public class TeamService extends BaseService<Team, String> implements IAccessCtr
 
     //下属名单
     private Map<String, Set<String>> subordinates;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public TeamService(MongoRepository<Team, String> repository) {
@@ -189,7 +193,7 @@ public class TeamService extends BaseService<Team, String> implements IAccessCtr
             return false;
         }
 
-        if(authUserId.equals(opUserId)){
+        if(authUserId.equals(opUserId) || userService.get(authUserId).data.role == Role.Admin){
             return true;
         }
 

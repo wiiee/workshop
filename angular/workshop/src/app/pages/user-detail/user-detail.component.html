@@ -71,6 +71,14 @@
                     </mat-select>
                 </mat-form-field>
 
+                <mat-form-field>
+                    <mat-select placeholder="Level" [(ngModel)]="user.level" name="level">
+                        <mat-option *ngFor="let level of levels" [value]="level.value">
+                            {{ level.key }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
                 <mat-form-field *ngIf="!isUpdate">
                     <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" [(ngModel)]="user.password" name="password" />
                     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>

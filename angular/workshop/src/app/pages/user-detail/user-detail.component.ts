@@ -19,6 +19,7 @@ export class UserDetailComponent implements OnInit {
 
   genders: any;
   roles: any;
+  levels: any;
 
   signUpForm: FormGroup;
   errorMsg: string;
@@ -36,26 +37,26 @@ export class UserDetailComponent implements OnInit {
 
   ngOnInit() {
     this.enumService.getOptions("com.workshop.domain.constant.Gender").subscribe(res => this.genders = res);
+    this.enumService.getOptions("com.workshop.domain.constant.Level").subscribe(res => this.levels = res);
     this.enumService.getOptions("com.workshop.domain.constant.Role").subscribe(res => this.roles = res);
     this.getUser();
   }
 
   getUser(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    
     this.route.queryParamMap.subscribe(params => {
       this.successMsg = params.get("successMsg");
-    });
+      const id = this.route.snapshot.paramMap.get('id');
 
-    if (id !== Constant.INVALID_ID) {
-      this.isUpdate = true;
-      this.userService.getUser(id).subscribe(res => {
-        console.log(res);
-        this.user = res.data;
-        this.oriUser = Object.assign({}, this.user);
-        console.log("oriUser: " + this.oriUser);
-      });
-    }
+      if (id !== Constant.INVALID_ID) {
+        this.isUpdate = true;
+        this.userService.getUser(id).subscribe(res => {
+          console.log(res);
+          this.user = res.data;
+          this.oriUser = Object.assign({}, this.user);
+          console.log("oriUser: " + this.oriUser);
+        });
+      }
+    });
   }
 
   onSubmit() {
@@ -89,8 +90,8 @@ export class UserDetailComponent implements OnInit {
       queryParams: { 'successMsg': successMsg }
     };
 
-    // Navigate to the login page with extras
-    this.router.navigate(['/user/', this.user.id], navigationExtras);
+    // Navigate to the user detail page with extras
+    this.router.navigate(['/user', this.user.id], navigationExtras);
   }
 
   resetForm(): void {
