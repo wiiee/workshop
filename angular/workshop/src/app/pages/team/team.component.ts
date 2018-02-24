@@ -17,7 +17,7 @@ export class TeamComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(private teamService: TeamService) {
-    this.teamService.getTeams().subscribe(res => {
+    this.teamService.getAll().subscribe(res => {
       console.log(res);
       this.teams = res.datum;
           // Assign the data to the data source for the table to render

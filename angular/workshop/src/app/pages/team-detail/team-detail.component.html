@@ -1,5 +1,13 @@
 <h1>Team Detail</h1>
 
+<div class="goBack">
+    <button mat-fab (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+</div>
+
+<div class="clearfix"></div>
+
 <form (ngSubmit)="onSubmit()" #formDir="ngForm">
     <div class="row">
         <div class="col">

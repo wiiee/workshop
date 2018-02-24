@@ -44,12 +44,13 @@ export class CachingInterceptor implements HttpInterceptor {
 
 
 /** Is this request cachable? */
-function isCachable(req: HttpRequest<any>) {
+function isCachable(req: HttpRequest<any>): boolean {
     // Only GET requests are cachable
     // return req.method === 'GET' &&
     //     // Only npm package search is cachable in this app
     //     -1 < req.url.indexOf(searchUrl);
-    return req.method === "GET";
+    // return req.method === "GET";
+    return false;
 }
 
 /**

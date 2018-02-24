@@ -2,7 +2,6 @@ import { Pair } from './../../entity/pair';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { EnumService } from '../../services/enum.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from '../../entity/user';
 import { Constant } from '../../entity/constant';
 
@@ -18,7 +17,6 @@ export class SignupComponent implements OnInit {
   genders: Pair<string, string>[];
   roles: Pair<string, string>[];
 
-  signUpForm: FormGroup;
   errorMsg: string;
   constructor(private enumService: EnumService, private authService: AuthService) {
     this.user = new User();

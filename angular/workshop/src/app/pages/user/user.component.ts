@@ -17,7 +17,7 @@ export class UserComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(private userService: UserService) {
-    this.userService.getUsers().subscribe(res => {
+    this.userService.getAll().subscribe(res => {
       console.log(res);
       this.users = res.datum;
           // Assign the data to the data source for the table to render

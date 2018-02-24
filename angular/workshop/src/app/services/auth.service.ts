@@ -34,7 +34,7 @@ export class AuthService {
 
         seq.subscribe(res => {
             if (res.status === 200) {
-                this.userService.getUser(user.id).subscribe(result => {
+                this.userService.getOne(user.id).subscribe(result => {
                     this.user = result.data;
                     this.successAuthorization(this.user, res.headers.get(Constant.AUTHORIZATION_HEADER));
                 });

@@ -5,16 +5,11 @@ import { Team } from './../entity/team';
 import { ServiceResult } from './../entity/service-result';
 
 import { Observable } from 'rxjs/Observable';
+import { BaseService } from './base.service';
 
 @Injectable()
-export class TeamService {
-  constructor(private api: Api) { }
-
-  getTeams(): Observable<ServiceResult<Team>> {
-    return this.api.get<ServiceResult<Team>>("/api/team");
-  }
-
-  getTeam(id: string): Observable<ServiceResult<Team>> {
-    return this.api.get<ServiceResult<Team>>("/api/team/" + id);
+export class TeamService extends BaseService<Team> {
+  constructor(api: Api) { 
+    super(api, "/api/team");
   }
 }

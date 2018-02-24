@@ -6,18 +6,13 @@ import { Injectable } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
+import { BaseService } from './base.service';
 
 @Injectable()
-export class UserService {
-    constructor(private api: Api) { }
-
-    getUsers(): Observable<ServiceResult<User>> {
-        return this.api.get<ServiceResult<User>>("/api/user");
-    }
-
-    getUser(id: string): Observable<ServiceResult<User>> {
-        return this.api.get<ServiceResult<User>>("/api/user/" + id);
-    }
+export class UserService extends BaseService<User> {
+    constructor(api: Api) {
+        super(api, "/api/user");
+     }
 
     getOwnerPairs(): Observable<Object> {
         return this.api.get("/api/user/ownerPairs");
@@ -25,17 +20,5 @@ export class UserService {
 
     getUserPairs(): Observable<Object> {
         return this.api.get("/api/user/userPairs");
-    }
-
-    updateUser(user: User): Observable<ServiceResult<User>> {
-        return this.api.post<ServiceResult<User>>("/api/user", user);
-    }
-
-    addUser(user: User): Observable<ServiceResult<User>> {
-        return this.api.put<ServiceResult<User>>("/api/user", user);
-    }
-
-    deleteUser(id: string): Observable<ServiceResult<User>> {
-        return this.api.delete<ServiceResult<User>>("/api/user/" + id);
     }
 }

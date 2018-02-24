@@ -3,6 +3,7 @@ package com.workshop.app.api;
 import com.wiiee.core.domain.security.SecurityUtil;
 import com.wiiee.core.domain.service.ServiceResult;
 import com.wiiee.core.web.security.WebSecurityUtil;
+import com.workshop.domain.constant.Role;
 import com.workshop.domain.entity.user.User;
 import com.workshop.domain.helper.AuthHelper;
 import com.workshop.domain.service.UserService;
@@ -79,5 +80,19 @@ public class UserController extends BaseController<String, User, UserService> {
     public List<Pair<String, String>> getUsers() {
         return getService().get().datum.stream()
                 .map(o -> new Pair<>(o.getId(), o.name)).collect(Collectors.toList());
+    }
+
+    @Override
+    @GetMapping
+    public ServiceResult<User> get() {
+        ServiceResult<User> result = getService().get();
+
+        //排除掉Admin和离职人员
+        List<String> authorities = SecurityUtil.getAuthorities();
+        if(authorities != null && !authorities.contains(Role.Admin.toString())){
+            result.datum.stream().filter(o -> o.role != Role.Admin && o.isOff).collect(Collectors.toList());
+        }
+
+        return result;
     }
 }
