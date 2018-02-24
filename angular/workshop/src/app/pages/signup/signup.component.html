@@ -4,38 +4,38 @@
   {{errorMsg}}
 </div>
 
-<form (ngSubmit)="onSubmit()" #formDir="ngForm">
+<form (ngSubmit)="onSubmit()" #form="ngForm">
   <div class="row">
     <div class="col">
       <div class="container">
         <mat-form-field>
-          <input matInput type="text" placeholder="Id" [(ngModel)]="user.id" name="id" />
+          <input matInput type="text" placeholder="Id" [(ngModel)]="user.id" name="id" required />
           <button mat-button *ngIf="user.id" matSuffix mat-icon-button aria-label="Clear" (click)="user.id=''">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
 
         <mat-form-field>
-          <input matInput type="text" placeholder="Name" [(ngModel)]="user.name" name="name" />
+          <input matInput type="text" placeholder="Name" [(ngModel)]="user.name" name="name" required />
           <button mat-button *ngIf="user.name" matSuffix mat-icon-button aria-label="Clear" (click)="user.name=''">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
 
         <mat-form-field>
-          <input matInput type="text" placeholder="NickName" [(ngModel)]="user.nickName" name="nickName" />
+          <input matInput type="text" placeholder="NickName" [(ngModel)]="user.nickName" name="nickName" required />
           <button mat-button *ngIf="user.nickName" matSuffix mat-icon-button aria-label="Clear" (click)="user.nickName=''">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
 
         <mat-form-field>
-          <input matInput type="text" placeholder="MobileNo" [(ngModel)]="user.mobileNo" name="mobileNo" />
+          <input matInput type="text" placeholder="MobileNo" [(ngModel)]="user.mobileNo" name="mobileNo" required />
           <mat-icon matSuffix>phone</mat-icon>
         </mat-form-field>
 
         <mat-form-field>
-          <mat-select placeholder="Gender" [(ngModel)]="user.gender" name="gender" >
+          <mat-select placeholder="Gender" [(ngModel)]="user.gender" name="gender" required>
             <mat-option *ngFor="let gender of genders" [value]="gender.value">
               {{ gender.key }}
             </mat-option>
@@ -43,7 +43,15 @@
         </mat-form-field>
 
         <mat-form-field>
-          <mat-select placeholder="Role" [(ngModel)]="user.role" name="role" >
+            <mat-select placeholder="Level" [(ngModel)]="user.level" name="level" required>
+                <mat-option *ngFor="let level of levels" [value]="level.value">
+                    {{ level.key }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Role" [(ngModel)]="user.role" name="role" required>
             <mat-option *ngFor="let role of roles" [value]="role.value">
               {{ role.key }}
             </mat-option>
@@ -51,7 +59,7 @@
         </mat-form-field>
 
         <mat-form-field>
-          <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" [(ngModel)]="user.password" name="password" />
+          <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" [(ngModel)]="user.password" name="password" required />
           <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
         </mat-form-field>
       </div>
@@ -61,8 +69,8 @@
   <div class="row">
     <div class="col">
       <div class="float-right">
-        <button type="submit" mat-raised-button color="primary" [disabled]="formDir.invalid">Submit</button>
-        <button type="reset" mat-raised-button (click)="formDir.resetForm({})">Reset</button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">Submit</button>
+        <button type="reset" mat-raised-button (click)="form.resetForm({})">Reset</button>
       </div>
     </div>
   </div>

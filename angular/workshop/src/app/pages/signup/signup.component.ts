@@ -15,6 +15,7 @@ export class SignupComponent implements OnInit {
   user: User;
 
   genders: Pair<string, string>[];
+  levels: Pair<string, string>[];
   roles: Pair<string, string>[];
 
   errorMsg: string;
@@ -25,6 +26,7 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
     this.enumService.getOptions("com.workshop.domain.constant.Gender").subscribe(res => this.genders = res);
+    this.enumService.getOptions("com.workshop.domain.constant.Level").subscribe(res => this.levels = res);
     this.enumService.getOptions("com.workshop.domain.constant.Role").subscribe(res => {
       this.roles = res.filter(o => o.key !== Constant.ADMIN);
     });

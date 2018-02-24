@@ -15,7 +15,7 @@ export abstract class BaseService<T extends Entity>{
     }
 
     getOne(id: string): Observable<ServiceResult<T>> {
-        return this.api.get<ServiceResult<T>>(this.endpoint + id);
+        return this.api.get<ServiceResult<T>>(this.endpoint + "/" + id);
     }
 
     update(item: T): Observable<ServiceResult<T>> {
@@ -26,7 +26,7 @@ export abstract class BaseService<T extends Entity>{
         return this.api.put<ServiceResult<T>>(this.endpoint, item);
     }
 
-    delete(id: string): Observable<ServiceResult<T>> {
-        return this.api.delete<ServiceResult<T>>(this.endpoint + id);
+    delete(id: string | number): Observable<ServiceResult<T>> {
+        return this.api.delete<ServiceResult<T>>(this.endpoint + "/" + id);
     }
 }

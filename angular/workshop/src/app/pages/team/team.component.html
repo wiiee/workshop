@@ -1,6 +1,6 @@
 <h1>Team</h1>
 
-<div class="float-right">
+<div class="float-right mb-2">
   <a routerLink="/team/null" routerLinkActive="active">
     <button mat-fab>
       <mat-icon>add</mat-icon>
@@ -10,7 +10,9 @@
 
 <div class="clearfix"></div>
 
-<div class="example-header">
+<app-header-message #msg></app-header-message>
+
+<div>
   <mat-form-field>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>

@@ -20,6 +20,8 @@ import { PageNotFoundComponent } from './not-found.component';
 import { TeamComponent } from './team/team.component';
 import { TeamDetailComponent } from './team-detail/team-detail.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { HeaderMessageComponent } from './header-message/header-message.component';
 
 
 @NgModule({
@@ -36,7 +38,9 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
     PageNotFoundComponent,
     TeamComponent,
     TeamDetailComponent,
-    UserDetailComponent
+    UserDetailComponent,
+    ConfirmationDialogComponent,
+    HeaderMessageComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -48,6 +52,7 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
     CommonModule
     // ReactiveFormsModule
   ],
+  entryComponents: [ConfirmationDialogComponent],
   exports: [LayoutComponent]
 })
 export class PagesModule { }

@@ -8,46 +8,94 @@
 
 <div class="clearfix"></div>
 
-<form (ngSubmit)="onSubmit()" #formDir="ngForm">
-    <div class="row">
-        <div class="col">
-            <div class="container">
-                <mat-form-field>
-                    <input matInput type="text" placeholder="Id" [(ngModel)]="team.id" name="id" [disabled]="team.id" />
-                </mat-form-field>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/home" routerLinkActive="active">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a routerLink="/team" routerLinkActive="active">Team</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Team Detail</li>
+    </ol>
+</nav>
 
-                <mat-form-field>
-                    <input matInput type="text" placeholder="Name" [(ngModel)]="team.name" name="name" />
-                    <button mat-button *ngIf="team.name" matSuffix mat-icon-button aria-label="Clear" (click)="team.name=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
+<app-header-message #msg></app-header-message>
 
-                <mat-form-field>
-                    <mat-select placeholder="OwnerIds" [(ngModel)]="team.ownerIds" name="ownerIds" multiple>
-                        <mat-option *ngFor="let pair of ownerPairs" [value]="pair.key">
-                            {{ pair.value }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+<div class="float-right mb-2" *ngIf="!isNew">
+    <button mat-icon-button color="primary" (click)="isEdit = !isEdit">
+        <mat-icon>{{isEdit ? "info" : "mode_edit"}}</mat-icon>
+    </button>
+    <button mat-icon-button color="warn" (click)="delete()">
+        <mat-icon>remove</mat-icon>
+    </button>
+</div>
 
-                <mat-form-field>
-                    <mat-select placeholder="UserIds" [(ngModel)]="team.userIds" name="userIds" multiple>
-                        <mat-option *ngFor="let pair of userPairs" [value]="pair.key">
-                            {{ pair.value }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+<div class="clearfix"></div>
+
+<div *ngIf="!isEdit && !isNew; else edit">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">OwnerIds</th>
+                <th scope="col">UserIds</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{entity.id}}</td>
+                <td>{{entity.name}}</td>
+                <td>{{entity.ownerIds}}</td>
+                <td>{{entity.userIds}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<ng-template #edit>
+    <form (ngSubmit)="onSubmit()" #form="ngForm">
+        <div class="row">
+            <div class="col">
+                <div class="container">
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Id" [(ngModel)]="entity.id" name="id" [disabled]="entity.id" required />
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Name" [(ngModel)]="entity.name" name="name" required />
+                        <button mat-button *ngIf="entity.name" matSuffix mat-icon-button aria-label="Clear" (click)="entity.name=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-select placeholder="OwnerIds" [(ngModel)]="entity.ownerIds" name="ownerIds" multiple required>
+                            <mat-option *ngFor="let pair of ownerPairs" [value]="pair.key">
+                                {{ pair.value }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-select placeholder="UserIds" [(ngModel)]="entity.userIds" name="userIds" multiple required>
+                            <mat-option *ngFor="let pair of userPairs" [value]="pair.key">
+                                {{ pair.value }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col">
-            <div class="float-right">
-                <button type="submit" mat-raised-button color="primary" [disabled]="formDir.invalid">Submit</button>
-                <button type="reset" mat-raised-button (click)="formDir.resetForm({})">Reset</button>
+        <div class="row">
+            <div class="col">
+                <div class="float-right">
+                    <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">Submit</button>
+                    <button type="button" mat-raised-button (click)="resetForm()">Reset</button>
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</ng-template>
