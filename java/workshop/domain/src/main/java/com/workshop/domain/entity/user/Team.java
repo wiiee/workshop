@@ -2,6 +2,7 @@ package com.workshop.domain.entity.user;
 
 import com.wiiee.core.platform.data.BaseData;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Team extends BaseData<String> {
@@ -13,11 +14,16 @@ public class Team extends BaseData<String> {
 
     public String parentId;
 
-    public Team(String id, String name, Set<String> ownerIds, Set<String> userIds, String parentId) {
-        super(id);
-        this.name = name;
-        this.userIds = userIds;
-        this.ownerIds = ownerIds;
-        this.parentId = parentId;
+    public Team(){
+        this.ownerIds = new HashSet<>();
+        this.userIds = new HashSet<>();
     }
+
+//    public Team(String id, String name, Set<String> ownerIds, Set<String> userIds, String parentId) {
+//        super(id);
+//        this.name = name;
+//        this.userIds = userIds;
+//        this.ownerIds = ownerIds;
+//        this.parentId = parentId;
+//    }
 }

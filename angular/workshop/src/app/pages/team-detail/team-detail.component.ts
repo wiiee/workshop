@@ -1,3 +1,4 @@
+import { Pair } from './../../entity/pair';
 import { MatDialog } from '@angular/material';
 import { TeamService } from './../../services/team.service';
 import { Team } from './../../entity/team';
@@ -15,8 +16,9 @@ import { BaseForm } from '../shared/base.form';
   styleUrls: ['./team-detail.component.css']
 })
 export class TeamDetailComponent extends BaseForm<Team, TeamService> implements OnInit {
-  ownerPairs: any;
-  userPairs: any;
+  ownerPairs: Pair<string, string>[];
+  userPairs: Pair<string, string>[];
+  teamPairs: Pair<string, string>[];
 
   constructor(
     route: ActivatedRoute,
@@ -26,17 +28,17 @@ export class TeamDetailComponent extends BaseForm<Team, TeamService> implements 
     teamService: TeamService,
     private userService: UserService) {
     super(route, router, location, matDialog, teamService, "/team");
-    this.entity = new Team();
+    
+    if(!this.entity){
+      this.entity = new Team();
+    }
   }
 
   ngOnInit() {
-    this.userService.getOwnerPairs().subscribe(res => {
-      this.ownerPairs = res;
+    this.userService.getOwnerPairs().subscribe(res => this.ownerPairs = res);
+    this.userService.getUserPairs().subscribe(res => this.userPairs = res);
+    this.service.getTeamPairs().subscribe(res => {
+      this.isNew ? this.teamPairs = res : this.teamPairs = res.filter(o => o.key !== this.entity.id); 
     });
-    this.userService.getUserPairs().subscribe(res => {
-      this.userPairs = res;
-    });
-
-    this.getEntity();
   }
 }

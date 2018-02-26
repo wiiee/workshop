@@ -21,24 +21,97 @@ export abstract class BaseForm<T extends Entity, S extends BaseService<T>> {
     @ViewChild('msg')
     msg: HeaderMessageComponent;
 
-    entityTypeName: string;
+    //数据类型名字
+    entityName: string;
+    //实体keys
+    keys: string[];
+    //id
+    id: string | number;
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         private location: Location,
         private matDialog: MatDialog,
-        public service: BaseService<T>,
+        public service: S,
         private urlPath: string) {
-            this.isNew = true;
-            console.log(typeof this);
+        this.route.queryParamMap.subscribe(params => {
+            this.id = this.route.snapshot.paramMap.get('id');
+            this.id === Constant.INVALID_ID ? this.isNew = true : this.isNew = false;
+            if (!this.isNew) {
+                this.isNew = false;
+                this.service.getOne(this.id).subscribe(res => {
+                    console.log(JSON.stringify(res));
+                    this.entity = res.data;
+                    this.cloneEntity();
+                });
+            }
+        });
+
+        this.entityName = this.getEntityName();
     }
 
+    //后退
     goBack(): void {
         this.location.back();
     }
 
-    redirect(successMsg: string, errorMsg: string, commands: any[]): void {
+    resetForm(): void {
+        this.entity = Object.assign({}, this.backup);
+    }
+
+    cloneEntity(): void {
+        this.backup = Object.assign({}, this.entity);
+        this.keys = Object.keys(this.entity);
+    }
+
+    onSubmit() {
+        console.log("Thanks for submitting! Data: " + JSON.stringify(this.entity));
+
+        if (this.isNew) {
+            this.service.add(this.entity).subscribe(res => {
+                if (res.isSuccessful) {
+                    this.entity = res.data;
+                    this.redirect("Create " + this.entityName + " " + this.entity.id + " successfully!", null, [this.urlPath, this.entity.id]);
+                }
+                else {
+                    this.msg.errorMsg = res.errorMsg;
+                }
+            });
+        }
+        else {
+            this.service.update(this.entity).subscribe(res => {
+                if (res.isSuccessful) {
+                    this.msg.successMsg = "Update " + this.entityName + " " + this.entity.id + " successfully!";
+                }
+                else {
+                    this.msg.errorMsg = res.errorMsg;
+                }
+            });
+        }
+    }
+
+    delete(): void {
+        let dialogRef = this.matDialog.open(ConfirmationDialogComponent, {
+            width: '250px'
+        });
+
+        dialogRef.afterClosed().subscribe(ok => {
+            if (ok) {
+                this.service.delete(this.entity.id).subscribe(res => {
+                    if (res.isSuccessful) {
+                        // Navigate to the user detail page with extras
+                        this.redirect("Delete " + this.entityName + " " + this.entity.id + " successfully!", null, [this.urlPath]);
+                    }
+                    else {
+                        this.msg.errorMsg = res.errorMsg;
+                    }
+                });
+            }
+        });
+    }
+
+    private redirect(successMsg: string, errorMsg: string, commands: any[]): void {
         let navigationExtras: NavigationExtras = {
             queryParams: {
             }
@@ -57,75 +130,7 @@ export abstract class BaseForm<T extends Entity, S extends BaseService<T>> {
         this.router.navigate(commands, navigationExtras);
     }
 
-    resetForm(): void {
-        this.entity = Object.assign({}, this.backup);
+    private getEntityName(): string {
+        return this.constructor.name.split("DetailComponent")[0].toLowerCase();
     }
-
-    cloneEntity(): void {
-        this.backup = Object.assign({}, this.entity);
-    }
-
-    onSubmit() {
-        console.log("Thanks for submitting! Data: " + JSON.stringify(this.entity));
-
-        if (this.isNew) {
-            this.service.add(this.entity).subscribe(res => {
-                if (res.isSuccessful) {
-                    this.redirect("Create user " + this.entity.id + " successfully!", null, [this.urlPath, this.entity.id]);
-                }
-                else {
-                    this.msg.errorMsg = res.errorMsg;
-                }
-            });
-        }
-        else {
-            this.service.update(this.entity).subscribe(res => {
-                if (res.isSuccessful) {
-                    this.msg.successMsg = "Update user " + this.entity.id + " successfully!";
-                }
-                else {
-                    this.msg.errorMsg = res.errorMsg;
-                }
-            });
-        }
-    }
-
-    getEntity(): void {
-        this.route.queryParamMap.subscribe(params => {
-          const id = this.route.snapshot.paramMap.get('id');
-    
-          if (id !== Constant.INVALID_ID) {
-            this.isNew = false;
-            this.service.getOne(id).subscribe(res => {
-              console.log(res);
-              this.entity = res.data;
-              this.cloneEntity();
-            });
-          }
-        });
-      }
-
-      delete(): void {
-        let dialogRef = this.matDialog.open(ConfirmationDialogComponent, {
-          width: '250px'
-        });
-    
-        dialogRef.afterClosed().subscribe(ok => {
-          if (ok) {
-            this.service.delete(this.entity.id).subscribe(res => {
-              if (res.isSuccessful) {
-                let navigationExtras: NavigationExtras = {
-                  queryParams: { 'successMsg': "Delete user " + this.entity.id + " successfully!" }
-                };
-    
-                // Navigate to the user detail page with extras
-                this.redirect("Delete user " + this.entity.id + " successfully!", null, ['/user']);
-              }
-              else {
-                this.msg.errorMsg = res.errorMsg;
-              }
-            });
-          }
-        });
-      }
 }

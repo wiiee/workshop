@@ -37,24 +37,26 @@
     <table class="table">
         <thead class="thead-dark">
             <tr>
-                <th scope="col">Id</th>
+                <!-- <th scope="col">Id</th>
                 <th scope="col">Name</th>
                 <th scope="col">NickName</th>
                 <th scope="col">MobileNo</th>
                 <th scope="col">Gender</th>
                 <th scope="col">Level</th>
-                <th scope="col">Role</th>
+                <th scope="col">Role</th> -->
+                <th scope="col" *ngFor="let key of keys">{{key}}</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>{{entity.id}}</td>
+                <!-- <td>{{entity.id}}</td>
                 <td>{{entity.name}}</td>
                 <td>{{entity.nickName}}</td>
                 <td>{{entity.mobileNo}}</td>
                 <td>{{entity.gender}}</td>
                 <td>{{entity.level}}</td>
-                <td>{{entity.role}}</td>
+                <td>{{entity.role}}</td> -->
+                <td *ngFor="let key of keys">{{entity[key] || "null"}}</td>
             </tr>
         </tbody>
     </table>

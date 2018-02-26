@@ -22,7 +22,8 @@ import { TeamDetailComponent } from './team-detail/team-detail.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { HeaderMessageComponent } from './header-message/header-message.component';
-
+import { WeeklyComponent } from './report/weekly/weekly.component';
+import { PerformanceComponent } from './report/performance/performance.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,9 @@ import { HeaderMessageComponent } from './header-message/header-message.componen
     TeamDetailComponent,
     UserDetailComponent,
     ConfirmationDialogComponent,
-    HeaderMessageComponent
+    HeaderMessageComponent,
+    WeeklyComponent,
+    PerformanceComponent
   ],
   imports: [
     BrowserAnimationsModule,

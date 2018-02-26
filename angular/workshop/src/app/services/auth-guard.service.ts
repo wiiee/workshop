@@ -1,5 +1,5 @@
 import { AuthService } from './auth.service';
-import { Injectable }       from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   CanActivate, Router,
   ActivatedRouteSnapshot,
@@ -7,11 +7,11 @@ import {
   CanActivateChild,
   NavigationExtras,
   CanLoad, Route
-}                           from '@angular/router';
+} from '@angular/router';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     let url: string = state.url;

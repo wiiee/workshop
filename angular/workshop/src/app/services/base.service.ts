@@ -11,22 +11,22 @@ export abstract class BaseService<T extends Entity>{
     }
 
     getAll(): Observable<ServiceResult<T>> {
-        return this.api.get<ServiceResult<T>>(this.endpoint);
+        return this.api.get(this.endpoint);
     }
 
-    getOne(id: string): Observable<ServiceResult<T>> {
-        return this.api.get<ServiceResult<T>>(this.endpoint + "/" + id);
+    getOne(id: string | number): Observable<ServiceResult<T>> {
+        return this.api.get(this.endpoint + "/" + id);
     }
 
     update(item: T): Observable<ServiceResult<T>> {
-        return this.api.post<ServiceResult<T>>(this.endpoint, item);
+        return this.api.post(this.endpoint, item);
     }
 
     add(item: T): Observable<ServiceResult<T>> {
-        return this.api.put<ServiceResult<T>>(this.endpoint, item);
+        return this.api.put(this.endpoint, item);
     }
 
     delete(id: string | number): Observable<ServiceResult<T>> {
-        return this.api.delete<ServiceResult<T>>(this.endpoint + "/" + id);
+        return this.api.delete(this.endpoint + "/" + id);
     }
 }

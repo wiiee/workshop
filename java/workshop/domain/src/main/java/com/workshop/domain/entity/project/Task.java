@@ -35,6 +35,8 @@ public class Task extends BaseData<String> {
 
     public List<PhaseItem> phaseItems;
 
+    public Task(){}
+
     public Task(String id, LocalDateTime startDate, String reporterId, String title, String description) {
         super(id);
         this.startDate = startDate;

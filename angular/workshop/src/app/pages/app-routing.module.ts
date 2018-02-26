@@ -1,3 +1,4 @@
+import { WeeklyComponent } from './report/weekly/weekly.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { TeamComponent } from './team/team.component';
 import { TaskComponent } from './task/task.component';
@@ -12,6 +13,7 @@ import { SprintComponent } from './sprint/sprint.component';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
 import { PageNotFoundComponent } from './not-found.component';
 import { TeamDetailComponent } from './team-detail/team-detail.component';
+import { PerformanceComponent } from './report/performance/performance.component';
 
 const routes: Routes = [
   {
@@ -45,6 +47,8 @@ const routes: Routes = [
   { path: 'task', component: TaskComponent },
   { path: 'task/:id', component: TaskDetailComponent },
   { path: 'sprint', component: SprintComponent },
+  { path: 'weekly', component: WeeklyComponent },
+  { path: 'performance', component: PerformanceComponent }, 
   { path: '**', component: PageNotFoundComponent }
 ];
 

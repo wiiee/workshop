@@ -11,6 +11,6 @@ import org.springframework.stereotype.Service;
 public class SprintService extends BaseService<Sprint, String> {
     @Autowired
     public SprintService(MongoRepository<Sprint, String> repository) {
-        super(repository, Sprint.class);
+        super(repository);
     }
 }

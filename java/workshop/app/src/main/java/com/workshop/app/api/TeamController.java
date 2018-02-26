@@ -1,33 +1,29 @@
 package com.workshop.app.api;
 
-import com.wiiee.core.domain.service.ServiceResult;
 import com.workshop.domain.entity.user.Team;
 import com.workshop.domain.service.TeamService;
+import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/team")
-public class TeamController {
+public class TeamController extends BaseController<String, Team, TeamService> {
     private static final Logger _logger = LoggerFactory.getLogger(TeamController.class);
 
-    @Autowired
-    private TeamService teamService;
-
-    @GetMapping
-    public ServiceResult<Team> get(){
-        return teamService.get();
+    public TeamController(TeamService service) {
+        super(service);
     }
 
-    @GetMapping("/{id}")
-    public ServiceResult<Team> get(@PathVariable String id){
-        return teamService.get(id);
-    }
-
-    @PostMapping
-    public ServiceResult<Team> create(@RequestBody Team team){
-        return teamService.create(team);
+    @GetMapping("/teamPairs")
+    public List<Pair<String, String>> getTeams() {
+        return getService().get().datum.stream()
+                .map(o -> new Pair<>(o.getId(), o.name)).collect(Collectors.toList());
     }
 }

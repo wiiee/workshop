@@ -30,7 +30,10 @@ export class UserDetailComponent extends BaseForm<User, UserService> implements 
     private enumService: EnumService,
     private authService: AuthService) {
     super(route, router, location, matDialog, userService, "/user");
-    this.entity = new User();
+
+    if(!this.entity){
+      this.entity = new User();
+    }
   }
 
   ngOnInit() {
@@ -44,7 +47,5 @@ export class UserDetailComponent extends BaseForm<User, UserService> implements 
         this.roles = res.filter(o => o.key !== Constant.ADMIN);
       }
     });
-
-    this.getEntity();
   }
 }

@@ -3,6 +3,7 @@ package com.workshop.domain.service;
 import com.wiiee.core.domain.security.SecurityUtil;
 import com.wiiee.core.domain.service.BaseService;
 import com.wiiee.core.domain.service.ServiceResult;
+import com.wiiee.core.platform.exception.CoreException;
 import com.workshop.domain.constant.Role;
 import com.workshop.domain.entity.user.User;
 import com.workshop.domain.helper.AuthHelper;
@@ -27,13 +28,13 @@ public class UserService extends BaseService<User, String> implements UserDetail
     private AuthHelper authHelper;
 
     public UserService(MongoRepository<User, String> repository, PasswordEncoder passwordEncoder) {
-        super(repository, User.class);
+        super(repository);
         this.passwordEncoder = passwordEncoder;
     }
 
     public ServiceResult<User> signUp(User user) {
         if (user == null || StringUtils.isEmpty(user.getId()) || StringUtils.isEmpty(user.password)) {
-            return ServiceResult.INVALID_USERNAME_OR_PWD;
+            return ServiceResult.getByException(CoreException.INVALID_USERNAME_OR_PWD);
         }
 
         ServiceResult<User> result = get(user.getId());
@@ -45,7 +46,7 @@ public class UserService extends BaseService<User, String> implements UserDetail
             resetRole(user);
             return super.create(user);
         } else {
-            return ServiceResult.USER_ALREADY_EXIST;
+            return ServiceResult.getByException(CoreException.USER_ALREADY_EXIST);
         }
     }
 
@@ -65,7 +66,7 @@ public class UserService extends BaseService<User, String> implements UserDetail
     @Override
     public ServiceResult<User> create(User entity) {
         if (entity == null || StringUtils.isEmpty(entity.getId()) || StringUtils.isEmpty(entity.password)) {
-            return ServiceResult.INVALID_USERNAME_OR_PWD;
+            return ServiceResult.getByException(CoreException.INVALID_USERNAME_OR_PWD);
         }
 
         entity.password = passwordEncoder.encode(entity.password);
@@ -79,7 +80,7 @@ public class UserService extends BaseService<User, String> implements UserDetail
     public ServiceResult<User> update(User entity) {
         if (entity == null || StringUtils.isEmpty(entity.getId())) {
             //ToDo: define exception
-            return ServiceResult.INVALID_USERNAME_OR_PWD;
+            return ServiceResult.getByException(CoreException.INVALID_USERNAME_OR_PWD);
         }
 
         ServiceResult<User> result = super.get(entity.getId());

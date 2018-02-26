@@ -26,7 +26,6 @@ public class UserController extends BaseController<String, User, UserService> {
     @Autowired
     private AuthHelper authHelper;
 
-    @Autowired
     public UserController(UserService service) {
         super(service);
     }

@@ -1,20 +1,12 @@
 import { Api } from './api';
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { Task } from '../entity/task';
+import { BaseService } from './base.service';
+import { Sprint } from '../entity/sprint';
 
 @Injectable()
-export class SprintService {
-
-  constructor(private api: Api) { }
-
-  getTasks(): Observable<Task[]> {
-    return of([]);
-  }
-
-  getTask(id: number): Observable<Task> {
-    return of();
+export class SprintService extends BaseService<Sprint> {
+  constructor(api: Api) { 
+    super(api, "/api/team");
   }
 }

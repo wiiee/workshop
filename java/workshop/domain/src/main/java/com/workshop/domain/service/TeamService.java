@@ -1,10 +1,11 @@
 package com.workshop.domain.service;
 
-import com.wiiee.core.domain.security.IAccessCtrl;
 import com.wiiee.core.domain.service.BaseService;
+import com.wiiee.core.domain.service.ServiceResult;
 import com.wiiee.core.platform.util.tree.Node;
 import com.workshop.domain.constant.Role;
 import com.workshop.domain.entity.user.Team;
+import com.workshop.domain.exception.WorkshopException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class TeamService extends BaseService<Team, String> implements IAccessCtrl {
+public class TeamService extends BaseService<Team, String> {
     //团队成员的根节点
     private Set<Node<String>> rootMemberIds;
     //团队的根节点
@@ -36,7 +37,7 @@ public class TeamService extends BaseService<Team, String> implements IAccessCtr
 
     @Autowired
     public TeamService(MongoRepository<Team, String> repository) {
-        super(repository, Team.class);
+        super(repository);
 
         rootMemberIds = new HashSet<>();
         rootTeamIds = new HashSet<>();
@@ -47,8 +48,18 @@ public class TeamService extends BaseService<Team, String> implements IAccessCtr
         subordinates = new HashMap<>();
     }
 
+    private void clear() {
+        rootMemberIds.clear();
+        rootTeamIds.clear();
+        teamIds.clear();
+        heights.clear();
+        subordinates.clear();
+    }
+
     @PostConstruct
     public void buildTree() {
+        clear();
+
         List<Team> teams = get().datum;
 
         for (Team team : teams) {
@@ -80,25 +91,66 @@ public class TeamService extends BaseService<Team, String> implements IAccessCtr
         });
     }
 
-    private void buildSubordinates(Set<String> parents, Node<String> node){
-        if(node.getChildren().isEmpty()){
-            return;
+    @Override
+    public ServiceResult<Team> update(Team entity) {
+        ServiceResult<Team> result = super.update(entity);
+        buildTree();
+        return result;
+    }
+
+    @Override
+    public ServiceResult<Team> delete(String id) {
+        ServiceResult<Team> result = super.delete(id);
+        buildTree();
+        return result;
+    }
+
+    @Override
+    public ServiceResult<Team> create(Team entity) {
+        if (entity.parentId != null) {
+            Team parentTeam = get(entity.parentId).data;
+
+            //检查父Team，存在更新父Team的成员，不存在就返回异常
+            if (parentTeam != null) {
+                boolean isOwnersExist = true;
+
+                for (String userId : entity.userIds) {
+                    if (!parentTeam.userIds.contains(userId)) {
+                        parentTeam.userIds.add(userId);
+                        isOwnersExist = false;
+                    }
+                }
+
+                if (!isOwnersExist) {
+                    super.update(parentTeam);
+                }
+            } else {
+                return ServiceResult.getByException(WorkshopException.EXCEPTION_INVALID_DATA);
+            }
         }
-        else{
+
+        ServiceResult<Team> result = super.create(entity);
+        buildTree();
+        return result;
+    }
+
+    private void buildSubordinates(Set<String> parents, Node<String> node) {
+        if (node.getChildren().isEmpty()) {
+            return;
+        } else {
             //保存当前父节点
             Set<String> rawParents = new HashSet<>(parents);
 
-            for(Node<String> child : node.getChildren()){
+            for (Node<String> child : node.getChildren()) {
                 //恢复当前父节点
                 parents = new HashSet<>(rawParents);
 
                 //所有子节点加入当前父节点的儿子
                 parents.add(node.getData());
                 parents.forEach(o -> {
-                    if(subordinates.containsKey(o)){
+                    if (subordinates.containsKey(o)) {
                         subordinates.get(o).add(child.getData());
-                    }
-                    else{
+                    } else {
                         subordinates.put(o, new HashSet<>(Arrays.asList(child.getData())));
                     }
                 });
@@ -109,8 +161,8 @@ public class TeamService extends BaseService<Team, String> implements IAccessCtr
         }
     }
 
-    public int getHeight(String memberId){
-        if(heights.containsKey(memberId)){
+    public int getHeight(String memberId) {
+        if (heights.containsKey(memberId)) {
             return heights.get(memberId);
         }
 
@@ -119,7 +171,7 @@ public class TeamService extends BaseService<Team, String> implements IAccessCtr
 
     //id1是否为id2的上级
     public boolean isBoss(String id1, String id2) {
-        if(StringUtils.isEmpty(id1) || StringUtils.isEmpty(id2)){
+        if (StringUtils.isEmpty(id1) || StringUtils.isEmpty(id2)) {
             return false;
         }
 
@@ -145,9 +197,9 @@ public class TeamService extends BaseService<Team, String> implements IAccessCtr
                     node.getChildren().forEach(o -> buildMemberTree(ownerNode, o, teams));
                 }
                 //没有子节点时，添加成员
-                else{
+                else {
                     team.userIds.forEach(o -> {
-                        if(!ownerId.equals(o)){
+                        if (!ownerId.equals(o)) {
                             Node<String> userNode = new Node<>(o);
                             ownerNode.addChild(userNode);
                         }
@@ -187,13 +239,12 @@ public class TeamService extends BaseService<Team, String> implements IAccessCtr
         }
     }
 
-    @Override
     public boolean isAllowed(String authUserId, String opUserId) {
-        if(StringUtils.isEmpty(authUserId) || StringUtils.isEmpty(opUserId)){
+        if (StringUtils.isEmpty(authUserId) || StringUtils.isEmpty(opUserId)) {
             return false;
         }
 
-        if(authUserId.equals(opUserId) || userService.get(authUserId).data.role == Role.Admin){
+        if (authUserId.equals(opUserId) || userService.get(authUserId).data.role == Role.Admin) {
             return true;
         }
 

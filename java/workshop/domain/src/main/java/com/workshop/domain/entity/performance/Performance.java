@@ -8,6 +8,8 @@ public class Performance {
     //Task从开始到结束的时长，以秒为单位，平均时长
     public int duration;
 
+    public Performance(){}
+
     public Performance(int value, int duration) {
         this.value = value;
         this.duration = duration;

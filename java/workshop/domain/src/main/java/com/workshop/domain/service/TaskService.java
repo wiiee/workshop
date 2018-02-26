@@ -10,6 +10,6 @@ import org.springframework.stereotype.Service;
 public class TaskService extends BaseService<Task, String> {
     @Autowired
     public TaskService(MongoRepository<Task, String> repository) {
-        super(repository, Task.class);
+        super(repository);
     }
 }

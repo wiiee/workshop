@@ -17,19 +17,5 @@ export class TaskDetailComponent implements OnInit {
     private taskService: TaskService) { }
 
   ngOnInit() {
-    this.getTask();
-  }
-
-  getTask(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-
-    this.taskService.getTask(id)
-      .subscribe(task => {
-        this.task = task;
-      });
-  }
-
-  goBack(): void {
-    this.location.back();
   }
 }

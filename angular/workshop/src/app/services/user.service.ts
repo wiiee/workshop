@@ -1,11 +1,10 @@
-import { HttpResponse } from '@angular/common/http';
-import { ServiceResult } from './../entity/service-result';
-import { User } from './../entity/user';
-import { Api } from './api';
 import { Injectable } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
+
+import { Pair } from './../entity/pair';
+import { User } from './../entity/user';
+import { Api } from './api';
 import { BaseService } from './base.service';
 
 @Injectable()
@@ -14,11 +13,11 @@ export class UserService extends BaseService<User> {
         super(api, "/api/user");
      }
 
-    getOwnerPairs(): Observable<Object> {
+    getOwnerPairs(): Observable<Pair<string, string>[]> {
         return this.api.get("/api/user/ownerPairs");
     }
 
-    getUserPairs(): Observable<Object> {
+    getUserPairs(): Observable<Pair<string, string>[]> {
         return this.api.get("/api/user/userPairs");
     }
 }

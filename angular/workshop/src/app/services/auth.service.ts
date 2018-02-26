@@ -81,7 +81,8 @@ export class AuthService {
     private redirect(): void {
         // Get the redirect URL from our auth service
         // If no redirect has been set, use the default
-        let redirect = this.redirectUrl ? this.redirectUrl : '/home';
+        // let redirect = this.redirectUrl ? this.redirectUrl : '/home';
+        let redirect = this.redirectUrl || "/home";
 
         // Set our navigation extras object
         // that passes on our global query params and fragment
