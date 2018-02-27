@@ -10,12 +10,13 @@ import { Router, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import { Constant } from '../entity/constant';
+import { Role } from '../entity/role';
 
 @Injectable()
 export class AuthService {
     isLoggedIn: boolean = false;
     user: User;
- 
+
     // store the URL so we can redirect after logging in
     redirectUrl: string;
 
@@ -102,5 +103,17 @@ export class AuthService {
 
     getUserId(): string {
         return this.user ? this.user.id : null;
+    }
+
+    getRole(): Role {
+        if (!this.isLoggedIn) {
+            return Role.Anonym;
+        }
+
+        return Role[this.user.role];
+    }
+
+    isAdmin(): boolean {
+        return this.getRole() === Role.Admin;
     }
 }

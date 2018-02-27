@@ -2,10 +2,10 @@ package com.workshop.domain.service;
 
 import com.wiiee.core.domain.service.BaseService;
 import com.wiiee.core.domain.service.ServiceResult;
+import com.wiiee.core.platform.exception.CoreException;
 import com.wiiee.core.platform.util.tree.Node;
 import com.workshop.domain.constant.Role;
 import com.workshop.domain.entity.user.Team;
-import com.workshop.domain.exception.WorkshopException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
@@ -107,6 +107,17 @@ public class TeamService extends BaseService<Team, String> {
 
     @Override
     public ServiceResult<Team> create(Team entity) {
+        if(entity == null){
+            return ServiceResult.getByException(CoreException.EXCEPTION_NULL_PARAMETERS);
+        }
+
+//        if (entity.parentId != null) {
+//            entity.parentId = entity.parentId.trim();
+//            if (entity.parentId.equals("")) {
+//                entity.parentId = null;
+//            }
+//        }
+
         if (entity.parentId != null) {
             Team parentTeam = get(entity.parentId).data;
 
@@ -114,9 +125,9 @@ public class TeamService extends BaseService<Team, String> {
             if (parentTeam != null) {
                 boolean isOwnersExist = true;
 
-                for (String userId : entity.userIds) {
-                    if (!parentTeam.userIds.contains(userId)) {
-                        parentTeam.userIds.add(userId);
+                for (String ownerId : entity.ownerIds) {
+                    if (!parentTeam.userIds.contains(ownerId)) {
+                        parentTeam.userIds.add(ownerId);
                         isOwnersExist = false;
                     }
                 }
@@ -125,7 +136,7 @@ public class TeamService extends BaseService<Team, String> {
                     super.update(parentTeam);
                 }
             } else {
-                return ServiceResult.getByException(WorkshopException.EXCEPTION_INVALID_DATA);
+                return ServiceResult.getByException(CoreException.EXCEPTION_INVALID_DATA);
             }
         }
 

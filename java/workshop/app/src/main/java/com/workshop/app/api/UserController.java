@@ -35,38 +35,13 @@ public class UserController extends BaseController<String, User, UserService> {
         ServiceResult result = getService().signUp(user);
 
         //注册成功后自动登录
-        if(result.isSuccessful){
+        if (result.isSuccessful) {
             Authentication authentication = SecurityUtil.authenticate(user.getId(), user.password, authHelper.getAuthorities(user.getId()));
             WebSecurityUtil.setHeaderToken(response, authentication);
         }
 
         return result;
     }
-
-//    @GetMapping
-//    public ServiceResult<User> get() {
-//        return getService().get();
-//    }
-//
-//    @GetMapping("/{id}")
-//    public ServiceResult<User> get(@PathVariable String id){
-//        return getService().get(id);
-//    }
-//
-//    @PostMapping
-//    public ServiceResult<User> post(@RequestBody User user){
-//        return getService().update(user);
-//    }
-//
-//    @PutMapping
-//    public ServiceResult<User> put(@RequestBody User user){
-//        return getService().create(user);
-//    }
-//
-//    @DeleteMapping
-//    public ServiceResult<User> delete(@RequestBody User user){
-//        return getService().create(user);
-//    }
 
     @GetMapping("/ownerPairs")
     public List<Pair<String, String>> getOwners() {
@@ -78,7 +53,9 @@ public class UserController extends BaseController<String, User, UserService> {
     @GetMapping("/userPairs")
     public List<Pair<String, String>> getUsers() {
         return getService().get().datum.stream()
-                .map(o -> new Pair<>(o.getId(), o.name)).collect(Collectors.toList());
+                .filter(o -> !o.isOff && o.role != Role.Admin)
+                .map(o -> new Pair<>(o.getId(), o.name))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -88,7 +65,7 @@ public class UserController extends BaseController<String, User, UserService> {
 
         //排除掉Admin和离职人员
         List<String> authorities = SecurityUtil.getAuthorities();
-        if(authorities != null && !authorities.contains(Role.Admin.toString())){
+        if (authorities != null && !authorities.contains(Role.Admin.toString())) {
             result.datum.stream().filter(o -> o.role != Role.Admin && o.isOff).collect(Collectors.toList());
         }
 

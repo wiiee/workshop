@@ -79,7 +79,6 @@ public class UserService extends BaseService<User, String> implements UserDetail
     @Override
     public ServiceResult<User> update(User entity) {
         if (entity == null || StringUtils.isEmpty(entity.getId())) {
-            //ToDo: define exception
             return ServiceResult.getByException(CoreException.INVALID_USERNAME_OR_PWD);
         }
 

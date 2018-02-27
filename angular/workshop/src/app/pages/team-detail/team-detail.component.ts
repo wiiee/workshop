@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material';
 import { TeamService } from './../../services/team.service';
 import { Team } from './../../entity/team';
 import { Component, OnInit } from '@angular/core';
-import { Constant } from '../../entity/constant';
 import { Location } from '@angular/common';
 import { EnumService } from './../../services/enum.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';

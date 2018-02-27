@@ -1,63 +1,69 @@
-<div class="container header">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand">Workshop</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-      aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<div class="wrapper">
+  <!-- 页面主体内容区域 -->
+  <div class="content">
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand">Workshop</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
-        </li>
-        <li class="nav-item dropdown" ngbDropdown>
-          <a class="nav-link dropdown-toggle" id="layout_organization" ngbDropdownToggle>Organization</a>
-          <div class="dropdown-menu" aria-labelledby="layout_organization" ngbDropdownMenu>
-            <a class="dropdown-item" routerLink="/user" routerLinkActive="active">User</a>
-            <a class="dropdown-item" routerLink="/team" routerLinkActive="active">Team</a>
-          </div>
-        </li>
-        <li class="nav-item dropdown" ngbDropdown>
-          <a class="nav-link dropdown-toggle" id="layout_work" ngbDropdownToggle>Work</a>
-          <div class="dropdown-menu" aria-labelledby="layout_work" ngbDropdownMenu>
-            <a class="dropdown-item" routerLink="/task" routerLinkActive="active">Task</a>
-            <a class="dropdown-item" routerLink="/sprint" routerLinkActive="active">Sprint</a>
-          </div>
-        </li>
-        <li class="nav-item dropdown" ngbDropdown>
-          <a class="nav-link dropdown-toggle" id="layout_report" ngbDropdownToggle>Report</a>
-          <div class="dropdown-menu" aria-labelledby="layout_report" ngbDropdownMenu>
-            <a class="dropdown-item" routerLink="/performance" routerLinkActive="active">Performance</a>
-            <a class="dropdown-item" routerLink="/weekly" routerLinkActive="active">Weekly</a>
-          </div>
-        </li>
-      </ul>
-      <ul class="navbar-nav" *ngIf="!authService.isLoggedIn">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/logIn" routerLinkActive="active">Log In</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/signUp" routerLinkActive="active">Sign Up</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav" *ngIf="authService.isLoggedIn">
-        <li class="nav-item">
-          <a class="nav-link">welcome, {{authService.getUserId()}}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" (click)="logOut()">Log Out</a>
-        </li>
-      </ul>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+            </li>
+            <li class="nav-item dropdown" ngbDropdown>
+              <a class="nav-link dropdown-toggle" id="layout_organization" ngbDropdownToggle>Organization</a>
+              <div class="dropdown-menu" aria-labelledby="layout_organization" ngbDropdownMenu>
+                <a class="dropdown-item" routerLink="/user" routerLinkActive="active">User</a>
+                <a class="dropdown-item" routerLink="/team" routerLinkActive="active">Team</a>
+              </div>
+            </li>
+            <li class="nav-item dropdown" ngbDropdown>
+              <a class="nav-link dropdown-toggle" id="layout_work" ngbDropdownToggle>Work</a>
+              <div class="dropdown-menu" aria-labelledby="layout_work" ngbDropdownMenu>
+                <a class="dropdown-item" routerLink="/task" routerLinkActive="active">Task</a>
+                <a class="dropdown-item" routerLink="/sprint" routerLinkActive="active">Sprint</a>
+              </div>
+            </li>
+            <li class="nav-item dropdown" ngbDropdown>
+              <a class="nav-link dropdown-toggle" id="layout_report" ngbDropdownToggle>Report</a>
+              <div class="dropdown-menu" aria-labelledby="layout_report" ngbDropdownMenu>
+                <a class="dropdown-item" routerLink="/performance" routerLinkActive="active">Performance</a>
+                <a class="dropdown-item" routerLink="/weekly" routerLinkActive="active">Weekly</a>
+              </div>
+            </li>
+          </ul>
+          <ul class="navbar-nav" *ngIf="!authService.isLoggedIn">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/logIn" routerLinkActive="active">Log In</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/signUp" routerLinkActive="active">Sign Up</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav" *ngIf="authService.isLoggedIn">
+            <li class="nav-item">
+              <a class="nav-link">welcome, {{authService.getUserId()}}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" (click)="logOut()">Log Out</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <router-outlet></router-outlet>
     </div>
-  </nav>
-
-  <router-outlet></router-outlet>
+  </div>
 </div>
 
-<div class="container footer">
-  <hr>
-  <footer>
-    &copy; 2018 Bill
-  </footer>
-</div>
+<footer class="container footer">
+  <div class="footer_content">
+    <div class="text">
+        &copy; 2018 Bill
+    </div>
+  </div>
+</footer>

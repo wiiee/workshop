@@ -1,11 +1,31 @@
-.header {
-    margin-bottom: 65px;
+.wrapper {
+    min-height: 100%;
+	margin-bottom: -50px; 
+}
+
+.wrapper:after {
+    content: "";
+    display: block;
+    height: 50px; 
+}
+
+.footer_content:before {
+    content: "";
+    display: block;
+    height: 10px;
+    background-color: red;
 }
 
 .footer {
-    position: fixed;
+  height: 50px; 
+}
+
+.footer_content {
+    height: 50px;
+    background-color: black;
+    color: white;
+}
+
+.text {
     margin: auto;
-    left: 0;
-    right: 0;
-    bottom: 5px;
 }
