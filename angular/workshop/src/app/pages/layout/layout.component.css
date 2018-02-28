@@ -1,31 +1,35 @@
 .wrapper {
     min-height: 100%;
-	margin-bottom: -50px; 
+    margin-bottom: -66px;
 }
 
 .wrapper:after {
     content: "";
     display: block;
-    height: 50px; 
+    height: 66px; 
 }
 
-.footer_content:before {
+footer {
+    height: 66px;
+}
+
+.divider:after, router-outlet:before {
     content: "";
     display: block;
-    height: 10px;
-    background-color: red;
+    height: 10px; 
 }
 
-.footer {
-  height: 50px; 
+.footer_content_wrapper {
+    height: 56px;
+    display: table;
 }
 
 .footer_content {
-    height: 50px;
-    background-color: black;
-    color: white;
+    padding: 8px;
+    display: table-cell;
+    vertical-align: middle;
 }
 
-.text {
-    margin: auto;
+.navbar-dark .navbar-brand {
+    color: white !important;
 }
