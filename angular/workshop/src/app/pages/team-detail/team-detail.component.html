@@ -12,7 +12,7 @@
 
 <mat-toolbar>
     <span class="spacer"></span>
-    <button mat-mini-fab (click)="isEdit = !isEdit">
+    <button mat-mini-fab class="mr-2" (click)="isEdit = !isEdit">
         <mat-icon>{{isEdit ? "info" : "mode_edit"}}</mat-icon>
     </button>
     <button mat-mini-fab (click)="delete()">
@@ -23,22 +23,14 @@
 <div class="divider"></div>
 
 <mat-card>
-    <table class="table" *ngIf="!isEdit && !isNew; else edit">
-        <thead class="thead-dark">
+    <table class="table table-bordered" *ngIf="!isEdit && !isNew; else edit">
+        <thead>
             <tr>
-                <!-- <th scope="col">Id</th>
-                <th scope="col">Name</th>
-                <th scope="col">OwnerIds</th>
-                <th scope="col">UserIds</th> -->
                 <th scope="col" *ngFor="let key of keys">{{key}}</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <!-- <td>{{entity.id}}</td>
-                <td>{{entity.name}}</td>
-                <td>{{entity.ownerIds}}</td>
-                <td>{{entity.userIds}}</td> -->
                 <td *ngFor="let key of keys">{{entity[key] || "null"}}</td>
             </tr>
         </tbody>

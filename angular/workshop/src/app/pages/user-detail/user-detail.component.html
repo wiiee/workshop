@@ -12,7 +12,7 @@
 
 <mat-toolbar>
     <span class="spacer"></span>
-    <button mat-mini-fab (click)="isEdit = !isEdit">
+    <button mat-mini-fab class="mr-2" (click)="isEdit = !isEdit">
         <mat-icon>{{isEdit ? "info" : "mode_edit"}}</mat-icon>
     </button>
     <button mat-mini-fab (click)="delete()">
@@ -23,28 +23,14 @@
 <div class="divider"></div>
 
 <mat-card>
-    <table class="table" *ngIf="!isEdit && !isNew; else edit">
-        <thead class="thead-dark">
+    <table class="table table-bordered" *ngIf="!isEdit && !isNew; else edit">
+        <thead>
             <tr>
-                <!-- <th scope="col">Id</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">NickName</th>
-                        <th scope="col">MobileNo</th>
-                        <th scope="col">Gender</th>
-                        <th scope="col">Level</th>
-                        <th scope="col">Role</th> -->
                 <th scope="col" *ngFor="let key of keys">{{key}}</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <!-- <td>{{entity.id}}</td>
-                        <td>{{entity.name}}</td>
-                        <td>{{entity.nickName}}</td>
-                        <td>{{entity.mobileNo}}</td>
-                        <td>{{entity.gender}}</td>
-                        <td>{{entity.level}}</td>
-                        <td>{{entity.role}}</td> -->
                 <td *ngFor="let key of keys">{{entity[key] || "null"}}</td>
             </tr>
         </tbody>
@@ -108,7 +94,7 @@
             <div class="d-flex">
                 <span class="spacer"></span>
                 <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">{{isNew ? "Save" : "Update"}}</button>
-                <button type="button" mat-raised-button (click)="resetForm()">Reset</button>
+                <button type="button" class="ml-2" mat-raised-button (click)="resetForm()">Reset</button>
             </div>
         </form>
     </ng-template>

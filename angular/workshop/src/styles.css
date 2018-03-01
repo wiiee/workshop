@@ -2,17 +2,14 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~bootstrap/dist/css/bootstrap.css";
 
-html, body {
-    height: 100%;
-}
-
 button:focus {
     outline: none;
     border: 0;
 }
 
-a:hover {
+a, a:link, a:visited, a:hover, a:active {
     text-decoration: none;
+    color: #ff4081;
 }
 
 .divider:after {

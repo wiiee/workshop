@@ -1,6 +1,6 @@
 <div class="container">
   <mat-sidenav-container [class.dark-theme]="isDark">
-    <mat-toolbar>
+    <mat-toolbar color="primary">
       <a mat-fab routerLink="/home" routerLinkActive="active">
         <mat-icon>home</mat-icon>
       </a>
@@ -14,7 +14,7 @@
           <a mat-mini-fab routerLink="/signUp" routerLinkActive="active">Sign Up</a>
       </ng-container>
       <ng-template #welcome>
-        <button mat-button disabled>welcome, {{authService.getUserId()}}</button>
+        <button mat-button class="welcome" disabled>Welcome, {{authService.getUserId()}}</button>
         <button mat-mini-fab (click)="logOut()">Log Out</button>
       </ng-template>
     </mat-toolbar>

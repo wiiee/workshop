@@ -1,7 +1,3 @@
-.container {
-    height: 100%;
-}
-
-mat-sidenav-container {
-   min-height: 100%;
+.mat-button.welcome[disabled] {
+    color: white;
 }
