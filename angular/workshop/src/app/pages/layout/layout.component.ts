@@ -1,8 +1,9 @@
 import { AuthService } from './../../services/auth.service';
 import { LocalStorageService } from './../../services/local-storage.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { Constant } from '../../entity/constant';
 import { User } from '../../entity/user';
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-layout',
@@ -10,8 +11,12 @@ import { User } from '../../entity/user';
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent implements OnInit {
-
-  constructor(private authService: AuthService, private localStorageService: LocalStorageService) { }
+  isDark: boolean;
+  constructor(
+    private authService: AuthService,
+    private localStorageService: LocalStorageService,
+    private _element: ElementRef,
+    private _overlayContainer: OverlayContainer) { }
 
   ngOnInit() {
     if (!this.authService.isLoggedIn

@@ -3,25 +3,29 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 
 html, body {
-	height: 100%;
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-}
-  
-.container > * {
-    width: 100%;
-}
-
-.goBack {
-    float: right !important;
-    margin-top: -50px;
-    margin-bottom: 10px;
+    height: 100%;
 }
 
 button:focus {
     outline: none;
     border: 0;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.divider:after {
+    content: "";
+    display: block;
+    height: 10px;
+    background-color: white;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+form, form mat-form-field {
+    width: 100%;
 }

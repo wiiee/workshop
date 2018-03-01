@@ -1,134 +1,115 @@
-<h1>User Detail</h1>
-
-<div class="goBack">
-    <button mat-fab (click)="goBack()">
+<mat-toolbar>
+    <span>User Detail</span>
+    <span class="spacer"></span>
+    <button mat-mini-fab (click)="goBack()">
         <mat-icon>arrow_back</mat-icon>
     </button>
-</div>
+</mat-toolbar>
 
-<div class="clearfix"></div>
-
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            <a routerLink="/home" routerLinkActive="active">Home</a>
-        </li>
-        <li class="breadcrumb-item">
-            <a routerLink="/user" routerLinkActive="active">User</a>
-        </li>
-        <li class="breadcrumb-item active" aria-current="page">User Detail</li>
-    </ol>
-</nav>
+<div class="divider"></div>
 
 <app-header-message #msg></app-header-message>
 
-<div class="float-right mb-2" *ngIf="!isNew">
-    <button mat-icon-button color="primary" (click)="isEdit = !isEdit">
+<mat-toolbar>
+    <span class="spacer"></span>
+    <button mat-mini-fab (click)="isEdit = !isEdit">
         <mat-icon>{{isEdit ? "info" : "mode_edit"}}</mat-icon>
     </button>
-    <button mat-icon-button color="warn" (click)="delete()">
+    <button mat-mini-fab (click)="delete()">
         <mat-icon>remove</mat-icon>
     </button>
-</div>
+</mat-toolbar>
 
-<div class="clearfix"></div>
+<div class="divider"></div>
 
-<div *ngIf="!isEdit && !isNew; else edit">
-    <table class="table">
+<mat-card>
+    <table class="table" *ngIf="!isEdit && !isNew; else edit">
         <thead class="thead-dark">
             <tr>
                 <!-- <th scope="col">Id</th>
-                <th scope="col">Name</th>
-                <th scope="col">NickName</th>
-                <th scope="col">MobileNo</th>
-                <th scope="col">Gender</th>
-                <th scope="col">Level</th>
-                <th scope="col">Role</th> -->
+                        <th scope="col">Name</th>
+                        <th scope="col">NickName</th>
+                        <th scope="col">MobileNo</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">Level</th>
+                        <th scope="col">Role</th> -->
                 <th scope="col" *ngFor="let key of keys">{{key}}</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <!-- <td>{{entity.id}}</td>
-                <td>{{entity.name}}</td>
-                <td>{{entity.nickName}}</td>
-                <td>{{entity.mobileNo}}</td>
-                <td>{{entity.gender}}</td>
-                <td>{{entity.level}}</td>
-                <td>{{entity.role}}</td> -->
+                        <td>{{entity.name}}</td>
+                        <td>{{entity.nickName}}</td>
+                        <td>{{entity.mobileNo}}</td>
+                        <td>{{entity.gender}}</td>
+                        <td>{{entity.level}}</td>
+                        <td>{{entity.role}}</td> -->
                 <td *ngFor="let key of keys">{{entity[key] || "null"}}</td>
             </tr>
         </tbody>
     </table>
-</div>
 
-<ng-template #edit>
-    <form (ngSubmit)="onSubmit()" #form="ngForm">
-        <div class="row">
-            <div class="col">
-                <div class="container">
-                    <mat-form-field>
-                        <input matInput type="text" placeholder="Id" [(ngModel)]="entity.id" name="id" [disabled]="!isNew" required />
-                    </mat-form-field>
+    <ng-template #edit>
+        <form (ngSubmit)="onSubmit()" #form="ngForm">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Id" [(ngModel)]="entity.id" name="id" [disabled]="!isNew" required />
+            </mat-form-field>
 
-                    <mat-form-field>
-                        <input matInput type="text" placeholder="Name" [(ngModel)]="entity.name" name="name" required />
-                        <button mat-button *ngIf="entity.name" matSuffix mat-icon-button aria-label="Clear" (click)="entity.name=''">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Name" [(ngModel)]="entity.name" name="name" required />
+                <button mat-button *ngIf="entity.name" matSuffix mat-icon-button aria-label="Clear" (click)="entity.name=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
 
-                    <mat-form-field>
-                        <input matInput type="text" placeholder="NickName" [(ngModel)]="entity.nickName" name="nickName" required />
-                        <button mat-button *ngIf="entity.nickName" matSuffix mat-icon-button aria-label="Clear" (click)="entity.nickName=''">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
+            <mat-form-field>
+                <input matInput type="text" placeholder="NickName" [(ngModel)]="entity.nickName" name="nickName" required />
+                <button mat-button *ngIf="entity.nickName" matSuffix mat-icon-button aria-label="Clear" (click)="entity.nickName=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
 
-                    <mat-form-field>
-                        <input matInput type="text" placeholder="MobileNo" [(ngModel)]="entity.mobileNo" name="mobileNo" required />
-                        <mat-icon matSuffix>phone</mat-icon>
-                    </mat-form-field>
+            <mat-form-field>
+                <input matInput type="text" placeholder="MobileNo" [(ngModel)]="entity.mobileNo" name="mobileNo" required />
+                <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>
 
-                    <mat-form-field>
-                        <mat-select placeholder="Gender" [(ngModel)]="entity.gender" name="gender" required>
-                            <mat-option *ngFor="let gender of genders" [value]="gender.value">
-                                {{ gender.key }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+            <mat-form-field>
+                <mat-select placeholder="Gender" [(ngModel)]="entity.gender" name="gender" required>
+                    <mat-option *ngFor="let gender of genders" [value]="gender.value">
+                        {{ gender.key }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
 
-                    <mat-form-field>
-                        <mat-select placeholder="Level" [(ngModel)]="entity.level" name="level" required>
-                            <mat-option *ngFor="let level of levels" [value]="level.value">
-                                {{ level.key }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+            <mat-form-field>
+                <mat-select placeholder="Level" [(ngModel)]="entity.level" name="level" required>
+                    <mat-option *ngFor="let level of levels" [value]="level.value">
+                        {{ level.key }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
 
-                    <mat-form-field>
-                        <mat-select placeholder="Role" [(ngModel)]="entity.role" name="role" required>
-                            <mat-option *ngFor="let role of roles" [value]="role.value">
-                                {{ role.key }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+            <mat-form-field>
+                <mat-select placeholder="Role" [(ngModel)]="entity.role" name="role" required>
+                    <mat-option *ngFor="let role of roles" [value]="role.value">
+                        {{ role.key }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
 
-                    <mat-form-field *ngIf="isNew">
-                        <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" [(ngModel)]="entity.password" name="password" required />
-                        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-                    </mat-form-field>
-                </div>
+            <mat-form-field *ngIf="isNew">
+                <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" [(ngModel)]="entity.password" name="password"
+                    required />
+                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </mat-form-field>
+
+            <div class="d-flex">
+                <span class="spacer"></span>
+                <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">{{isNew ? "Save" : "Update"}}</button>
+                <button type="button" mat-raised-button (click)="resetForm()">Reset</button>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col">
-                <div class="float-right">
-                    <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">{{isNew ? "Save" : "Update"}}</button>
-                    <button type="button" mat-raised-button (click)="resetForm()">Reset</button>
-                </div>
-            </div>
-        </div>
-    </form>
-</ng-template>
+        </form>
+    </ng-template>
+</mat-card>

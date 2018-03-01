@@ -6,10 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sprint.component.css']
 })
 export class SprintComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit() {
   }
-
 }

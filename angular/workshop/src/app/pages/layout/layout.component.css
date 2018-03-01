@@ -1,35 +1,7 @@
-.wrapper {
-    min-height: 100%;
-    margin-bottom: -66px;
+.container {
+    height: 100%;
 }
 
-.wrapper:after {
-    content: "";
-    display: block;
-    height: 66px; 
-}
-
-footer {
-    height: 66px;
-}
-
-.divider:after, router-outlet:before {
-    content: "";
-    display: block;
-    height: 10px; 
-}
-
-.footer_content_wrapper {
-    height: 56px;
-    display: table;
-}
-
-.footer_content {
-    padding: 8px;
-    display: table-cell;
-    vertical-align: middle;
-}
-
-.navbar-dark .navbar-brand {
-    color: white !important;
+mat-sidenav-container {
+   min-height: 100%;
 }

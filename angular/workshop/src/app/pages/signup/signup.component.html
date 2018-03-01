@@ -1,77 +1,73 @@
-<h1>Sign Up</h1>
+<mat-toolbar>
+  <span>Sign Up</span>
+</mat-toolbar>
 
-<div class="alert alert-danger" role="alert" *ngIf="errorMsg">
-  {{errorMsg}}
-</div>
+<app-header-message #msg></app-header-message>
 
-<form (ngSubmit)="onSubmit()" #form="ngForm">
-  <div class="row">
-    <div class="col">
-      <div class="container">
-        <mat-form-field>
-          <input matInput type="text" placeholder="Id" [(ngModel)]="user.id" name="id" required />
-          <button mat-button *ngIf="user.id" matSuffix mat-icon-button aria-label="Clear" (click)="user.id=''">
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-form-field>
+<div class="divider"></div>
 
-        <mat-form-field>
-          <input matInput type="text" placeholder="Name" [(ngModel)]="user.name" name="name" required />
-          <button mat-button *ngIf="user.name" matSuffix mat-icon-button aria-label="Clear" (click)="user.name=''">
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-form-field>
+<mat-card>
+  <form (ngSubmit)="onSubmit()" #form="ngForm">
+    <mat-form-field>
+      <input matInput type="text" placeholder="Id" [(ngModel)]="user.id" name="id" required />
+      <button mat-button *ngIf="user.id" matSuffix mat-icon-button aria-label="Clear" (click)="user.id=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
 
-        <mat-form-field>
-          <input matInput type="text" placeholder="NickName" [(ngModel)]="user.nickName" name="nickName" required />
-          <button mat-button *ngIf="user.nickName" matSuffix mat-icon-button aria-label="Clear" (click)="user.nickName=''">
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" placeholder="Name" [(ngModel)]="user.name" name="name" required />
+      <button mat-button *ngIf="user.name" matSuffix mat-icon-button aria-label="Clear" (click)="user.name=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
 
-        <mat-form-field>
-          <input matInput type="text" placeholder="MobileNo" [(ngModel)]="user.mobileNo" name="mobileNo" required />
-          <mat-icon matSuffix>phone</mat-icon>
-        </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" placeholder="NickName" [(ngModel)]="user.nickName" name="nickName" required />
+      <button mat-button *ngIf="user.nickName" matSuffix mat-icon-button aria-label="Clear" (click)="user.nickName=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
 
-        <mat-form-field>
-          <mat-select placeholder="Gender" [(ngModel)]="user.gender" name="gender" required>
-            <mat-option *ngFor="let gender of genders" [value]="gender.value">
-              {{ gender.key }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" placeholder="MobileNo" [(ngModel)]="user.mobileNo" name="mobileNo" required />
+      <mat-icon matSuffix>phone</mat-icon>
+    </mat-form-field>
 
-        <mat-form-field>
-            <mat-select placeholder="Level" [(ngModel)]="user.level" name="level" required>
-                <mat-option *ngFor="let level of levels" [value]="level.value">
-                    {{ level.key }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Gender" [(ngModel)]="user.gender" name="gender" required>
+        <mat-option *ngFor="let gender of genders" [value]="gender.value">
+          {{ gender.key }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-        <mat-form-field>
-          <mat-select placeholder="Role" [(ngModel)]="user.role" name="role" required>
-            <mat-option *ngFor="let role of roles" [value]="role.value">
-              {{ role.key }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Level" [(ngModel)]="user.level" name="level" required>
+        <mat-option *ngFor="let level of levels" [value]="level.value">
+          {{ level.key }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-        <mat-form-field>
-          <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" [(ngModel)]="user.password" name="password" required />
-          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-        </mat-form-field>
-      </div>
+    <mat-form-field>
+      <mat-select placeholder="Role" [(ngModel)]="user.role" name="role" required>
+        <mat-option *ngFor="let role of roles" [value]="role.value">
+          {{ role.key }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" [(ngModel)]="user.password" name="password" required
+      />
+      <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+    </mat-form-field>
+
+    <div class="d-flex">
+      <span class="spacer"></span>
+      <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">Submit</button>
+      <button type="reset" mat-raised-button (click)="form.resetForm({})">Reset</button>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="float-right">
-        <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">Submit</button>
-        <button type="reset" mat-raised-button (click)="form.resetForm({})">Reset</button>
-      </div>
-    </div>
-  </div>
-</form>
+  </form>
+</mat-card>

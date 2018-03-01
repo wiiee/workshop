@@ -1,24 +1,20 @@
-<h1>Team</h1>
-
-<div class="float-right mb-2">
-  <a routerLink="/team/null" routerLinkActive="active">
-    <button mat-fab>
-      <mat-icon>add</mat-icon>
-    </button>
+<mat-toolbar>
+  <span>Team</span>
+  <span class="spacer"></span>
+  <a mat-mini-fab routerLink="/team/null" routerLinkActive="active">
+    <mat-icon>add</mat-icon>
   </a>
-</div>
+</mat-toolbar>
 
-<div class="clearfix"></div>
+<app-header-message></app-header-message>
 
-<app-header-message #msg></app-header-message>
+<div class="divider"></div>
 
-<div>
+<mat-card>
   <mat-form-field>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
-</div>
 
-<div class="mat-elevation-z8">
   <mat-table [dataSource]="dataSource" matSort>
     <!-- Id Column -->
     <ng-container matColumnDef="id">
@@ -50,4 +46,4 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
   <mat-paginator [pageSizeOptions]="[25, 50, 100]"></mat-paginator>
-</div>
+</mat-card>

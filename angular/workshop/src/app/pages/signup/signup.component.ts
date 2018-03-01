@@ -1,6 +1,7 @@
+import { HeaderMessageComponent } from './../header-message/header-message.component';
 import { Pair } from './../../entity/pair';
 import { AuthService } from './../../services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { EnumService } from '../../services/enum.service';
 import { User } from '../../entity/user';
 import { Constant } from '../../entity/constant';
@@ -18,8 +19,13 @@ export class SignupComponent implements OnInit {
   levels: Pair<string, string>[];
   roles: Pair<string, string>[];
 
+  @ViewChild('msg')
+  msg: HeaderMessageComponent;
+
   errorMsg: string;
-  constructor(private enumService: EnumService, private authService: AuthService) {
+  constructor(
+    private enumService: EnumService,
+    private authService: AuthService) {
     this.user = new User();
     this.user.role = "User";
   }
@@ -37,7 +43,7 @@ export class SignupComponent implements OnInit {
     console.log("Thanks for submitting! Data: " + JSON.stringify(this.user));
     this.authService.signUp(this.user).subscribe(res => {
       if (!res.body.isSuccessful) {
-        this.errorMsg = res.body.errorMsg;
+        this.msg.errorMsg = res.body.errorMsg;
       }
     });
   }

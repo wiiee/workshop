@@ -1,0 +1,27 @@
+.button-row {
+    /* display: flex;
+    align-items: center;
+    justify-content: space-around; */
+    font-size: 20px;
+    color: white;
+}
+
+router-outlet:after {
+    content: "";
+    display: block;
+    height: 10px; 
+    background-color: white;
+}
+
+.container {
+    height: 100%;
+}
+
+.container .content {
+   background-color: rgba(0, 0, 0, 0.87);
+   min-height: 100%;
+}
+
+a {
+    color: white;
+}

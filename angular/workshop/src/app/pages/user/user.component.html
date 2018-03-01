@@ -1,24 +1,20 @@
-<h1>User</h1>
-
-<div class="float-right mb-2">
-  <a routerLink="/user/null" routerLinkActive="active">
-    <button mat-fab>
-      <mat-icon>person_add</mat-icon>
-    </button>
+<mat-toolbar>
+  <span>User</span>
+  <span class="spacer"></span>
+  <a mat-mini-fab routerLink="/user/null" routerLinkActive="active">
+    <mat-icon>person_add</mat-icon>
   </a>
-</div>
-
-<div class="clearfix"></div>
+</mat-toolbar>
 
 <app-header-message></app-header-message>
 
-<div>
+<div class="divider"></div>
+
+<mat-card>
   <mat-form-field>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
-</div>
 
-<div class="mat-elevation-z8">
   <mat-table [dataSource]="dataSource" matSort>
     <!-- Id Column -->
     <ng-container matColumnDef="id">
@@ -63,4 +59,4 @@
   </mat-table>
 
   <mat-paginator [pageSizeOptions]="[25, 50, 100]"></mat-paginator>
-</div>
+</mat-card>

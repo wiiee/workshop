@@ -1,70 +1,52 @@
-<div class="wrapper">
-  <!-- 页面主体内容区域 -->
-  <div class="content">
-    <div class="container">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand">Workshop</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-          aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+<div class="container">
+  <mat-sidenav-container [class.dark-theme]="isDark">
+    <mat-toolbar>
+      <a mat-fab routerLink="/home" routerLinkActive="active">
+        <mat-icon>home</mat-icon>
+      </a>
+      <button mat-button [matMenuTriggerFor]="orgMenu" class="ml-2">Organization</button>
+      <button mat-button [matMenuTriggerFor]="workMenu">Work</button>
+      <button mat-button [matMenuTriggerFor]="reportMenu">Report</button>
+      <span class="spacer"></span>
+      <button mat-button (click)="isDark = !isDark">{{isDark ? 'Light' : 'Dark'}}</button>
+      <ng-container *ngIf="!authService.isLoggedIn else welcome">
+          <a mat-mini-fab routerLink="/logIn" routerLinkActive="active">Log In</a>
+          <a mat-mini-fab routerLink="/signUp" routerLinkActive="active">Sign Up</a>
+      </ng-container>
+      <ng-template #welcome>
+        <button mat-button disabled>welcome, {{authService.getUserId()}}</button>
+        <button mat-mini-fab (click)="logOut()">Log Out</button>
+      </ng-template>
+    </mat-toolbar>
 
-        <div class="collapse navbar-collapse">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
-            </li>
-            <li class="nav-item dropdown" ngbDropdown>
-              <a class="nav-link dropdown-toggle" id="layout_organization" ngbDropdownToggle>Organization</a>
-              <div class="dropdown-menu" aria-labelledby="layout_organization" ngbDropdownMenu>
-                <a class="dropdown-item" routerLink="/user" routerLinkActive="active">User</a>
-                <a class="dropdown-item" routerLink="/team" routerLinkActive="active">Team</a>
-              </div>
-            </li>
-            <li class="nav-item dropdown" ngbDropdown>
-              <a class="nav-link dropdown-toggle" id="layout_work" ngbDropdownToggle>Work</a>
-              <div class="dropdown-menu" aria-labelledby="layout_work" ngbDropdownMenu>
-                <a class="dropdown-item" routerLink="/task" routerLinkActive="active">Task</a>
-                <a class="dropdown-item" routerLink="/sprint" routerLinkActive="active">Sprint</a>
-              </div>
-            </li>
-            <li class="nav-item dropdown" ngbDropdown>
-              <a class="nav-link dropdown-toggle" id="layout_report" ngbDropdownToggle>Report</a>
-              <div class="dropdown-menu" aria-labelledby="layout_report" ngbDropdownMenu>
-                <a class="dropdown-item" routerLink="/performance" routerLinkActive="active">Performance</a>
-                <a class="dropdown-item" routerLink="/weekly" routerLinkActive="active">Weekly</a>
-              </div>
-            </li>
-          </ul>
-          <ul class="navbar-nav" *ngIf="!authService.isLoggedIn">
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/logIn" routerLinkActive="active">Log In</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/signUp" routerLinkActive="active">Sign Up</a>
-            </li>
-          </ul>
-          <ul class="navbar-nav" *ngIf="authService.isLoggedIn">
-            <li class="nav-item">
-              <a class="nav-link">welcome, {{authService.getUserId()}}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" (click)="logOut()">Log Out</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+    <mat-menu [overlapTrigger]="false" #orgMenu="matMenu">
+      <a routerLink="/user" routerLinkActive="active">
+        <button mat-menu-item>User</button>
+      </a>
+      <a routerLink="/team" routerLinkActive="active">
+        <button mat-menu-item>Team</button>
+      </a>
+    </mat-menu>
 
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+    <mat-menu [overlapTrigger]="false" #workMenu="matMenu">
+      <a routerLink="/task" routerLinkActive="active">
+        <button mat-menu-item>Task</button>
+      </a>
+      <a routerLink="/sprint" routerLinkActive="active">
+        <button mat-menu-item>Sprint</button>
+      </a>
+    </mat-menu>
+
+    <mat-menu [overlapTrigger]="false" #reportMenu="matMenu">
+        <a routerLink="/performance" routerLinkActive="active">
+          <button mat-menu-item>Performance</button>
+        </a>
+        <a routerLink="/weekly" routerLinkActive="active">
+          <button mat-menu-item>Weekly</button>
+        </a>
+      </mat-menu>
+
+    <div class="divider"></div>
+    <router-outlet></router-outlet>
+  </mat-sidenav-container>
 </div>
-
-<footer class="container">
-  <div class="divider"></div>
-  <div class="footer_content_wrapper bg-primary text-white">
-    <div class="footer_content">
-      &copy; 2018 Bill
-    </div>
-  </div>
-</footer>

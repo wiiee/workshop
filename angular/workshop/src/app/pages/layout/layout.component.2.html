@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="content">
+    <mat-toolbar color="accent">
+        <div class="button-row">
+          <a routerLink="/home" routerLinkActive="active">
+            <button mat-button>Home</button> 
+          </a>
+          <button mat-button [matMenuTriggerFor]="orgMenu">Organization</button>
+          <button mat-button [matMenuTriggerFor]="workMenu">Work</button>
+          <!-- <button mat-button #workMenuTrigger="matMenuTrigger" (mouseover)="workMenuTrigger.openMenu()" [matMenuTriggerFor]="workMenu">Work</button> -->
+        </div>
+      </mat-toolbar>
+    
+      <mat-menu [overlapTrigger]="false" #orgMenu="matMenu">
+        <a routerLink="/user" routerLinkActive="active">
+          <button mat-menu-item>User</button>
+        </a>
+        <a routerLink="/team" routerLinkActive="active">
+          <button mat-menu-item>Team</button>
+        </a>
+      </mat-menu>
+    
+      <mat-menu [overlapTrigger]="false" #workMenu="matMenu">
+        <a routerLink="/task" routerLinkActive="active">
+          <button mat-menu-item>Task</button>
+        </a>
+        <a routerLink="/sprint" routerLinkActive="active">
+          <button mat-menu-item>Sprint</button>
+        </a>
+      </mat-menu>
+    
+      <router-outlet></router-outlet>
+  </div>
+</div>
