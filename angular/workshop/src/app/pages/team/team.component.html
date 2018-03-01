@@ -16,30 +16,14 @@
   </mat-form-field>
 
   <mat-table [dataSource]="dataSource" matSort>
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <a routerLink="/team/{{row.id}}">{{row.id}}</a>
+    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</mat-header-cell>
+      <mat-cell *matCellDef="let row" class="text-truncate">
+        <ng-container *ngIf="column === 'id' else text">
+          <a routerLink="/team/{{row.id}}">{{row.id}}</a>
+        </ng-container>
+        <ng-template #text>{{row[column]}}</ng-template>
       </mat-cell>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
-    </ng-container>
-
-    <!-- OwnerIds Column -->
-    <ng-container matColumnDef="ownerIds">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Owner Ids</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.ownerIds}} </mat-cell>
-    </ng-container>
-
-    <!-- UserIds Column -->
-    <ng-container matColumnDef="userIds">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>User Ids</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.userIds}} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

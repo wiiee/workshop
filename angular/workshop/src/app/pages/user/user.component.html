@@ -16,47 +16,18 @@
   </mat-form-field>
 
   <mat-table [dataSource]="dataSource" matSort>
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <a routerLink="/user/{{row.id}}">{{row.id}}</a>
+    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</mat-header-cell>
+      <mat-cell *matCellDef="let row" class="text-truncate">
+        <ng-container *ngIf="column === 'id' else text">
+          <a routerLink="/user/{{row.id}}">{{row.id}}</a>
+        </ng-container>
+        <ng-template #text>{{row[column]}}</ng-template>
       </mat-cell>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
-    </ng-container>
-
-    <!-- NickName Column -->
-    <ng-container matColumnDef="nickName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Nick Name</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.nickName}} </mat-cell>
-    </ng-container>
-
-    <!-- MobileNo Column -->
-    <ng-container matColumnDef="mobileNo">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Mobile No</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.mobileNo}} </mat-cell>
-    </ng-container>
-
-    <!-- Level Column -->
-    <ng-container matColumnDef="level">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Level</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.level}} </mat-cell>
-    </ng-container>
-
-    <!-- Role Column -->
-    <ng-container matColumnDef="role">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.role}} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
-
   <mat-paginator [pageSizeOptions]="[25, 50, 100]"></mat-paginator>
 </mat-card>
