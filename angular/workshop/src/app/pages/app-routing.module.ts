@@ -1,3 +1,4 @@
+import { SprintDetailComponent } from './sprint-detail/sprint-detail.component';
 import { WeeklyComponent } from './report/weekly/weekly.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { TeamComponent } from './team/team.component';
@@ -47,6 +48,7 @@ const routes: Routes = [
   { path: 'task', component: TaskComponent },
   { path: 'task/:id', component: TaskDetailComponent },
   { path: 'sprint', component: SprintComponent },
+  { path: 'sprint/:id', component: SprintDetailComponent },
   { path: 'weekly', component: WeeklyComponent },
   { path: 'performance', component: PerformanceComponent }, 
   { path: '**', component: PageNotFoundComponent }

@@ -1,0 +1,20 @@
+/* mat-card {
+    height: 50px;
+} */
+
+mat-list, mat-card {
+    width: 100%;
+}
+
+mat-list-item {
+    width: 100%;
+    display: block;
+}
+
+.card {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: block;
+    top: 52px;
+}

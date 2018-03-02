@@ -10,8 +10,8 @@
       <span class="spacer"></span>
       <button mat-button (click)="isDark = !isDark">{{isDark ? 'Light' : 'Dark'}}</button>
       <ng-container *ngIf="!authService.isLoggedIn else welcome">
-          <a mat-mini-fab routerLink="/logIn" routerLinkActive="active">Log In</a>
-          <a mat-mini-fab routerLink="/signUp" routerLinkActive="active">Sign Up</a>
+        <a mat-mini-fab routerLink="/logIn" routerLinkActive="active">Log In</a>
+        <a mat-mini-fab routerLink="/signUp" routerLinkActive="active">Sign Up</a>
       </ng-container>
       <ng-template #welcome>
         <button mat-button class="welcome" disabled>Welcome, {{authService.getUserId()}}</button>
@@ -38,15 +38,16 @@
     </mat-menu>
 
     <mat-menu [overlapTrigger]="false" #reportMenu="matMenu">
-        <a routerLink="/performance" routerLinkActive="active">
-          <button mat-menu-item>Performance</button>
-        </a>
-        <a routerLink="/weekly" routerLinkActive="active">
-          <button mat-menu-item>Weekly</button>
-        </a>
-      </mat-menu>
+      <a routerLink="/performance" routerLinkActive="active">
+        <button mat-menu-item>Performance</button>
+      </a>
+      <a routerLink="/weekly" routerLinkActive="active">
+        <button mat-menu-item>Weekly</button>
+      </a>
+    </mat-menu>
 
     <div class="divider"></div>
+    
     <router-outlet></router-outlet>
   </mat-sidenav-container>
 </div>

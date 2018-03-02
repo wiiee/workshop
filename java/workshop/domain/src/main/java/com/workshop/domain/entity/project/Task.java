@@ -3,6 +3,7 @@ package com.workshop.domain.entity.project;
 import com.wiiee.core.platform.data.BaseData;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Task extends BaseData<String> {
@@ -37,11 +38,12 @@ public class Task extends BaseData<String> {
 
     public Task(){}
 
-    public Task(String id, LocalDateTime startDate, String reporterId, String title, String description) {
+    public Task(String id, String reporterId, String title, String description) {
         super(id);
-        this.startDate = startDate;
+        this.startDate = LocalDateTime.now();
         this.reporterId = reporterId;
         this.title = title;
         this.description = description;
+        this.phaseItems = new ArrayList<>();
     }
 }

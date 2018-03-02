@@ -1,3 +1,58 @@
-<p>
-  sprint-detail works!
-</p>
+<mat-toolbar>
+  <span>Task Detail</span>
+  <span class="spacer"></span>
+  <button mat-mini-fab (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div class="divider"></div>
+
+<app-header-message #msg></app-header-message>
+
+<mat-grid-list [cols]="tasksGroup.length" rowHeight="1:3">
+  <mat-grid-tile>
+    <mat-grid-tile-header>ToDo</mat-grid-tile-header>
+    <div class="card"></div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-grid-tile-header>Analysis</mat-grid-tile-header>
+    <div class="card"></div>
+  </mat-grid-tile>
+  <mat-grid-tile dnd-droppable (onDropSuccess)="drop($event, pendings)" [allowDrop]="allow(pendings)">
+    <mat-grid-tile-header>Pending</mat-grid-tile-header>
+    <div class="card">
+      <mat-card class="mb-2" dnd-draggable [dragEnabled]="true" [dragData]="item" (onDragSuccess)="drag(i, pendings)" *ngFor="let item of pendings; let i = index">
+        <mat-card-title-group>
+          <mat-card-title>{{item}}</mat-card-title>
+          <mat-card-subtitle>{{item}}</mat-card-subtitle>
+          <img mat-card-md-image>
+        </mat-card-title-group>
+      </mat-card>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile dnd-droppable (onDropSuccess)="drop($event, ongoings)" [allowDrop]="allow(ongoings)">
+    <mat-grid-tile-header>Ongoing</mat-grid-tile-header>
+    <div class="card">
+      <mat-card class="mb-2" dnd-draggable [dragEnabled]="true" [dragData]="item" (onDragSuccess)="drag(i, ongoings)" *ngFor="let item of ongoings; let i = index">
+        <mat-card-title-group>
+          <mat-card-title>{{item}}</mat-card-title>
+          <mat-card-subtitle>{{item}}</mat-card-subtitle>
+          <img mat-card-md-image>
+        </mat-card-title-group>
+      </mat-card>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile dnd-droppable (onDropSuccess)="drop($event, dones)" [allowDrop]="allow(dones)">
+    <mat-grid-tile-header>Done</mat-grid-tile-header>
+    <div class="card">
+      <mat-card class="mb-2" dnd-draggable [dragEnabled]="true" [dragData]="item" (onDragSuccess)="drag(i, dones)" *ngFor="let item of dones; let i = index">
+        <mat-card-title-group>
+          <mat-card-title>{{item}}</mat-card-title>
+          <mat-card-subtitle>{{item}}</mat-card-subtitle>
+          <img mat-card-md-image>
+        </mat-card-title-group>
+      </mat-card>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
