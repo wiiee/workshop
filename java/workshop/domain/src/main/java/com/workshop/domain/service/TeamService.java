@@ -1,8 +1,10 @@
 package com.workshop.domain.service;
 
+import com.wiiee.core.domain.security.SecurityUtil;
 import com.wiiee.core.domain.service.BaseService;
 import com.wiiee.core.domain.service.ServiceResult;
 import com.wiiee.core.platform.exception.CoreException;
+import com.wiiee.core.platform.exception.MyException;
 import com.wiiee.core.platform.util.tree.Node;
 import com.workshop.domain.constant.Role;
 import com.workshop.domain.entity.user.Team;
@@ -11,6 +13,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import sun.swing.StringUIClientPropertyKey;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -107,7 +110,7 @@ public class TeamService extends BaseService<Team, String> {
 
     @Override
     public ServiceResult<Team> create(Team entity) {
-        if(entity == null){
+        if (entity == null) {
             return ServiceResult.getByException(CoreException.EXCEPTION_NULL_PARAMETERS);
         }
 
@@ -140,6 +143,7 @@ public class TeamService extends BaseService<Team, String> {
             }
         }
 
+        entity.userIds = entity.userIds.stream().filter(o -> entity.ownerIds.contains(o)).collect(Collectors.toSet());
         ServiceResult<Team> result = super.create(entity);
         buildTree();
         return result;
@@ -260,5 +264,16 @@ public class TeamService extends BaseService<Team, String> {
         }
 
         return isBoss(authUserId, opUserId);
+    }
+
+    public String getTeamId(String userId) throws MyException {
+        if (StringUtils.isEmpty(userId)) {
+            throw CoreException.EXCEPTION_NULL_PARAMETERS;
+            //return null;
+        }
+
+        return get().datum.stream()
+                .filter(o -> o.ownerIds.contains(userId) || o.userIds.contains(userId)).map(o -> o.getId())
+                .findFirst().orElse(null);
     }
 }

@@ -10,7 +10,7 @@
 
 <app-header-message #msg></app-header-message>
 
-<mat-toolbar>
+<mat-toolbar *ngIf="!isNew">
     <span class="spacer"></span>
     <button mat-mini-fab class="mr-2" (click)="isEdit = !isEdit">
         <mat-icon>{{isEdit ? "info" : "mode_edit"}}</mat-icon>

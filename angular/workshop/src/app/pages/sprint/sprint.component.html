@@ -6,3 +6,28 @@
   </a>
 </mat-toolbar>
 
+<div class="divider"></div>
+
+<app-header-message></app-header-message>
+
+<mat-card *ngIf="entities">
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
+
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</mat-header-cell>
+      <mat-cell *matCellDef="let row" class="text-truncate">
+        <ng-container *ngIf="column === 'id' else text">
+          <a [routerLink]="['/sprint', row.id]" [queryParams]="{containerId: containerId}">{{row.id}}</a>
+        </ng-container>
+        <ng-template #text>{{row[column]}}</ng-template>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[25, 50, 100]"></mat-paginator>
+</mat-card>

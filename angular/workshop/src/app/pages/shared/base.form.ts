@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs/Observable';
+import { ServiceResult } from './../../entity/service-result';
 import { ConfirmationDialogComponent } from './../confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
 import { ViewChild } from '@angular/core';
@@ -28,6 +30,8 @@ export abstract class BaseForm<T extends Entity, S extends BaseService<T>> {
     //id
     id: string | number;
 
+    containerId: string;
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -36,15 +40,19 @@ export abstract class BaseForm<T extends Entity, S extends BaseService<T>> {
         public service: S,
         private urlPath: string) {
         this.route.queryParamMap.subscribe(params => {
+            console.log("params: " + params);
             this.id = this.route.snapshot.paramMap.get('id');
             this.id === Constant.INVALID_ID ? this.isNew = true : this.isNew = false;
             if (!this.isNew) {
-                this.isNew = false;
-                this.service.getOne(this.id).subscribe(res => {
+                this.containerId = params.get("containerId");
+                this.service.getOne(this.id, this.containerId).subscribe(res => {
                     console.log(JSON.stringify(res));
                     this.entity = res.data;
                     this.cloneEntity();
                 });
+            }
+            else {
+                this.service.getContainerId().subscribe(res => this.containerId = res);
             }
         });
 
@@ -69,7 +77,7 @@ export abstract class BaseForm<T extends Entity, S extends BaseService<T>> {
         console.log("Thanks for submitting! Data: " + JSON.stringify(this.entity));
 
         if (this.isNew) {
-            this.service.add(this.entity).subscribe(res => {
+            this.service.add(this.entity, this.containerId).subscribe(res => {
                 if (res.isSuccessful) {
                     this.entity = res.data;
                     this.redirect("Create " + this.entityName + " " + this.entity.id + " successfully!", null, [this.urlPath, this.entity.id]);
@@ -80,7 +88,7 @@ export abstract class BaseForm<T extends Entity, S extends BaseService<T>> {
             });
         }
         else {
-            this.service.update(this.entity).subscribe(res => {
+            this.service.update(this.entity, this.containerId).subscribe(res => {
                 if (res.isSuccessful) {
                     this.msg.successMsg = "Update " + this.entityName + " " + this.entity.id + " successfully!";
                 }
@@ -98,7 +106,7 @@ export abstract class BaseForm<T extends Entity, S extends BaseService<T>> {
 
         dialogRef.afterClosed().subscribe(ok => {
             if (ok) {
-                this.service.delete(this.entity.id).subscribe(res => {
+                this.service.delete(this.entity.id, this.containerId).subscribe(res => {
                     if (res.isSuccessful) {
                         // Navigate to the user detail page with extras
                         this.redirect("Delete " + this.entityName + " " + this.entity.id + " successfully!", null, [this.urlPath]);

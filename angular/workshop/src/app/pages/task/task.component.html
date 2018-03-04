@@ -10,7 +10,7 @@
 
 <app-header-message></app-header-message>
 
-<mat-card>
+<mat-card *ngIf="entities">
   <mat-form-field>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>

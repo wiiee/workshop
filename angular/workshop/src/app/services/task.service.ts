@@ -1,3 +1,5 @@
+import { Pair } from './../entity/pair';
+import { Observable } from 'rxjs/Observable';
 import { Api } from './api';
 import { Injectable } from '@angular/core';
 
@@ -8,5 +10,9 @@ import { BaseService } from './base.service';
 export class TaskService extends BaseService<Task> {
   constructor(api: Api) { 
     super(api, "/api/task");
+  }
+
+  getTaskPairs(teamId: string): Observable<Pair<string, string>[]> {
+    return this.api.get("/api/task/taskPairs/" + teamId || "");
   }
 }

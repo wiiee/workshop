@@ -8,11 +8,11 @@ import { BaseService } from './base.service';
 
 @Injectable()
 export class TeamService extends BaseService<Team> {
-  constructor(api: Api) { 
+  constructor(api: Api) {
     super(api, "/api/team");
   }
 
   getTeamPairs(): Observable<Pair<string, string>[]> {
     return this.api.get("/api/team/teamPairs");
-}
+  }
 }

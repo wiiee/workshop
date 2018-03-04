@@ -10,7 +10,7 @@
 
 <app-header-message></app-header-message>
 
-<mat-card>
+<mat-card *ngIf="entities">
   <mat-form-field>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
@@ -20,7 +20,7 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</mat-header-cell>
       <mat-cell *matCellDef="let row" class="text-truncate">
         <ng-container *ngIf="column === 'id' else text">
-          <a routerLink="/user/{{row.id}}">{{row.id}}</a>
+          <a [routerLink]="['/user', row.id]">{{row.id}}</a>
         </ng-container>
         <ng-template #text>{{row[column]}}</ng-template>
       </mat-cell>

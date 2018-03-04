@@ -1,3 +1,6 @@
+import { TeamService } from './../../services/team.service';
+import { TaskService } from './../../services/task.service';
+import { Pair } from './../../entity/pair';
 import { Task } from './../../entity/task';
 import { Sprint } from './../../entity/sprint';
 import { SprintService } from './../../services/sprint.service';
@@ -6,6 +9,11 @@ import { BaseForm } from '../shared/base.form';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { Location } from '@angular/common';
+import { EnumUtil } from '../../util/enum-util';
+import { Phase } from '../../entity/phase';
+
+// import { groupBy } from 'lodash/groupBy';
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-sprint-detail',
@@ -21,12 +29,17 @@ export class SprintDetailComponent extends BaseForm<Sprint, SprintService> imple
   ongoings: string[];
   dones: string[];
 
+  phases: string[];
+
+  taskPairs: Pair<string, string>[];
+
   constructor(
     route: ActivatedRoute,
     router: Router,
     location: Location,
     matDialog: MatDialog,
-    sprintService: SprintService) {
+    sprintService: SprintService,
+    private taskService: TaskService) {
     super(route, router, location, matDialog, sprintService, "/sprint");
 
     if (!this.entity) {
@@ -35,21 +48,23 @@ export class SprintDetailComponent extends BaseForm<Sprint, SprintService> imple
   }
 
   ngOnInit() {
+    this.taskService.getTaskPairs(null).subscribe(res => this.taskPairs = res);
+
+    this.phases = EnumUtil.getNames(Phase);
     this.tasksGroup = [];
 
-    
+    this.phases.forEach(element => {
+      console.log("phase: " + element);
+      this.tasksGroup.push([]);
+    });
+
+    // _.groupBy(this.entity.taskIds, 'getPhase()');
 
     this.todos = ["t1", "t2"];
     this.analysis = ["a1", "a2"];
     this.pendings = ["p1", "p2", "p3"];
     this.ongoings = ["o1", "o2", "o3"];
     this.dones = ["d1", "d2", "d3"];
-
-    this.tasksGroup.push(this.todos);
-    this.tasksGroup.push(this.analysis);
-    this.tasksGroup.push(this.pendings);
-    this.tasksGroup.push(this.ongoings);
-    this.tasksGroup.push(this.dones);
   }
 
   drop($event: any, source: string[]) {

@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <span>Task Detail</span>
+  <span>Sprint Detail</span>
   <span class="spacer"></span>
   <button mat-mini-fab (click)="goBack()">
     <mat-icon>arrow_back</mat-icon>
@@ -10,14 +10,73 @@
 
 <app-header-message #msg></app-header-message>
 
-<mat-grid-list [cols]="tasksGroup.length" rowHeight="1:3">
+<mat-toolbar *ngIf="!isNew">
+  <span class="spacer"></span>
+  <button mat-mini-fab class="mr-2" (click)="isEdit = !isEdit">
+    <mat-icon>{{isEdit ? "info" : "mode_edit"}}</mat-icon>
+  </button>
+  <button mat-mini-fab (click)="delete()">
+    <mat-icon>remove</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div class="divider"></div>
+
+<mat-card>
+  <mat-grid-list [cols]="phases.length" rowHeight="1:3" *ngIf="!isEdit && !isNew; else edit">
+    <mat-grid-tile *ngFor="let phase of phases">
+      <mat-grid-tile-header>{{phase}}</mat-grid-tile-header>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <ng-template #edit>
+    <form (ngSubmit)="onSubmit()" #form="ngForm">
+      <mat-form-field>
+        <input matInput type="text" placeholder="Id" [(ngModel)]="entity.id" name="id" disabled required />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput type="text" placeholder="Name" [(ngModel)]="entity.name" name="name" required />
+        <button mat-button *ngIf="entity.name" matSuffix mat-icon-button aria-label="Clear" (click)="entity.name=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field>
+          <mat-select placeholder="TaskIds" [(ngModel)]="entity.taskIds" name="taskIds" multiple>
+              <mat-option *ngFor="let pair of taskPairs" [value]="pair.key">
+                  {{ pair.value }}
+              </mat-option>
+          </mat-select>
+      </mat-form-field>
+
+      <div class="d-flex">
+        <span class="spacer"></span>
+        <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">{{isNew ? "Save" : "Update"}}</button>
+        <button type="button" class="ml-2" mat-raised-button (click)="resetForm()">Reset</button>
+      </div>
+    </form>
+  </ng-template>
+</mat-card>
+
+<!-- <mat-grid-list [cols]="phases.length" rowHeight="1:3">
+  <mat-grid-tile *ngFor="let phase of phases">
+    <mat-grid-tile-header>{{phase}}</mat-grid-tile-header>
+  </mat-grid-tile>
+</mat-grid-list> -->
+
+<!-- <mat-grid-list cols="5" rowHeight="1:3">
   <mat-grid-tile>
     <mat-grid-tile-header>ToDo</mat-grid-tile-header>
-    <div class="card"></div>
+    <div class="card">
+      <mat-card>hello, world</mat-card>
+    </div>
   </mat-grid-tile>
   <mat-grid-tile>
     <mat-grid-tile-header>Analysis</mat-grid-tile-header>
-    <div class="card"></div>
+    <div class="card">
+      <mat-card>hello, world</mat-card>
+    </div>
   </mat-grid-tile>
   <mat-grid-tile dnd-droppable (onDropSuccess)="drop($event, pendings)" [allowDrop]="allow(pendings)">
     <mat-grid-tile-header>Pending</mat-grid-tile-header>
@@ -55,4 +114,4 @@
       </mat-card>
     </div>
   </mat-grid-tile>
-</mat-grid-list>
+</mat-grid-list> -->
