@@ -23,9 +23,18 @@
 <div class="divider"></div>
 
 <mat-card>
-  <mat-grid-list [cols]="phases.length" rowHeight="1:3" *ngIf="!isEdit && !isNew; else edit">
-    <mat-grid-tile *ngFor="let phase of phases">
-      <mat-grid-tile-header>{{phase}}</mat-grid-tile-header>
+  <mat-grid-list [cols]="phases.length" rowHeight="1:5" *ngIf="!isEdit && !isNew; else edit">
+    <mat-grid-tile dnd-droppable (onDropSuccess)="drop($event, group)" [allowDrop]="allow(group)" *ngFor="let group of tasksGroup; let i = index">
+      <mat-grid-tile-header>{{phases[i]}}</mat-grid-tile-header>
+      <div class="card">
+        <mat-card class="mb-2" dnd-draggable [dragEnabled]="true" [dragData]="item" (onDragSuccess)="drag(i, group)" *ngFor="let item of group">
+          <mat-card-title-group>
+            <mat-card-title>{{item.title}}</mat-card-title>
+            <mat-card-subtitle>{{item.description}}</mat-card-subtitle>
+            <img mat-card-md-image>
+          </mat-card-title-group>
+        </mat-card>
+      </div>
     </mat-grid-tile>
   </mat-grid-list>
 
@@ -43,11 +52,11 @@
       </mat-form-field>
 
       <mat-form-field>
-          <mat-select placeholder="TaskIds" [(ngModel)]="entity.taskIds" name="taskIds" multiple>
-              <mat-option *ngFor="let pair of taskPairs" [value]="pair.key">
-                  {{ pair.value }}
-              </mat-option>
-          </mat-select>
+        <mat-select placeholder="TaskIds" [(ngModel)]="entity.taskIds" name="taskIds" multiple>
+          <mat-option *ngFor="let pair of taskPairs" [value]="pair.key">
+            {{ pair.value }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
 
       <div class="d-flex">

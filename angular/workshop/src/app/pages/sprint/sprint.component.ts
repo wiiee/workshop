@@ -10,7 +10,7 @@ import { BaseList } from '../shared/base.list';
 })
 export class SprintComponent extends BaseList<Sprint, SprintService> implements OnInit {
   constructor(sprintService: SprintService) {
-    super(sprintService, ['id', 'name']);
+    super(sprintService, ['name', 'taskIds']);
   }
 
   ngOnInit() {

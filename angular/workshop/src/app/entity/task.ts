@@ -12,10 +12,7 @@ export class Task implements Entity {
         public value: number = null,
         public teamId: string = null,
         public phaseItems: PhaseItem[] = null,
+        public phase: Phase = null,
         public isReviewed: boolean = null
     ) { }
-
-    getPhase(): Phase {
-        return this.phaseItems ? this.phaseItems[this.phaseItems.length - 1].phase : null;
-    }
 }

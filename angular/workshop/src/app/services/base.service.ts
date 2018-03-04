@@ -27,6 +27,10 @@ export abstract class BaseService<T extends Entity>{
         return this.api.get(this.endpoint + "/" + id);
     }
 
+    getByIds(ids: Array<string | number>): Observable<ServiceResult<T>> {
+        return this.api.post(this.endpoint + "/items", ids);
+    }
+
     update(item: T, containerId: string = null): Observable<ServiceResult<T>> {
         if (containerId) {
             return this.api.post(this.endpoint + "/item", item);

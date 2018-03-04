@@ -1,6 +1,8 @@
 package com.workshop.domain.entity.project;
 
 import com.wiiee.core.platform.data.BaseData;
+import com.workshop.domain.constant.Phase;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,7 +38,8 @@ public class Task extends BaseData<String> {
 
     public List<PhaseItem> phaseItems;
 
-    public Task(){}
+    public Task() {
+    }
 
     public Task(String id, String reporterId, String title, String description) {
         super(id);
@@ -45,5 +48,13 @@ public class Task extends BaseData<String> {
         this.title = title;
         this.description = description;
         this.phaseItems = new ArrayList<>();
+    }
+
+    public Phase getPhase() {
+        if (CollectionUtils.isEmpty(phaseItems)) {
+            return null;
+        }
+
+        return phaseItems.get(phaseItems.size() - 1).phase;
     }
 }

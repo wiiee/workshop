@@ -1,7 +1,7 @@
 <mat-toolbar>
   <span>Team</span>
   <span class="spacer"></span>
-  <a mat-mini-fab routerLink="/team/null" routerLinkActive="active">
+  <a mat-mini-fab [routerLink]="['/team', 'null']" routerLinkActive="active">
     <mat-icon>add</mat-icon>
   </a>
 </mat-toolbar>
@@ -16,11 +16,11 @@
   </mat-form-field>
 
   <mat-table [dataSource]="dataSource" matSort>
-    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; let i = index">
       <mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</mat-header-cell>
       <mat-cell *matCellDef="let row" class="text-truncate">
-        <ng-container *ngIf="column === 'id' else text">
-          <a routerLink="/team/{{row.id}}">{{row.id}}</a>
+        <ng-container *ngIf="i === 0 else text">
+          <a [routerLink]="['/team', row.id]">{{row[column]}}</a>
         </ng-container>
         <ng-template #text>{{row[column]}}</ng-template>
       </mat-cell>

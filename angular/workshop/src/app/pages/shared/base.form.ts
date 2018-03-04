@@ -12,7 +12,6 @@ import { Constant } from '../../entity/constant';
 
 export abstract class BaseForm<T extends Entity, S extends BaseService<T>> {
     //表单初始化数据
-    entity: T
     backup: T;
 
     //是否新建/查看
@@ -31,6 +30,7 @@ export abstract class BaseForm<T extends Entity, S extends BaseService<T>> {
     id: string | number;
 
     containerId: string;
+    seq: Observable<ServiceResult<T>>;
 
     constructor(
         private route: ActivatedRoute,
@@ -38,21 +38,20 @@ export abstract class BaseForm<T extends Entity, S extends BaseService<T>> {
         private location: Location,
         private matDialog: MatDialog,
         public service: S,
-        private urlPath: string) {
+        private urlPath: string,
+        public entity: T) {
         this.route.queryParamMap.subscribe(params => {
             console.log("params: " + params);
             this.id = this.route.snapshot.paramMap.get('id');
             this.id === Constant.INVALID_ID ? this.isNew = true : this.isNew = false;
+            this.containerId = params.get("containerId");
             if (!this.isNew) {
-                this.containerId = params.get("containerId");
-                this.service.getOne(this.id, this.containerId).subscribe(res => {
+                this.seq = this.service.getOne(this.id, this.containerId).share();
+                this.seq.subscribe(res => {
                     console.log(JSON.stringify(res));
                     this.entity = res.data;
                     this.cloneEntity();
                 });
-            }
-            else {
-                this.service.getContainerId().subscribe(res => this.containerId = res);
             }
         });
 

@@ -10,7 +10,7 @@ import { BaseList } from '../shared/base.list';
 })
 export class TeamComponent extends BaseList<Team, TeamService> implements OnInit {
   constructor(teamService: TeamService) {
-    super(teamService, ['id', 'name', 'ownerIds', 'userIds']);
+    super(teamService, ['name', 'ownerIds', 'userIds']);
   }
 
   ngOnInit() {

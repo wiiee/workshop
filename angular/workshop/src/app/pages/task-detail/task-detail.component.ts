@@ -29,10 +29,9 @@ export class TaskDetailComponent extends BaseForm<Task, TaskService> implements 
     private authService: AuthService,
     private userService: UserService,
     private teamService: TeamService) {
-    super(route, router, location, matDialog, taskService, "/task");
+    super(route, router, location, matDialog, taskService, "/task", new Task());
 
     if (!this.entity) {
-      this.entity = new Task();
       this.entity.reporterId = authService.getUserId();
     }
   }

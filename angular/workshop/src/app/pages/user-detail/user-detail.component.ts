@@ -29,11 +29,7 @@ export class UserDetailComponent extends BaseForm<User, UserService> implements 
     userService: UserService,
     private enumService: EnumService,
     private authService: AuthService) {
-    super(route, router, location, matDialog, userService, "/user");
-
-    if(!this.entity){
-      this.entity = new User();
-    }
+    super(route, router, location, matDialog, userService, "/user", new User());
   }
 
   ngOnInit() {

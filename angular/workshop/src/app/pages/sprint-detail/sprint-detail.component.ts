@@ -21,17 +21,13 @@ import * as _ from "lodash";
   styleUrls: ['./sprint-detail.component.css']
 })
 export class SprintDetailComponent extends BaseForm<Sprint, SprintService> implements OnInit {
-  tasksGroup: Array<string>[];
-
-  todos: string[];
-  analysis: string[];
-  pendings: string[];
-  ongoings: string[];
-  dones: string[];
-
+  tasksGroup: Array<Task>[];
   phases: string[];
 
+  //所有的tasks
   taskPairs: Pair<string, string>[];
+  //当前sprint的tasks
+  tasks: Task[];
 
   constructor(
     route: ActivatedRoute,
@@ -40,11 +36,7 @@ export class SprintDetailComponent extends BaseForm<Sprint, SprintService> imple
     matDialog: MatDialog,
     sprintService: SprintService,
     private taskService: TaskService) {
-    super(route, router, location, matDialog, sprintService, "/sprint");
-
-    if (!this.entity) {
-      this.entity = new Sprint();
-    }
+    super(route, router, location, matDialog, sprintService, "/sprint", new Sprint());
   }
 
   ngOnInit() {
@@ -53,33 +45,32 @@ export class SprintDetailComponent extends BaseForm<Sprint, SprintService> imple
     this.phases = EnumUtil.getNames(Phase);
     this.tasksGroup = [];
 
-    this.phases.forEach(element => {
-      console.log("phase: " + element);
-      this.tasksGroup.push([]);
+    this.seq.subscribe(res => {
+      this.taskService.getByIds(res.data.taskIds).subscribe(result => {
+        this.tasks = result.datum;
+        this.phases.forEach(phase => {
+          console.log("phase: " + phase);
+          // let items = this.tasks.filter(o => o.phase.toString() === phase);
+          this.tasksGroup.push(this.tasks);
+        });
+      });
     });
-
-    // _.groupBy(this.entity.taskIds, 'getPhase()');
-
-    this.todos = ["t1", "t2"];
-    this.analysis = ["a1", "a2"];
-    this.pendings = ["p1", "p2", "p3"];
-    this.ongoings = ["o1", "o2", "o3"];
-    this.dones = ["d1", "d2", "d3"];
   }
 
-  drop($event: any, source: string[]) {
+  drop($event: any, group: Task[]) {
     console.log($event);
     let data: any = $event.dragData;
 
-    source.push(data);
+    group.push(data);
   }
 
-  drag(i: number, source: string[]) {
+  drag(i: number, group: Task[]) {
     console.log(i);
-    source.splice(i, 1);
+    group.splice(i, 1);
   }
 
-  allow(source: string[]) {
-    return (dragData: any) => !source.includes(dragData);
+  allow(group: Task[]) {
+    return (dragData: any) => true;
+    // return (dragData: any) => !group.includes(dragData);
   }
 }

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 public abstract class BaseController<Id extends Serializable, T extends BaseData<Id>, S extends BaseService<T, Id>> {
     private static final Logger _logger = LoggerFactory.getLogger(BaseController.class);
@@ -30,6 +31,11 @@ public abstract class BaseController<Id extends Serializable, T extends BaseData
     @GetMapping("/{id}")
     public ServiceResult<T> get(@PathVariable Id id) {
         return service.get(id);
+    }
+
+    @PostMapping("/items")
+    public ServiceResult<T> getByIds(@RequestBody List<Id> ids){
+        return service.getByIds(ids);
     }
 
     @PostMapping

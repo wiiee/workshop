@@ -26,11 +26,7 @@ export class TeamDetailComponent extends BaseForm<Team, TeamService> implements 
     matDialog: MatDialog,
     teamService: TeamService,
     private userService: UserService) {
-    super(route, router, location, matDialog, teamService, "/team");
-    
-    if(!this.entity){
-      this.entity = new Team();
-    }
+    super(route, router, location, matDialog, teamService, "/team", new Team());
   }
 
   ngOnInit() {

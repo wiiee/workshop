@@ -1,7 +1,10 @@
+import { element } from 'protractor';
 import { TaskService } from './../../services/task.service';
 import { Task } from './../../entity/task';
 import { Component, OnInit } from '@angular/core';
 import { BaseList } from '../shared/base.list';
+import { MatCell } from '@angular/material';
+import { QueryList } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-task',
@@ -10,9 +13,10 @@ import { BaseList } from '../shared/base.list';
 })
 export class TaskComponent extends BaseList<Task, TaskService> implements OnInit {
   constructor(taskService: TaskService) {
-    super(taskService, ['id', 'title', 'description', 'reporterId']);
+    super(taskService, ['title', 'description', 'reporterId', 'assigneeId', 'teamId']);
   }
 
   ngOnInit() {
+
   }
 }
