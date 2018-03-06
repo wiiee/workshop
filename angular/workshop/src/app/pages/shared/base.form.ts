@@ -9,8 +9,9 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { BaseService } from '../../services/base.service';
 import { Constant } from '../../entity/constant';
+import { BasePage } from './base.page';
 
-export abstract class BaseForm<T extends Entity, S extends BaseService<T>> {
+export abstract class BaseForm<T extends Entity, S extends BaseService<T>> extends BasePage {
     //表单初始化数据
     backup: T;
 
@@ -40,6 +41,7 @@ export abstract class BaseForm<T extends Entity, S extends BaseService<T>> {
         public service: S,
         private urlPath: string,
         public entity: T) {
+        super();
         this.route.queryParamMap.subscribe(params => {
             console.log("params: " + params);
             this.id = this.route.snapshot.paramMap.get('id');

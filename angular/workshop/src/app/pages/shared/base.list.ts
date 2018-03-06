@@ -4,8 +4,9 @@ import { ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Entity } from './../../entity/entity';
 import { BaseService } from '../../services/base.service';
+import { BasePage } from './base.page';
 
-export abstract class BaseList<T extends Entity, S extends BaseService<T>> {
+export abstract class BaseList<T extends Entity, S extends BaseService<T>> extends BasePage {
     //
     dataSource: MatTableDataSource<T>;
     entities: T[];
@@ -18,6 +19,7 @@ export abstract class BaseList<T extends Entity, S extends BaseService<T>> {
     constructor(
         private service: S,
         public displayedColumns: string[]) {
+        super();
         this.service.getContainerId().subscribe(text => {
             this.containerId = text;
             this.service.getAll(this.containerId).subscribe(res => {

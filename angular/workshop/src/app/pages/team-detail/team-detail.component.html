@@ -31,7 +31,7 @@
         </thead>
         <tbody>
             <tr>
-                <td *ngFor="let key of keys">{{entity[key]}}</td>
+                <td *ngFor="let key of keys">{{toJson(entity[key])}}</td>
             </tr>
         </tbody>
     </table>

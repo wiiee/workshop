@@ -44,8 +44,8 @@ public abstract class BaseItemContainerController<T2 extends BaseData<String>, T
         return service.updateItem(item);
     }
 
-    @DeleteMapping("/item")
-    public ServiceResult<T2> deleteItem(@RequestBody String itemId) {
-        return service.deleteItem(itemId);
+    @DeleteMapping("/item/{containerId}")
+    public ServiceResult<T2> deleteItem(@PathVariable String containerId) {
+        return service.deleteItem(containerId);
     }
 }

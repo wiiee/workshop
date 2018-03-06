@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { TeamService } from './../../services/team.service';
 import { TaskService } from './../../services/task.service';
 import { Pair } from './../../entity/pair';
@@ -14,6 +15,7 @@ import { Phase } from '../../entity/phase';
 
 // import { groupBy } from 'lodash/groupBy';
 import * as _ from "lodash";
+import { PhaseItem } from '../../entity/phase-item';
 
 @Component({
   selector: 'app-sprint-detail',
@@ -35,7 +37,8 @@ export class SprintDetailComponent extends BaseForm<Sprint, SprintService> imple
     location: Location,
     matDialog: MatDialog,
     sprintService: SprintService,
-    private taskService: TaskService) {
+    private taskService: TaskService,
+    private authService: AuthService) {
     super(route, router, location, matDialog, sprintService, "/sprint", new Sprint());
   }
 
@@ -49,28 +52,28 @@ export class SprintDetailComponent extends BaseForm<Sprint, SprintService> imple
       this.taskService.getByIds(res.data.taskIds).subscribe(result => {
         this.tasks = result.datum;
         this.phases.forEach(phase => {
-          console.log("phase: " + phase);
-          // let items = this.tasks.filter(o => o.phase.toString() === phase);
-          this.tasksGroup.push(this.tasks);
+          let items = this.tasks.filter(o => o.phase.toString() === phase);
+          this.tasksGroup.push(items);
         });
       });
     });
   }
 
-  drop($event: any, group: Task[]) {
-    console.log($event);
-    let data: any = $event.dragData;
-
-    group.push(data);
+  drop($event: any, group: Task[], phase: string) {
+    let task: Task = $event.dragData;
+    task.phaseItems.push(new PhaseItem(Phase[phase], this.authService.getUserId()));
+    this.taskService.updatePhase(task).subscribe(res => {
+      task = res.data;
+      group.push($event.dragData);
+    });
   }
 
   drag(i: number, group: Task[]) {
-    console.log(i);
     group.splice(i, 1);
   }
 
   allow(group: Task[]) {
-    return (dragData: any) => true;
+    return (dragData: any) => !group.includes(dragData);
     // return (dragData: any) => !group.includes(dragData);
   }
 }

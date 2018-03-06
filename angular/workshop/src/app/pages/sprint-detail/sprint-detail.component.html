@@ -24,16 +24,14 @@
 
 <mat-card>
   <mat-grid-list [cols]="phases.length" rowHeight="1:5" *ngIf="!isEdit && !isNew; else edit">
-    <mat-grid-tile dnd-droppable (onDropSuccess)="drop($event, group)" [allowDrop]="allow(group)" *ngFor="let group of tasksGroup; let i = index">
+    <mat-grid-tile dnd-droppable (onDropSuccess)="drop($event, group, phases[i])" [allowDrop]="allow(group)" *ngFor="let group of tasksGroup; let i = index">
       <mat-grid-tile-header>{{phases[i]}}</mat-grid-tile-header>
-      <div class="card">
-        <mat-card class="mb-2" dnd-draggable [dragEnabled]="true" [dragData]="item" (onDragSuccess)="drag(i, group)" *ngFor="let item of group">
-          <mat-card-title-group>
-            <mat-card-title>{{item.title}}</mat-card-title>
-            <mat-card-subtitle>{{item.description}}</mat-card-subtitle>
-            <img mat-card-md-image>
-          </mat-card-title-group>
-        </mat-card>
+      <div class="column_wrapper">
+        <div class="card_column">
+          <mat-card class="mb-2" dnd-draggable [dragEnabled]="true" [dragData]="item" (onDragSuccess)="drag(j, group)" *ngFor="let item of group; let j = index">
+            <a [routerLink]="['/task', group[j].id]">{{item.title}}</a>
+          </mat-card>
+        </div>
       </div>
     </mat-grid-tile>
   </mat-grid-list>

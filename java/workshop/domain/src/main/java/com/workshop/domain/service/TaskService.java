@@ -4,6 +4,7 @@ import com.wiiee.core.domain.security.SecurityUtil;
 import com.wiiee.core.domain.service.BaseService;
 import com.wiiee.core.domain.service.ServiceResult;
 import com.wiiee.core.platform.exception.CoreException;
+import com.workshop.domain.entity.project.PhaseItem;
 import com.workshop.domain.entity.project.Task;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
@@ -40,4 +41,15 @@ public class TaskService extends BaseService<Task, String> {
 //
 //        return super.update(entity);
 //    }
+
+    public ServiceResult<Task> updatePhase(Task entity){
+        if(entity == null){
+            return ServiceResult.getByException(CoreException.EXCEPTION_NULL_PARAMETERS);
+        }
+
+        PhaseItem last = entity.phaseItems.get(entity.phaseItems.size() - 1);
+        last.dateTime = LocalDateTime.now();
+
+        return update(entity);
+    }
 }

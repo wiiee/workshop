@@ -39,16 +39,20 @@ public class Task extends BaseData<String> {
     public List<PhaseItem> phaseItems;
 
     public Task() {
+        this.phaseItems = new ArrayList<>();
+        this.comments = new ArrayList<>();
+        this.codes = new ArrayList<>();
+        this.startDate = LocalDateTime.now();
     }
 
-    public Task(String id, String reporterId, String title, String description) {
-        super(id);
-        this.startDate = LocalDateTime.now();
-        this.reporterId = reporterId;
-        this.title = title;
-        this.description = description;
-        this.phaseItems = new ArrayList<>();
-    }
+//    public Task(String id, String reporterId, String title, String description) {
+//        super(id);
+//        this.startDate = LocalDateTime.now();
+//        this.reporterId = reporterId;
+//        this.title = title;
+//        this.description = description;
+//        this.phaseItems = new ArrayList<>();
+//    }
 
     public Phase getPhase() {
         if (CollectionUtils.isEmpty(phaseItems)) {
