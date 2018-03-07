@@ -1,3 +1,4 @@
+import { MetricService } from './services/metric.service';
 import { SprintService } from './services/sprint.service';
 import { LocalStorageService } from './services/local-storage.service';
 import { TeamService } from './services/team.service';
@@ -34,6 +35,7 @@ import { AuthService } from './services/auth.service';
     TeamService,
     EnumService,
     SprintService,
+    MetricService,
     LocalStorageService,
     { provide: RequestCache, useClass: RequestCacheWithMap },
     httpInterceptorProviders],

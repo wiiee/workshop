@@ -1,5 +1,6 @@
 package com.workshop.domain.entity.project;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wiiee.core.platform.data.BaseData;
 import com.workshop.domain.constant.Phase;
 import org.springframework.util.CollectionUtils;
@@ -60,5 +61,20 @@ public class Task extends BaseData<String> {
         }
 
         return phaseItems.get(phaseItems.size() - 1).phase;
+    }
+
+    @JsonIgnore
+    public int getDuration() {
+        return 0;
+    }
+
+    @JsonIgnore
+    public int getBlockDuration() {
+        return 0;
+    }
+
+    @JsonIgnore
+    public int getDurationExceptBlock() {
+        return 0;
     }
 }

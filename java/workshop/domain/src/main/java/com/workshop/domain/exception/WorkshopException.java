@@ -12,4 +12,6 @@ public abstract class WorkshopException implements BaseException {
 
     //1301 ~ 1400 Task Service Error
 
+    //1401 ~ 1500 Metric Service Error
+    public static final MyException METRIC_DUPLICATE = new MyException(1024, "Metric is duplicate.");
 }

@@ -79,6 +79,17 @@
                 </mat-select>
             </mat-form-field>
 
+            <div class="d-flex">
+                <span class="spacer"></span>
+                <mat-checkbox [(ngModel)]="entity.isReviewed" align="end" name="isReviewed">
+                    isReviewed
+                </mat-checkbox>
+            </div>
+
+            <mat-form-field>
+                <input matInput type="text" placeholder="Phase" [(ngModel)]="entity.phase" name="phase" disabled />
+            </mat-form-field>
+
             <mat-form-field>
                 <mat-select placeholder="TeamId" [(ngModel)]="entity.teamId" name="teamId">
                     <mat-option *ngFor="let pair of teamPairs" [value]="pair.key">
