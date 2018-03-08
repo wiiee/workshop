@@ -23,6 +23,8 @@ public class PointList {
     }
 
     public List<Point> getPoints() {
-        return points.stream().distinct().sorted((p1, p2) -> Long.compare(p1.timeStamp, p2.timeStamp)).collect(Collectors.toList());
+        return points.stream().distinct()
+                .sorted((p1, p2) -> p1.dateTime.compareTo(p2.dateTime))
+                .collect(Collectors.toList());
     }
 }

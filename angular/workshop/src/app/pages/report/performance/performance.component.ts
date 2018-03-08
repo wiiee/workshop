@@ -1,6 +1,7 @@
 import { PointList } from './../../../entity/point-list';
 import { MetricService } from './../../../services/metric.service';
 import { Component, OnInit } from '@angular/core';
+import { EChartUtil } from '../../../util/echart-util';
 
 @Component({
   selector: 'app-performance',
@@ -8,98 +9,80 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./performance.component.css']
 })
 export class PerformanceComponent implements OnInit {
-  chartOption: any;
+  option: any
 
   intervals: any;
-  interval: number;
+  interval: string;
 
   startDate: Date;
   endDate: Date;
 
-  points: PointList;
+  pointList: PointList;
 
   constructor(private metricService: MetricService) { }
 
   ngOnInit() {
     this.metricService.getByUserId("G1").subscribe(res => {
-      this.points = res;
+      this.pointList = res;
       console.log(res);
+      this.option = {
+        tooltip: {
+          trigger: 'axis'
+        },
+        xAxis: {
+          type: 'category',
+          data: this.pointList.points.map(o => o.dateTime)
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            type: 'line',
+            smooth: true,
+            data: this.pointList.points.map(o => o.value)
+          }
+        ]
+      };
     });
 
-    this.interval = 1;
+    this.interval = "all";
 
     this.intervals = [
-      { key: "Daily", value: 1 },
-      { key: "Weekly", value: 7 },
-      { key: "Monthly", value: 30 },
-      { key: "Yearly", value: 365 }
+      { key: "All", value: "all" },
+      { key: "Daily", value: "day" },
+      { key: "Weekly", value: "week" },
+      { key: "Monthly", value: "month" },
+      { key: "Yearly", value: "year" }
     ];
+  }
 
-    this.chartOption = {
-      title: {
-        text: '折线图堆叠'
-      },
+  calculate(): void {
+    let range = EChartUtil.getRange(this.pointList, this.startDate, this.endDate);
+    let rangePointList = range;
+
+    if (this.interval !== "all") {
+      rangePointList = EChartUtil.getByInterval(range, this.interval);
+    }
+
+    this.option = {
       tooltip: {
         trigger: 'axis'
       },
-      legend: {
-        data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-      },
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
-      toolbox: {
-        feature: {
-          saveAsImage: {}
-        }
-      },
       xAxis: {
         type: 'category',
-        boundaryGap: false,
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        data: rangePointList.points.map(o => o.dateTime)
       },
       yAxis: {
         type: 'value'
       },
       series: [
         {
-          name: '邮件营销',
           type: 'line',
-          stack: '总量',
-          data: [120, 132, 101, 134, 90, 230, 210]
-        },
-        {
-          name: '联盟广告',
-          type: 'line',
-          stack: '总量',
-          data: [220, 182, 191, 234, 290, 330, 310]
-        },
-        {
-          name: '视频广告',
-          type: 'line',
-          stack: '总量',
-          data: [150, 232, 201, 154, 190, 330, 410]
-        },
-        {
-          name: '直接访问',
-          type: 'line',
-          stack: '总量',
-          data: [320, 332, 301, 334, 390, 330, 320]
-        },
-        {
-          name: '搜索引擎',
-          type: 'line',
-          stack: '总量',
-          data: [820, 932, 901, 934, 1290, 1330, 1320]
+          smooth: true,
+          data: rangePointList.points.map(o => o.value)
         }
       ]
     };
-  }
-
-  calculate(): void {
-
   }
 }

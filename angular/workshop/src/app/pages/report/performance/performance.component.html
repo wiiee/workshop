@@ -14,18 +14,18 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field class="ml-2">
-    <input matInput [matDatepicker]="startDate" placeholder="Start date">
-    <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
-    <mat-datepicker #startDate></mat-datepicker>
+    <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="startDate" placeholder="Start date">
+    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #startDatePicker></mat-datepicker>
   </mat-form-field>
   <mat-form-field class="ml-2">
-    <input matInput [matDatepicker]="endDate" placeholder="End date">
-    <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
-    <mat-datepicker #endDate></mat-datepicker>
+    <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="endDate" placeholder="End date">
+    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #endDatePicker></mat-datepicker>
   </mat-form-field>
   <button type="button" class="ml-2" mat-raised-button (click)="calculate()">Calculate</button>
 </mat-toolbar>
 
 <div class="divider"></div>
 
-<div echarts [options]="chartOption"></div>
+<div echarts [options]="option"></div>

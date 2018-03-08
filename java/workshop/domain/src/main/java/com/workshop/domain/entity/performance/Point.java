@@ -1,14 +1,16 @@
 package com.workshop.domain.entity.performance;
 
+import java.time.LocalDateTime;
+
 /**
  * Created by bill.wang on 3/6/18
  */
 public abstract class Point {
-    public long timeStamp;
+    public LocalDateTime dateTime;
     public int value;
 
-    public Point(long timeStamp, int value) {
-        this.timeStamp = timeStamp;
+    public Point(LocalDateTime dateTime, int value) {
+        this.dateTime = dateTime;
         this.value = value;
     }
 }

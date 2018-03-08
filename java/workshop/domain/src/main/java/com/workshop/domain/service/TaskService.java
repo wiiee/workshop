@@ -71,10 +71,11 @@ public class TaskService extends BaseService<Task, String> {
         //ToDo: use queue instead in future'
         //如果卡完成了，需要建立metrics
         if (entity.isReviewed && entity.getPhase() == Phase.Deployed) {
-            metricService.addPoint(MetricName.Value.value(), new TaskPoint(Instant.now().toEpochMilli(), entity.value, entity.getId(), entity.assigneeId));
-            metricService.addPoint(MetricName.Duration.value(), new TaskPoint(Instant.now().toEpochMilli(), entity.getDuration(), entity.getId(), entity.assigneeId));
-            metricService.addPoint(MetricName.BlockDuration.value(), new TaskPoint(Instant.now().toEpochMilli(), entity.getBlockDuration(), entity.getId(), entity.assigneeId));
-            metricService.addPoint(MetricName.DurationExceptBlock.value(), new TaskPoint(Instant.now().toEpochMilli(), entity.getDurationExceptBlock(), entity.getId(), entity.assigneeId));
+            LocalDateTime now = LocalDateTime.now();
+            metricService.addPoint(MetricName.Value.value(), new TaskPoint(now, entity.value, entity.getId(), entity.assigneeId));
+            metricService.addPoint(MetricName.Duration.value(), new TaskPoint(now, entity.getDuration(), entity.getId(), entity.assigneeId));
+            metricService.addPoint(MetricName.BlockDuration.value(), new TaskPoint(now, entity.getBlockDuration(), entity.getId(), entity.assigneeId));
+            metricService.addPoint(MetricName.DurationExceptBlock.value(), new TaskPoint(now, entity.getDurationExceptBlock(), entity.getId(), entity.assigneeId));
         }
 
         return super.update(entity);

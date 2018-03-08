@@ -79,13 +79,6 @@
                 </mat-select>
             </mat-form-field>
 
-            <div class="d-flex">
-                <span class="spacer"></span>
-                <mat-checkbox [(ngModel)]="entity.isReviewed" align="end" name="isReviewed">
-                    isReviewed
-                </mat-checkbox>
-            </div>
-
             <mat-form-field>
                 <input matInput type="text" placeholder="Phase" [(ngModel)]="entity.phase" name="phase" disabled />
             </mat-form-field>
@@ -97,6 +90,17 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+
+            <mat-form-field>
+                <input matInput type="text" placeholder="Value" [(ngModel)]="entity.value" name="value" />
+            </mat-form-field>
+
+            <div class="d-flex mb-2">
+                <span class="spacer"></span>
+                <mat-checkbox [(ngModel)]="entity.isReviewed" align="end" name="isReviewed">
+                    isReviewed
+                </mat-checkbox>
+            </div>
 
             <div class="d-flex">
                 <span class="spacer"></span>

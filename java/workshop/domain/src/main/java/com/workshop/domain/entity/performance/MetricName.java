@@ -13,7 +13,6 @@ public enum MetricName {
     //任务花费的block以外的时间，以秒为单位
     DurationExceptBlock("task.except.block.duration");
 
-
     private String value;
 
     MetricName(String value) {
