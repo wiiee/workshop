@@ -1,5 +1,4 @@
 import { Entity } from './entity';
-import { Phase } from './phase';
 import { PhaseItem } from './phase-item';
 
 export class Task implements Entity {
@@ -12,7 +11,7 @@ export class Task implements Entity {
         public value: number = null,
         public teamId: string = null,
         public phaseItems: PhaseItem[] = null,
-        public phase: Phase = null,
+        public phase: string = null,
         public isReviewed: boolean = null
     ) { }
 }

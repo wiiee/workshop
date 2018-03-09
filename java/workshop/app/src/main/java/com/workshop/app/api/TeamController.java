@@ -40,4 +40,14 @@ public class TeamController extends BaseController<String, Team, TeamService> {
             return null;
         }
     }
+
+    @GetMapping("/phases/{userId}")
+    public List<String> getPhases(@PathVariable String userId){
+        try {
+            return getService().getPhases(userId);
+        } catch (MyException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 }

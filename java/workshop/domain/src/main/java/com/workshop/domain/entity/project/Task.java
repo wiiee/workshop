@@ -3,11 +3,14 @@ package com.workshop.domain.entity.project;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wiiee.core.platform.data.BaseData;
 import com.workshop.domain.constant.Phase;
+import javafx.util.Pair;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Task extends BaseData<String> {
     //开始结束时间
@@ -55,7 +58,7 @@ public class Task extends BaseData<String> {
 //        this.phaseItems = new ArrayList<>();
 //    }
 
-    public Phase getPhase() {
+    public String getPhase() {
         if (CollectionUtils.isEmpty(phaseItems)) {
             return null;
         }
@@ -63,18 +66,10 @@ public class Task extends BaseData<String> {
         return phaseItems.get(phaseItems.size() - 1).phase;
     }
 
+    //获取各个阶段耗费的时间
+    //ToDo:
     @JsonIgnore
-    public int getDuration() {
-        return 0;
-    }
-
-    @JsonIgnore
-    public int getBlockDuration() {
-        return 0;
-    }
-
-    @JsonIgnore
-    public int getDurationExceptBlock() {
-        return 0;
+    public List<Pair<String, Integer>> getDurations() {
+        return new ArrayList<>();
     }
 }

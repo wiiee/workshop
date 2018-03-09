@@ -1,4 +1,4 @@
-import { PointList } from './../entity/point-list';
+import { TaskMetric } from './../entity/task-metric';
 import { Pair } from './../entity/pair';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
@@ -6,7 +6,6 @@ import { Injectable } from '@angular/core';
 import { Api } from './api';
 import { Team } from './../entity/team';
 import { BaseService } from './base.service';
-import { MetricPoint } from '../entity/metric-point';
 
 @Injectable()
 export class MetricService {
@@ -14,11 +13,11 @@ export class MetricService {
 
   }
 
-  getByUserId(userId: string): Observable<PointList> {
+  getByUserId(userId: string): Observable<TaskMetric> {
     return this.api.get("/api/metric/user/" + userId);
   }
 
-  getByTeamId(teamId: string): Observable<Map<string, PointList>> {
+  getByTeamId(teamId: string): Observable<TaskMetric> {
     return this.api.get("/api/metric/team/" + teamId);
   }
 }

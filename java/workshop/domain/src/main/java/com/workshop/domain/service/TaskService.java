@@ -69,13 +69,11 @@ public class TaskService extends BaseService<Task, String> {
         }
 
         //ToDo: use queue instead in future'
+        //ToDo: set phase to team's last phase
         //如果卡完成了，需要建立metrics
-        if (entity.isReviewed && entity.getPhase() == Phase.Deployed) {
+        if (entity.isReviewed && entity.getPhase() == Phase.Deployed.toString()) {
             LocalDateTime now = LocalDateTime.now();
-            metricService.addPoint(MetricName.Value.value(), new TaskPoint(now, entity.value, entity.getId(), entity.assigneeId));
-            metricService.addPoint(MetricName.Duration.value(), new TaskPoint(now, entity.getDuration(), entity.getId(), entity.assigneeId));
-            metricService.addPoint(MetricName.BlockDuration.value(), new TaskPoint(now, entity.getBlockDuration(), entity.getId(), entity.assigneeId));
-            metricService.addPoint(MetricName.DurationExceptBlock.value(), new TaskPoint(now, entity.getDurationExceptBlock(), entity.getId(), entity.assigneeId));
+            metricService.addPoint(MetricName.Task.value(), new TaskPoint(now, entity.value, entity.getId(), entity.assigneeId, entity.getDurations()));
         }
 
         return super.update(entity);

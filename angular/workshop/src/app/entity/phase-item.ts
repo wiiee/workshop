@@ -1,11 +1,8 @@
-import { Phase } from "./phase";
-
 export class PhaseItem {
     constructor(
-        public phase: Phase = null,
-        public userId: String = null,
+        public phase: string = null,
+        public userId: string = null,
         public dateTime: Date = null
     ) {
-
     }
 }

@@ -11,7 +11,6 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { Location } from '@angular/common';
 import { EnumUtil } from '../../util/enum-util';
-import { Phase } from '../../entity/phase';
 
 // import { groupBy } from 'lodash/groupBy';
 import * as _ from "lodash";
@@ -38,14 +37,15 @@ export class SprintDetailComponent extends BaseForm<Sprint, SprintService> imple
     matDialog: MatDialog,
     sprintService: SprintService,
     private taskService: TaskService,
+    private teamService: TeamService,
     private authService: AuthService) {
     super(route, router, location, matDialog, sprintService, "/sprint", new Sprint());
   }
 
   ngOnInit() {
     this.taskService.getTaskPairs(null).subscribe(res => this.taskPairs = res);
+    this.teamService.getPhases().subscribe(res => this.phases = res);
 
-    this.phases = EnumUtil.getNames(Phase);
     this.tasksGroup = [];
 
     this.seq.subscribe(res => {
@@ -61,7 +61,7 @@ export class SprintDetailComponent extends BaseForm<Sprint, SprintService> imple
 
   drop($event: any, group: Task[], phase: string) {
     let task: Task = $event.dragData;
-    task.phaseItems.push(new PhaseItem(Phase[phase], this.authService.getUserId()));
+    task.phaseItems.push(new PhaseItem(phase, this.authService.getUserId()));
     this.taskService.updatePhase(task).subscribe(res => {
       task = res.data;
       group.push($event.dragData);

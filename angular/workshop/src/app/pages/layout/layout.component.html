@@ -6,6 +6,7 @@
       </a>
       <button mat-button [matMenuTriggerFor]="orgMenu" class="ml-2">Organization</button>
       <button mat-button [matMenuTriggerFor]="workMenu">Work</button>
+      <button mat-button [matMenuTriggerFor]="performanceMenu">Performance</button>
       <button mat-button [matMenuTriggerFor]="reportMenu">Report</button>
       <span class="spacer"></span>
       <button mat-button (click)="isDark = !isDark">{{isDark ? 'Light' : 'Dark'}}</button>
@@ -37,17 +38,23 @@
       </a>
     </mat-menu>
 
-    <mat-menu [overlapTrigger]="false" #reportMenu="matMenu">
-      <a routerLink="/performance" routerLinkActive="active">
-        <button mat-menu-item>Performance</button>
+    <mat-menu [overlapTrigger]="false" #performanceMenu="matMenu">
+      <a routerLink="/performance/user/G1" routerLinkActive="active">
+        <button mat-menu-item>User</button>
       </a>
-      <a routerLink="/weekly" routerLinkActive="active">
+      <a routerLink="/performance/team/G1" routerLinkActive="active">
+        <button mat-menu-item>Team</button>
+      </a>
+    </mat-menu>
+
+    <mat-menu [overlapTrigger]="false" #reportMenu="matMenu">
+      <a routerLink="/report//weekly" routerLinkActive="active">
         <button mat-menu-item>Weekly</button>
       </a>
     </mat-menu>
 
     <div class="divider"></div>
-    
+
     <router-outlet></router-outlet>
   </mat-sidenav-container>
 </div>

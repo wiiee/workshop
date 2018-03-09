@@ -28,7 +28,8 @@ public class SprintService extends BaseItemContainerService<SprintItem, Sprint> 
     public ServiceResult<SprintItem> addItem(String containerId, SprintItem item) {
         item.taskIds.forEach(taskId -> {
             Task task = taskService.get(taskId).data;
-            task.phaseItems.add(new PhaseItem(Phase.ToDo, SecurityUtil.getUserId(), LocalDateTime.now()));
+            //ToDo: change it to team's frist phase
+            task.phaseItems.add(new PhaseItem(Phase.ToDo.toString(), SecurityUtil.getUserId(), LocalDateTime.now()));
             taskService.update(task);
         });
 

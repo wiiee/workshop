@@ -5,7 +5,7 @@ import com.wiiee.core.platform.log.LoggerFacade;
 import com.wiiee.core.platform.log.other.OtherLogEntry;
 import com.wiiee.core.platform.log.other.OtherLogEntryPool;
 import com.workshop.domain.entity.performance.Metric;
-import com.workshop.domain.entity.performance.MetricPoint;
+import com.workshop.domain.entity.performance.Point;
 import com.workshop.domain.exception.WorkshopException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -29,7 +29,7 @@ public class MetricService extends BaseService<Metric, String> {
         super(repository);
     }
 
-    public void addPoint(String id, MetricPoint point) {
+    public void addPoint(String id, Point point) {
         if (StringUtils.isEmpty(id) || point == null) {
             return;
         }

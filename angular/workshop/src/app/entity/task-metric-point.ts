@@ -1,12 +1,16 @@
-export class MetricPoint {
+import { Pair } from './pair';
+
+export class TaskMetricPoint {
     constructor(
         public id: string = null,
         public dateTime: string = null,
         public value: number = null,
+        public duration: number = null,
         public day: string = null,
         public week: string  = null,
         public month: string = null,
-        public year: string = null
+        public year: string = null,
+        public phases: Pair<string, number>[] = null
     ) {
 
     }

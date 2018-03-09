@@ -21,5 +21,5 @@ public class Metric extends BaseData<String> {
         this.points = new ArrayList<>();
     }
 
-    public List<MetricPoint> points;
+    public List<Point> points;
 }

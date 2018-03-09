@@ -1,12 +1,13 @@
-import { MetricPoint } from './../entity/metric-point';
-import { PointList } from './../entity/point-list';
+import { Pair } from './../entity/pair';
+import { TaskMetricPoint } from './../entity/task-metric-point';
+import { TaskMetric } from './../entity/task-metric';
 import * as _ from "lodash";
 
 export abstract class EChartUtil {
     private static readonly ONE_DAY_MILLI_SECONDS: number = 86400000;
 
-    static getRange(pointList: PointList, startDate: Date, endDate: Date): PointList {
-        let points: MetricPoint[] = pointList.points.filter(o => EChartUtil.isInRange(new Date(o.dateTime), startDate, endDate));
+    static getRange(metric: TaskMetric, startDate: Date, endDate: Date): TaskMetric {
+        let points: TaskMetricPoint[] = metric.points.filter(o => EChartUtil.isInRange(new Date(o.dateTime), startDate, endDate));
 
         let total: number = 0;
         let average: number = 0;
@@ -16,7 +17,7 @@ export abstract class EChartUtil {
             average = Math.round(total / points.length);
         }
 
-        return new PointList(points, total, average);
+        return new TaskMetric(points, total, average);
     }
 
     private static isInRange(date: Date, startDate: Date, endDate: Date): boolean {
@@ -35,18 +36,71 @@ export abstract class EChartUtil {
     }
 
     //获取Daily, weekly, monthly, yearly
-    static getByInterval(pointList: PointList, interval: string): PointList {
-        let groups = _.groupBy(pointList.points, interval);
-        let keys = Object.keys(groups);
+    static getByInterval(metric: TaskMetric, interval: string): TaskMetric {
+        let groups = _.groupBy(metric.points, interval);
+        let points: TaskMetricPoint[] = [];
 
-        let points: MetricPoint[] = [];
+        for (let key in groups) {
+            let items = <TaskMetricPoint[]>groups[key];
+            points.push(new TaskMetricPoint(null, key, 
+                items.map(o => o.value).reduce((prev, current) => prev + current),
+                items.map(o => o.duration).reduce((prev, current) => prev + current),
+                null, null, null, null,
+                this.getPhases(items.map(o => o.phases))
+            ));
+        }
 
-        keys.forEach(key => {
-            let items = <MetricPoint[]>groups[key];
-            points.push(new MetricPoint(items[0].id, key, items.map(o => o.value).reduce((prev, current) => prev + current)));
-        })
-
-        return new PointList(points, pointList.total, pointList.average);
+        return new TaskMetric(points, metric.total, Math.round(metric.total / points.length), );
     }
 
+    private static getPhases(data: Array<Pair<string, number>[]>): Pair<string, number>[]{
+        let phases = data.reduce((prev, current) => prev.concat(current));
+        let groups = _.groupBy(phases, 'key');
+        let result = [];
+
+        for (let key in groups) {
+            let total = groups[key].map(o => o.value).reduce((prev, current) => prev + current);
+            result.push({
+                key: key,
+                value: Math.round(total / data.length)
+            })
+        }
+
+        return result;
+    }
+
+    static getPieData(metric: TaskMetric) {
+        let phases = metric.points.map(o => o.phases).reduce((prev, current) => prev.concat(current));
+
+        let groups = _.groupBy(phases, 'key');
+        let result = [];
+
+        for (let key in groups) {
+            result.push({
+                name: key,
+                value: groups[key].map(o => o.value).reduce((prev, current) => prev + current)
+            })
+        }
+
+        return result;
+    }
+
+    static getPhasesLineData(metric: TaskMetric) {
+        let phases = metric.points.map(o => o.phases).reduce((prev, current) => prev.concat(current));
+
+        let groups = _.groupBy(phases, 'key');
+        let result = [];
+
+        for(let key in groups){
+            result.push(groups[key]);
+        }
+
+        return result;
+    }
+
+    static getPhaseNames(metric: TaskMetric): string[] {
+        let phases = metric.points.map(o => o.phases).reduce((prev, current) => prev.concat(current));
+        let groups = _.groupBy(phases, 'key');
+        return Object.keys(groups);
+    }
 }

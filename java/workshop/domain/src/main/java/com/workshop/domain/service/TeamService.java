@@ -35,6 +35,8 @@ public class TeamService extends BaseService<Team, String> {
     //下属名单
     private Map<String, Set<String>> subordinates;
 
+    private List<Team> teams;
+
     @Autowired
     private UserService userService;
 
@@ -63,7 +65,7 @@ public class TeamService extends BaseService<Team, String> {
     public void buildTree() {
         clear();
 
-        List<Team> teams = get().datum;
+        this.teams = get().datum;
 
         for (Team team : teams) {
             getOrBuildParentNode(team, teams);
@@ -275,5 +277,17 @@ public class TeamService extends BaseService<Team, String> {
         return get().datum.stream()
                 .filter(o -> o.ownerIds.contains(userId) || o.userIds.contains(userId)).map(o -> o.getId())
                 .findFirst().orElse(null);
+    }
+
+    public List<String> getPhases(String userId) throws MyException{
+        if (StringUtils.isEmpty(userId)) {
+            throw CoreException.EXCEPTION_NULL_PARAMETERS;
+        }
+
+        String teamId = getTeamId(userId);
+
+        Team team = this.teams.stream().filter(o -> o.getId().equals(teamId)).findFirst().orElse(null);
+
+        return team.teamSetting.getPhases();
     }
 }

@@ -14,6 +14,8 @@ public class Team extends BaseData<String> {
 
     public String parentId;
 
+    public TeamSetting teamSetting;
+
     public Team(){
         this.ownerIds = new HashSet<>();
         this.userIds = new HashSet<>();

@@ -1,0 +1,57 @@
+<mat-toolbar>
+  <span>Performance-Team</span>
+</mat-toolbar>
+
+<div class="divider"></div>
+
+<mat-toolbar class="calculate">
+  <span class="spacer"></span>
+  <mat-form-field>
+    <mat-select [(ngModel)]="interval" placeholder="Interval">
+      <mat-option *ngFor="let pair of intervals" [value]="pair.value">
+        {{pair.key}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="ml-2">
+    <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="startDate" placeholder="Start date">
+    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #startDatePicker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field class="ml-2">
+    <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="endDate" placeholder="End date">
+    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #endDatePicker></mat-datepicker>
+  </mat-form-field>
+  <button type="button" class="ml-2" mat-raised-button (click)="calculate()">Calculate</button>
+</mat-toolbar>
+
+<div class="divider"></div>
+
+<!-- Value 线图 -->
+<div echarts [options]="option1"></div>
+<div class="divider"></div>
+
+<!-- 各阶段总的分布时间 饼图 -->
+<!-- 各阶段时间 线表 -->
+<mat-toolbar>
+  <span class="spacer"></span>
+  <mat-radio-group [(ngModel)]="user">
+    <mat-radio-button class="ml-2" [value]="item" (change)="changeUser($event)" *ngFor="let item of users">{{phase}}</mat-radio-button>
+  </mat-radio-group>
+</mat-toolbar>
+<div echarts [options]="option2"></div>
+<div class="divider"></div>
+
+<!-- 总时间 线表 -->
+<div echarts [options]="option3"></div>
+<div class="divider"></div>
+
+<!-- 各阶段时间 线表 -->
+<mat-toolbar>
+  <span class="spacer"></span>
+  <mat-radio-group [(ngModel)]="phase">
+    <mat-radio-button class="ml-2" [value]="i" (change)="changePhase($event)" *ngFor="let phase of phases; let i = index">{{phase}}</mat-radio-button>
+  </mat-radio-group>
+</mat-toolbar>
+<div echarts [options]="option4"></div>
