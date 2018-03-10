@@ -9,7 +9,7 @@ import { BaseService } from './base.service';
 
 @Injectable()
 export class TeamService extends BaseService<Team> {
-  constructor(api: Api, private authService: AuthService) {
+  constructor(api: Api) {
     super(api, "/api/team");
   }
 
@@ -17,7 +17,11 @@ export class TeamService extends BaseService<Team> {
     return this.api.get("/api/team/teamPairs");
   }
 
-  getPhases(): Observable<string[]> {
-    return this.api.get("/api/team/phases/" + this.authService.getUserId);
+  getPhases(teamId: string): Observable<string[]> {
+    return this.api.get("/api/team/phases/" + teamId);
+  }
+
+  getTeamByUserId(userId: string): Observable<Team> {
+    return this.api.get("/api/team/user/" + userId);
   }
 }

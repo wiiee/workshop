@@ -1,6 +1,5 @@
 package com.workshop.domain.service;
 
-import com.wiiee.core.domain.security.SecurityUtil;
 import com.wiiee.core.domain.service.BaseService;
 import com.wiiee.core.domain.service.ServiceResult;
 import com.wiiee.core.platform.exception.CoreException;
@@ -13,7 +12,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import sun.swing.StringUIClientPropertyKey;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -268,26 +266,31 @@ public class TeamService extends BaseService<Team, String> {
         return isBoss(authUserId, opUserId);
     }
 
-    public String getTeamId(String userId) throws MyException {
+    public Optional<Team> getTeamByUserId(String userId) {
         if (StringUtils.isEmpty(userId)) {
-            throw CoreException.EXCEPTION_NULL_PARAMETERS;
-            //return null;
+            return Optional.empty();
         }
 
-        return get().datum.stream()
-                .filter(o -> o.ownerIds.contains(userId) || o.userIds.contains(userId)).map(o -> o.getId())
-                .findFirst().orElse(null);
+        return teams.stream()
+                .filter(o -> o.getMemberIds().contains(userId))
+                .findFirst();
     }
 
-    public List<String> getPhases(String userId) throws MyException{
-        if (StringUtils.isEmpty(userId)) {
-            throw CoreException.EXCEPTION_NULL_PARAMETERS;
+    public List<String> getPhases(String teamId) {
+        if (StringUtils.isEmpty(teamId)) {
+            return Collections.emptyList();
         }
 
-        String teamId = getTeamId(userId);
+        Team team = getTeam(teamId).orElse(null);
 
-        Team team = this.teams.stream().filter(o -> o.getId().equals(teamId)).findFirst().orElse(null);
+        if (team == null) {
+            return Collections.emptyList();
+        } else {
+            return team.teamSetting.getPhases();
+        }
+    }
 
-        return team.teamSetting.getPhases();
+    public Optional<Team> getTeam(String teamId) {
+        return teams.stream().filter(o -> o.getId().equals(teamId)).findFirst();
     }
 }

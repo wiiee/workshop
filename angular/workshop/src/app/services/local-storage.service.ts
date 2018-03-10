@@ -1,3 +1,4 @@
+import { Team } from './../entity/team';
 import { User } from './../entity/user';
 import { Injectable } from '@angular/core';
 import { Constant } from '../entity/constant';
@@ -26,8 +27,9 @@ export class LocalStorageService {
         this.localStorage.removeItem(key);
     }
 
-    storeAuthorization(user: User, authorizationToken: string){
+    storeAuthorization(user: User, team: Team, authorizationToken: string){
         this.setItem(Constant.USER, JSON.stringify(user));
+        this.setItem(Constant.TEAM, JSON.stringify(team));
         this.setItem(Constant.AUTHORIZATION_TOKEN, authorizationToken);
     }
 }

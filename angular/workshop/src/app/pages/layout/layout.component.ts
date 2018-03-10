@@ -24,6 +24,7 @@ export class LayoutComponent implements OnInit {
       && this.localStorageService.getItem(Constant.AUTHORIZATION_TOKEN)) {
       this.authService.isLoggedIn = true;
       this.authService.user = <User>JSON.parse(this.localStorageService.getItem(Constant.USER));
+      this.authService.reloadTeam();
     }
   }
 

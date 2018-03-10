@@ -1,7 +1,6 @@
 package com.workshop.app.api;
 
 import com.wiiee.core.domain.security.SecurityUtil;
-import com.wiiee.core.platform.exception.MyException;
 import com.workshop.domain.entity.user.Team;
 import com.workshop.domain.service.TeamService;
 import javafx.util.Pair;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,27 +27,17 @@ public class TeamController extends BaseController<String, Team, TeamService> {
                 .map(o -> new Pair<>(o.getId(), o.name)).collect(Collectors.toList());
     }
 
-    @GetMapping("/teamId/{userId}")
-    public String getTeamId(@PathVariable String userId) {
-        try {
-            if(StringUtils.isEmpty(userId)){
-                userId = SecurityUtil.getUserId();
-            }
-
-            return getService().getTeamId(userId);
-        } catch (MyException e) {
-            System.out.println(e.getMessage());
-            return null;
+    @GetMapping("/user/{userId}")
+    public Optional<Team> getTeamByUserId(@PathVariable String userId) {
+        if (StringUtils.isEmpty(userId)) {
+            userId = SecurityUtil.getUserId();
         }
+
+        return getService().getTeamByUserId(userId);
     }
 
-    @GetMapping("/phases/{userId}")
-    public List<String> getPhases(@PathVariable String userId){
-        try {
-            return getService().getPhases(userId);
-        } catch (MyException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+    @GetMapping("/phases/{teamId}")
+    public List<String> getPhases(@PathVariable String teamId) {
+        return getService().getPhases(teamId);
     }
 }

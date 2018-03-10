@@ -1,5 +1,6 @@
 package com.workshop.domain.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wiiee.core.platform.data.BaseData;
 
 import java.util.HashSet;
@@ -16,9 +17,17 @@ public class Team extends BaseData<String> {
 
     public TeamSetting teamSetting;
 
-    public Team(){
+    public Team() {
         this.ownerIds = new HashSet<>();
         this.userIds = new HashSet<>();
+        this.teamSetting = new TeamSetting();
+    }
+
+    @JsonIgnore
+    public Set<String> getMemberIds() {
+        Set<String> result = new HashSet<>(ownerIds);
+        result.addAll(userIds);
+        return result;
     }
 
 //    public Team(String id, String name, Set<String> ownerIds, Set<String> userIds, String parentId) {

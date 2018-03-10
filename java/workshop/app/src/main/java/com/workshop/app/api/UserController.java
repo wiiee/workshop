@@ -6,6 +6,7 @@ import com.wiiee.core.web.security.WebSecurityUtil;
 import com.workshop.domain.constant.Role;
 import com.workshop.domain.entity.user.User;
 import com.workshop.domain.helper.AuthHelper;
+import com.workshop.domain.service.TeamService;
 import com.workshop.domain.service.UserService;
 import javafx.util.Pair;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,6 +27,9 @@ public class UserController extends BaseController<String, User, UserService> {
 
     @Autowired
     private AuthHelper authHelper;
+
+    @Autowired
+    private TeamService teamService;
 
     public UserController(UserService service) {
         super(service);
@@ -47,14 +52,23 @@ public class UserController extends BaseController<String, User, UserService> {
     public List<Pair<String, String>> getOwners() {
         return getService().get().datum.stream()
                 .filter(o -> o.role.value() > 0)
-                .map(o -> new Pair<>(o.getId(), o.name)).collect(Collectors.toList());
+                .map(o -> new Pair<>(o.getId(), o.getDisplayName())).collect(Collectors.toList());
     }
 
     @GetMapping("/userPairs")
     public List<Pair<String, String>> getUsers() {
         return getService().get().datum.stream()
                 .filter(o -> !o.isOff && o.role != Role.Admin)
-                .map(o -> new Pair<>(o.getId(), o.name))
+                .map(o -> new Pair<>(o.getId(), o.getDisplayName()))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/teamPairs/{teamId}")
+    public List<Pair<String, String>> getTeamUsers(@PathVariable String teamId) {
+        Set<String> memberIds = teamService.get(teamId).data.getMemberIds();
+        return getService().getByIds(memberIds).datum.stream()
+                .filter(o -> !o.isOff && o.role != Role.Admin)
+                .map(o -> new Pair<>(o.getId(), o.getDisplayName()))
                 .collect(Collectors.toList());
     }
 

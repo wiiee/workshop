@@ -1,5 +1,6 @@
 package com.workshop.domain.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wiiee.core.platform.data.BaseData;
 import com.workshop.domain.constant.Gender;
 import com.workshop.domain.constant.Level;
@@ -39,5 +40,10 @@ public class User extends BaseData<String> {
         this.level = level;
         this.role = role;
         this.isOff = isOff;
+    }
+
+    @JsonIgnore
+    public String getDisplayName(){
+        return String.format("%s(%s)", nickName, name);
     }
 }
