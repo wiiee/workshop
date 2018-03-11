@@ -44,8 +44,8 @@ export class SprintDetailComponent extends BaseForm<Sprint, SprintService> imple
 
   ngOnInit() {
     this.taskService.getTaskPairs(null).subscribe(res => this.taskPairs = res);
-    this.teamService.getPhases().subscribe(res => this.phases = res);
-
+    this.teamService.getPhases(this.authService.team.id).subscribe(res => this.phases = res);
+    
     this.tasksGroup = [];
 
     this.seq.subscribe(res => {
@@ -61,7 +61,7 @@ export class SprintDetailComponent extends BaseForm<Sprint, SprintService> imple
 
   drop($event: any, group: Task[], phase: string) {
     let task: Task = $event.dragData;
-    task.phaseItems.push(new PhaseItem(phase, this.authService.getUserId()));
+    task.phaseItems.push(new PhaseItem(phase, this.authService.getUserId(), null));
     this.taskService.updatePhase(task).subscribe(res => {
       task = res.data;
       group.push($event.dragData);

@@ -266,14 +266,14 @@ public class TeamService extends BaseService<Team, String> {
         return isBoss(authUserId, opUserId);
     }
 
-    public Optional<Team> getTeamByUserId(String userId) {
+    public Team getTeamByUserId(String userId) {
         if (StringUtils.isEmpty(userId)) {
-            return Optional.empty();
+            return null;
         }
 
         return teams.stream()
                 .filter(o -> o.getMemberIds().contains(userId))
-                .findFirst();
+                .findFirst().orElse(null);
     }
 
     public List<String> getPhases(String teamId) {
@@ -281,7 +281,7 @@ public class TeamService extends BaseService<Team, String> {
             return Collections.emptyList();
         }
 
-        Team team = getTeam(teamId).orElse(null);
+        Team team = getTeam(teamId);
 
         if (team == null) {
             return Collections.emptyList();
@@ -290,7 +290,7 @@ public class TeamService extends BaseService<Team, String> {
         }
     }
 
-    public Optional<Team> getTeam(String teamId) {
-        return teams.stream().filter(o -> o.getId().equals(teamId)).findFirst();
+    public Team getTeam(String teamId) {
+        return teams.stream().filter(o -> o.getId().equals(teamId)).findFirst().orElse(null);
     }
 }

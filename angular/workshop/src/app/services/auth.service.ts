@@ -18,8 +18,6 @@ import { Role } from '../entity/role';
 export class AuthService {
     isLoggedIn: boolean = false;
     user: User;
-
-    //启动的时候要更新一下
     team: Team;
 
     // store the URL so we can redirect after logging in
@@ -43,9 +41,8 @@ export class AuthService {
             if (res.status === 200) {
                 this.userService.getOne(user.id).subscribe(result => {
                     this.user = result.data;
-                    this.teamService.getTeamByUserId(this.user.id).subscribe(team => {
-                        this.successAuthorization(this.user, team, res.headers.get(Constant.AUTHORIZATION_HEADER));
-                    });
+                    this.successAuthorization(this.user, res.headers.get(Constant.AUTHORIZATION_HEADER));
+                    this.reloadTeam();
                 });
             }
         }, err => {
@@ -65,9 +62,8 @@ export class AuthService {
 
         seq.subscribe(res => {
             if (res.body.isSuccessful) {
-                this.teamService.getTeamByUserId(this.user.id).subscribe(team => {
-                    this.successAuthorization(this.user, team, res.headers.get(Constant.AUTHORIZATION_HEADER));
-                });
+                this.successAuthorization(this.user, res.headers.get(Constant.AUTHORIZATION_HEADER));
+                this.reloadTeam();
             }
         }, err => {
             console.error("error: " + JSON.stringify(err.error));
@@ -76,11 +72,10 @@ export class AuthService {
         return seq;
     }
 
-    private successAuthorization(user: User, team: Team, authorizationToken: string): void {
-        this.localStorageService.storeAuthorization(user, team, authorizationToken);
+    private successAuthorization(user: User, authorizationToken: string): void {
+        this.localStorageService.storeAuthorization(user, authorizationToken);
         this.isLoggedIn = true;
         this.user = user;
-        this.team = team;
         this.redirect();
     }
 
@@ -88,7 +83,6 @@ export class AuthService {
         this.localStorageService.clear();
         this.isLoggedIn = false;
         this.user = null;
-        this.team = null;
     }
 
     private redirect(): void {
@@ -129,10 +123,9 @@ export class AuthService {
         return this.getRole() === Role.Admin;
     }
 
-    reloadTeam(): void {
-        this.teamService.getTeamByUserId(this.getUserId()).subscribe(res => {
-            this.team = res;
-            this.localStorageService.setItem(Constant.TEAM, JSON.stringify(this.team));
-        })
+    reloadTeam(): Observable<Team> {
+        let seq = this.teamService.getTeamByUserId(this.getUserId()).share();
+        seq.subscribe(res => this.team = res);
+        return seq;
     }
 }

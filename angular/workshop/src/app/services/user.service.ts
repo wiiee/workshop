@@ -20,4 +20,8 @@ export class UserService extends BaseService<User> {
     getUserPairs(): Observable<Pair<string, string>[]> {
         return this.api.get("/api/user/userPairs");
     }
+
+    getUserPairsByTeamId(teamId: string): Observable<Pair<string, string>[]> {
+        return this.api.get("/api/user/userPairs/" + teamId);
+    }
 }

@@ -1,7 +1,9 @@
 package com.workshop.app.api;
 
 import com.workshop.domain.constant.Phase;
-import com.workshop.domain.entity.performance.*;
+import com.workshop.domain.entity.performance.Metric;
+import com.workshop.domain.entity.performance.Point;
+import com.workshop.domain.entity.performance.TaskPoint;
 import com.workshop.domain.service.MetricService;
 import javafx.util.Pair;
 import org.apache.commons.lang3.EnumUtils;
@@ -29,7 +31,7 @@ public class MetricController extends BaseController<String, Metric, MetricServi
 
     //单个成员
     @GetMapping("/user/{userId}")
-    public PointList getByUserId(@PathVariable String userId) {
+    public List<Point> getByUserId(@PathVariable String userId) {
 //        Metric metric = getService().get(MetricName.Value.value()).data;
 //        List<Point> result = new ArrayList<>();
 //
@@ -47,40 +49,40 @@ public class MetricController extends BaseController<String, Metric, MetricServi
 
         List<Point> result = new ArrayList<>();
 
-        for(int i = 0; i < 100; i++){
+        for (int i = 0; i < 100; i++) {
             result.add(generateTaskPoint(i, "G1"));
         }
 
-        return new PointList(result);
+        return result;
     }
 
     //Team下的所有成员
     @GetMapping("/team/{teamId}")
-    public PointList getByTeamId(@PathVariable String teamId) {
+    public List<Point> getByTeamId(@PathVariable String teamId) {
 
         List<Point> result = new ArrayList<>();
 
-        for(int i = 0; i < 1000; i++){
+        for (int i = 0; i < 1000; i++) {
             String[] users = {"G1", "G2", "G3", "G4"};
             result.add(generateTaskPoint(i, users[i % 4]));
         }
 
-        return new PointList(result);
+        return result;
     }
 
     //Manager下的所有成员
     @GetMapping("/manager/user/{managerId}")
-    public Map<String, PointList> getUsersByManagerId(@PathVariable String managerId) {
-        Map<String, PointList> result = new HashMap<>();
+    public Map<String, List<Point>> getUsersByManagerId(@PathVariable String managerId) {
+        Map<String, List<Point>> result = new HashMap<>();
 
-        for(int i = 0; i < 50; i++){
+        for (int i = 0; i < 50; i++) {
             List<Point> points = new ArrayList<>();
 
-            for(int j = 0; j < 100; j++){
+            for (int j = 0; j < 100; j++) {
                 points.add(generateTaskPoint(j, ""));
             }
 
-            result.put(String.valueOf(i), new PointList(points));
+            result.put(String.valueOf(i), points);
         }
 
         return result;
@@ -88,23 +90,23 @@ public class MetricController extends BaseController<String, Metric, MetricServi
 
     //Manager下的所有团队
     @GetMapping("/manager/team/{managerId}")
-    public Map<String, PointList> getTeamsByManagerId(@PathVariable String managerId) {
-        Map<String, PointList> result = new HashMap<>();
+    public Map<String, List<Point>> getTeamsByManagerId(@PathVariable String managerId) {
+        Map<String, List<Point>> result = new HashMap<>();
 
-        for(int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             List<Point> points = new ArrayList<>();
 
-            for(int j = 0; j < 100; j++){
+            for (int j = 0; j < 100; j++) {
                 points.add(generateTaskPoint(j, ""));
             }
 
-            result.put(String.valueOf(i), new PointList(points));
+            result.put(String.valueOf(i), points);
         }
 
         return result;
     }
 
-    private TaskPoint generateTaskPoint(int j, String userId){
+    private TaskPoint generateTaskPoint(int j, String userId) {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         LocalDateTime now = LocalDateTime.now();
 

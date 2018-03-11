@@ -39,10 +39,10 @@
     </mat-menu>
 
     <mat-menu [overlapTrigger]="false" #performanceMenu="matMenu">
-      <a routerLink="/performance/user/G1" routerLinkActive="active">
+      <a [routerLink]="['/performance/user', authService.getUserId()]" routerLinkActive="active">
         <button mat-menu-item>User</button>
       </a>
-      <a routerLink="/performance/team/G1" routerLinkActive="active">
+      <a [routerLink]="['/performance/team', authService.team.id]" routerLinkActive="active" *ngIf="authService.team">
         <button mat-menu-item>Team</button>
       </a>
     </mat-menu>

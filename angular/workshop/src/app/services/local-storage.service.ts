@@ -27,9 +27,8 @@ export class LocalStorageService {
         this.localStorage.removeItem(key);
     }
 
-    storeAuthorization(user: User, team: Team, authorizationToken: string){
+    storeAuthorization(user: User, authorizationToken: string){
         this.setItem(Constant.USER, JSON.stringify(user));
-        this.setItem(Constant.TEAM, JSON.stringify(team));
         this.setItem(Constant.AUTHORIZATION_TOKEN, authorizationToken);
     }
 }

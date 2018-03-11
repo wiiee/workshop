@@ -28,7 +28,7 @@ public class TeamController extends BaseController<String, Team, TeamService> {
     }
 
     @GetMapping("/user/{userId}")
-    public Optional<Team> getTeamByUserId(@PathVariable String userId) {
+    public Team getTeamByUserId(@PathVariable String userId) {
         if (StringUtils.isEmpty(userId)) {
             userId = SecurityUtil.getUserId();
         }

@@ -63,10 +63,10 @@ public class UserController extends BaseController<String, User, UserService> {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/teamPairs/{teamId}")
+    @GetMapping("/userPairs/{teamId}")
     public List<Pair<String, String>> getTeamUsers(@PathVariable String teamId) {
-        Set<String> memberIds = teamService.get(teamId).data.getMemberIds();
-        return getService().getByIds(memberIds).datum.stream()
+        Set<String> userIds = teamService.get(teamId).data.userIds;
+        return getService().getByIds(userIds).datum.stream()
                 .filter(o -> !o.isOff && o.role != Role.Admin)
                 .map(o -> new Pair<>(o.getId(), o.getDisplayName()))
                 .collect(Collectors.toList());
