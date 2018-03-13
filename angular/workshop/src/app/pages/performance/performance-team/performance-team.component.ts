@@ -60,18 +60,18 @@ export class PerformanceTeamComponent implements OnInit {
       });
 
       this.isPhaseAll = this.phasePairs.map(o => o.value).reduce((p, c) => p && c);
-    });
 
-    this.route.queryParamMap.subscribe(params => {
-      console.log("params: " + params);
-      let teamId = this.route.snapshot.paramMap.get('id');
-      this.metricService.getByTeamId(teamId).subscribe(res => {
-        this.source = res;
-        this.rebuildData();
-        console.log(res);
+      this.route.queryParamMap.subscribe(params => {
+        console.log("params: " + params);
+        let teamId = this.route.snapshot.paramMap.get('id');
+        this.metricService.getByTeamId(teamId).subscribe(res => {
+          this.source = res;
+          this.rebuildData();
+          console.log(res);
+        });
+
+        this.userService.getUserPairsByTeamId(teamId).subscribe(res => this.userPairs = res);
       });
-
-      this.userService.getUserPairsByTeamId(teamId).subscribe(res => this.userPairs = res);
     });
   }
 

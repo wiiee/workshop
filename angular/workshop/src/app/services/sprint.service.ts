@@ -14,7 +14,6 @@ export class SprintService extends BaseService<Sprint> {
   }
 
   getContainerId(): Observable<string> {
-    // return this.api.httpClient.get(Api.SERVER_URL + "/api/team/teamId/", { responseType: 'text' });
-    return this.api.httpClient.get(Api.SERVER_URL + "/api/team/teamId/" + this.authService.getUserId(), { responseType: 'text' });
+    return of(this.authService.team.id);
   }
 }

@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs/Observable';
+import { Phase } from './../../entity/phase';
 import { AuthService } from './../../services/auth.service';
 import { TeamService } from './../../services/team.service';
 import { TaskService } from './../../services/task.service';
@@ -40,14 +42,17 @@ export class SprintDetailComponent extends BaseForm<Sprint, SprintService> imple
     private teamService: TeamService,
     private authService: AuthService) {
     super(route, router, location, matDialog, sprintService, "/sprint", new Sprint());
+    this.taskService.getTaskPairs(null).subscribe(res => this.taskPairs = res);
+
+    this.authService.reloadTeam().subscribe(team => {
+      this.phases = team.teamSetting.phases;
+      console.log("length: " + this.phases.length);
+    });
+
+    this.tasksGroup = [];
   }
 
   ngOnInit() {
-    this.taskService.getTaskPairs(null).subscribe(res => this.taskPairs = res);
-    this.teamService.getPhases(this.authService.team.id).subscribe(res => this.phases = res);
-    
-    this.tasksGroup = [];
-
     this.seq.subscribe(res => {
       this.taskService.getByIds(res.data.taskIds).subscribe(result => {
         this.tasks = result.datum;

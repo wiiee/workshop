@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -65,7 +66,7 @@ public class UserController extends BaseController<String, User, UserService> {
 
     @GetMapping("/userPairs/{teamId}")
     public List<Pair<String, String>> getTeamUsers(@PathVariable String teamId) {
-        Set<String> userIds = teamService.get(teamId).data.userIds;
+        Collection<String> userIds = teamService.get(teamId).data.userIds;
         return getService().getByIds(userIds).datum.stream()
                 .filter(o -> !o.isOff && o.role != Role.Admin)
                 .map(o -> new Pair<>(o.getId(), o.getDisplayName()))

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 public abstract class BaseController<Id extends Serializable, T extends BaseData<Id>, S extends BaseService<T, Id>> {
@@ -34,7 +35,7 @@ public abstract class BaseController<Id extends Serializable, T extends BaseData
     }
 
     @PostMapping("/items")
-    public ServiceResult<T> getByIds(@RequestBody List<Id> ids){
+    public ServiceResult<T> getByIds(@RequestBody Collection<Id> ids){
         return service.getByIds(ids);
     }
 

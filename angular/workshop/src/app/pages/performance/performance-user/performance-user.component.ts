@@ -49,15 +49,13 @@ export class PerformanceUserComponent implements OnInit {
       });
 
       this.isPhaseAll = this.phasePairs.map(o => o.value).reduce((p, c) => p && c);
-    });
 
-    this.route.queryParamMap.subscribe(params => {
-      console.log("params: " + params);
-      let userId = this.route.snapshot.paramMap.get('id');
-      this.metricService.getByUserId(userId).subscribe(res => {
-        this.source = res;
-        this.rebuildData();
-        console.log(res);
+      this.route.queryParamMap.subscribe(params => {
+        let userId = this.route.snapshot.paramMap.get('id');
+        this.metricService.getByUserId(userId).subscribe(res => {
+          this.source = res;
+          this.rebuildData();
+        });
       });
     });
   }
@@ -97,16 +95,17 @@ export class PerformanceUserComponent implements OnInit {
   }
 
   private setOption3(): void {
-    console.log(this.phasePairs.map(o => o.key + "/" + o.value).join(","));
+    console.log('Phases: ' + this.phasePairs.map(o => o.key + '/' + o.value).join(','));
 
     let title = 'Phases';
+    let data = TaskMetricUtil.getPhasesLine(this.data, this.phasePairs, title);
     this.option3 = EChartsUtil.buildLine(TaskMetricUtil.getPhasesLine(this.data, this.phasePairs, title));
   }
 
   reloadPhases(): void {
     //this.phase = event.value;
     this.isPhaseAll = this.phasePairs.map(o => o.value).reduce((p, c) => p && c);
-    console.log("all: " + this.isPhaseAll);
+    console.log('all: ' + this.isPhaseAll);
     this.setOption3();
   }
 
