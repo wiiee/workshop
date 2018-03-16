@@ -31,7 +31,8 @@ export class PerformanceTeamComponent implements OnInit {
   endDate: Date;
 
   source: TaskMetricPoint[];
-  data: TaskMetricPoint[];
+  range: TaskMetricPoint[];
+  data: Map<string, TaskMetricPoint[]>;
 
   phasePairs: Pair<string, boolean>[];
   isPhaseAll: boolean;
@@ -47,8 +48,9 @@ export class PerformanceTeamComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.interval = "all";
-    this.intervals = TaskMetricUtil.INTERVALS;
+    this.interval = "week";
+    this.intervals = TaskMetricUtil.INTERVALS.filter(
+      o => o.key === "Weekly" || o.key === "Monthly" || o.key === "Yearly");
 
     this.phasePairs = [];
     this.authService.reloadTeam().subscribe(res => {
@@ -56,7 +58,7 @@ export class PerformanceTeamComponent implements OnInit {
         this.phasePairs.push({
           key: o,
           value: true
-        })
+        });
       });
 
       this.isPhaseAll = this.phasePairs.map(o => o.value).reduce((p, c) => p && c);
@@ -80,8 +82,8 @@ export class PerformanceTeamComponent implements OnInit {
   }
 
   private rebuildData(): void {
-    this.data = TaskMetricUtil.getRange(this.source, this.startDate, this.endDate);
-    this.data = TaskMetricUtil.getPointsByInterval(this.data, this.interval);
+    this.range = TaskMetricUtil.getRange(this.source, this.startDate, this.endDate);
+    this.data = TaskMetricUtil.getUserPointsByInterval(this.range, this.interval);
     this.setOptions();
   }
 
@@ -92,39 +94,47 @@ export class PerformanceTeamComponent implements OnInit {
   }
 
   private setOption1(): void {
-    let total = this.data.map(o => o.value).reduce((p, v) => p + v);
-    let length = this.data.length;
-    let average = length === 0 ? 0 : Math.round(total / length);
+    let total:number = 0;
+    let length:number = 0;
+    let average: number = 0;
+
+    this.data.forEach((value, key) => {
+      total += value.map(o => o.value).reduce((p, v) => p + v);
+      length = value.length;
+    });
+
+    average = length === 0 ? 0 : Math.round(total / length);
 
     let title = 'Workload -> Length: ' + length
       + ' | Total: ' + total
       + ' | Average: ' + average;
-    this.option1 = EChartsUtil.buildLine(TaskMetricUtil.getValueLine(this.data, title));
+
+    let bar = TaskMetricUtil.getValueBar(this.data, title);
+
+    this.option1 = EChartsUtil.buildBarWithLine(bar);
   }
 
   private setOption2(): void {
     let title = 'Phase';
     let name = 'Phase';
 
-    this.option2 = EChartsUtil.buildPie(TaskMetricUtil.getPhasesPie(this.data, title, name));
+    this.option2 = EChartsUtil.buildPie(TaskMetricUtil.getPhasesPie(this.range, title, name));
   }
 
   private setOption3(): void {
     console.log(this.phasePairs.map(o => o.key + "/" + o.value).join(","));
 
     let title = 'Phases';
-    this.option3 = EChartsUtil.buildLine(TaskMetricUtil.getPhasesLine(this.data, this.phasePairs, title));
+    this.option3 = EChartsUtil.buildBarWithLine(TaskMetricUtil.getPhasesBar(this.data, this.phasePairs, title));
   }
 
   reloadPhases(): void {
-    //this.phase = event.value;
     this.isPhaseAll = this.phasePairs.map(o => o.value).reduce((p, c) => p && c);
     console.log("all: " + this.isPhaseAll);
     this.setOption3();
   }
 
   switchAll(): void {
-    //this.isPhaseAll = !this.isPhaseAll;
     this.phasePairs.forEach(o => o.value = this.isPhaseAll);
     this.setOption3();
   }

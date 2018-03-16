@@ -4,19 +4,20 @@ import com.workshop.domain.constant.Phase;
 import com.workshop.domain.entity.performance.Metric;
 import com.workshop.domain.entity.performance.Point;
 import com.workshop.domain.entity.performance.TaskPoint;
+import com.workshop.domain.entity.user.Team;
 import com.workshop.domain.service.MetricService;
+import com.workshop.domain.service.TeamService;
 import javafx.util.Pair;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.EnumUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -25,6 +26,9 @@ import java.util.concurrent.ThreadLocalRandom;
 @RestController
 @RequestMapping("/api/metric")
 public class MetricController extends BaseController<String, Metric, MetricService> {
+    @Autowired
+    private TeamService teamService;
+
     public MetricController(MetricService service) {
         super(service);
     }
@@ -59,13 +63,17 @@ public class MetricController extends BaseController<String, Metric, MetricServi
     //Team下的所有成员
     @GetMapping("/team/{teamId}")
     public List<Point> getByTeamId(@PathVariable String teamId) {
-
         List<Point> result = new ArrayList<>();
 
-        for (int i = 0; i < 1000; i++) {
-            String[] users = {"G1", "G2", "G3", "G4"};
-            result.add(generateTaskPoint(i, users[i % 4]));
+        Team team = teamService.getTeam(teamId);
+
+        String[] users = team.userIds.toArray(new String[team.userIds.size()]);
+
+        for (int i = 0; i < 100; i++) {
+            result.add(generateTaskPoint(i, users[i % team.userIds.size()]));
         }
+
+        result.sort(Comparator.comparing(p -> p.dateTime));
 
         return result;
     }

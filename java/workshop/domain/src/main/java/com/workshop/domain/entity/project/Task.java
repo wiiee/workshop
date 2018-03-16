@@ -2,15 +2,14 @@ package com.workshop.domain.entity.project;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wiiee.core.platform.data.BaseData;
-import com.workshop.domain.constant.Phase;
 import javafx.util.Pair;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class Task extends BaseData<String> {
     //开始结束时间
@@ -37,6 +36,9 @@ public class Task extends BaseData<String> {
     //代码提交信息
     public List<Code> codes;
 
+    //Tags
+    public Set<String> tags;
+
     //是否被Review过
     public boolean isReviewed;
 
@@ -46,6 +48,7 @@ public class Task extends BaseData<String> {
         this.phaseItems = new ArrayList<>();
         this.comments = new ArrayList<>();
         this.codes = new ArrayList<>();
+        this.tags = new HashSet<>();
         this.startDate = LocalDateTime.now();
     }
 

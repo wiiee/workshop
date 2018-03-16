@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 
 public abstract class BaseController<Id extends Serializable, T extends BaseData<Id>, S extends BaseService<T, Id>> {
     private static final Logger _logger = LoggerFactory.getLogger(BaseController.class);

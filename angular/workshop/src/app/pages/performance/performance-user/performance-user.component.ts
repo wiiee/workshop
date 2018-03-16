@@ -45,7 +45,7 @@ export class PerformanceUserComponent implements OnInit {
         this.phasePairs.push({
           key: o,
           value: true
-        })
+        });
       });
 
       this.isPhaseAll = this.phasePairs.map(o => o.value).reduce((p, c) => p && c);

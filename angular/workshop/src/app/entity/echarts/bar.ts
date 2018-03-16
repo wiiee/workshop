@@ -1,4 +1,4 @@
-export class Line {
+export class Bar {
     constructor(
         public title: string,
         //x坐标

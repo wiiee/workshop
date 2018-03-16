@@ -12,8 +12,4 @@ export class SprintService extends BaseService<Sprint> {
   constructor(api: Api, private authService: AuthService) { 
     super(api, "/api/sprint");
   }
-
-  getContainerId(): Observable<string> {
-    return of(this.authService.team.id);
-  }
 }

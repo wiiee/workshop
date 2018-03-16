@@ -32,7 +32,7 @@ export class AuthService {
     logIn(user: User): Observable<HttpResponse<Object>> {
         this.clearAuthorization();
 
-        let seq = this.api.httpClient.post(Api.SERVER_URL + "/api/user/logIn", {
+        let seq = this.api.httpClient.post(Api.SERVER_URL + '/api/user/logIn', {
             username: user.id,
             password: user.password
         }, { observe: "response" }).share();
@@ -56,7 +56,7 @@ export class AuthService {
         this.clearAuthorization();
 
         let seq = this.api.httpClient.post<ServiceResult<User>>(
-            Api.SERVER_URL + "/api/user/signUp",
+            Api.SERVER_URL + '/api/user/signUp',
             user,
             { observe: "response" }).share();
 
@@ -89,7 +89,7 @@ export class AuthService {
         // Get the redirect URL from our auth service
         // If no redirect has been set, use the default
         // let redirect = this.redirectUrl ? this.redirectUrl : '/home';
-        let redirect = this.redirectUrl || "/home";
+        let redirect = this.redirectUrl || '/home';
 
         // Set our navigation extras object
         // that passes on our global query params and fragment

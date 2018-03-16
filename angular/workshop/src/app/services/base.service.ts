@@ -11,11 +11,7 @@ export abstract class BaseService<T extends Entity>{
     constructor(public api: Api, public endpoint: string) {
     }
 
-    getAll(containerId: string = null): Observable<ServiceResult<T>> {
-        if (containerId) {
-            return this.api.get(this.endpoint + "/" + containerId);
-        }
-
+    getAll(): Observable<ServiceResult<T>> {
         return this.api.get(this.endpoint);
     }
 
@@ -53,9 +49,5 @@ export abstract class BaseService<T extends Entity>{
         }
 
         return this.api.delete(this.endpoint + "/" + id);
-    }
-
-    getContainerId(): Observable<string> {
-        return of(null);
     }
 }

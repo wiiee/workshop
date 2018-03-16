@@ -10,7 +10,7 @@
 
 <app-header-message></app-header-message>
 
-<mat-card *ngIf="entities">
+<mat-card>
   <mat-form-field>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
@@ -18,7 +18,7 @@
   <mat-table [dataSource]="dataSource" matSort>
     <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; let i = index">
       <mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</mat-header-cell>
-      <mat-cell *matCellDef="let row" class="text-truncate" [matTooltip]="row[column]">
+      <mat-cell *matCellDef="let row" class="text-truncate">
         <ng-container *ngIf="i === 0 else text">
           <a [routerLink]="['/task', row.id]">{{row[column]}}</a>
         </ng-container>
@@ -29,5 +29,6 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
-  <mat-paginator [pageSizeOptions]="[25, 50, 100]"></mat-paginator>
+
+  <mat-paginator #paginator [pageSizeOptions]="[25, 50, 100]" [showFirstLastButtons]="true"></mat-paginator>
 </mat-card>

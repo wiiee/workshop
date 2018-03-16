@@ -39,7 +39,7 @@
     </mat-menu>
 
     <mat-menu [overlapTrigger]="false" #performanceMenu="matMenu">
-      <a [routerLink]="['/performance/user', authService.getUserId()]" routerLinkActive="active">
+      <a [routerLink]="['/performance/user', authService.getUserId()]" routerLinkActive="active" *ngIf="authService.getUserId()">
         <button mat-menu-item>User</button>
       </a>
       <a [routerLink]="['/performance/team', authService.team.id]" routerLinkActive="active" *ngIf="authService.team">
@@ -48,7 +48,7 @@
     </mat-menu>
 
     <mat-menu [overlapTrigger]="false" #reportMenu="matMenu">
-      <a routerLink="/report//weekly" routerLinkActive="active">
+      <a routerLink="/report/weekly" routerLinkActive="active">
         <button mat-menu-item>Weekly</button>
       </a>
     </mat-menu>

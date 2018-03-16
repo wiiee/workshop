@@ -3,6 +3,7 @@ import { Pair } from './pair';
 export class TaskMetricPoint {
     constructor(
         public id: string,
+        public userId: string,
         public dateTime: string,
         public value: number,
         public duration: number,
