@@ -2,14 +2,11 @@ package com.workshop.domain.entity.project;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wiiee.core.platform.data.BaseData;
-import javafx.util.Pair;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 public class Task extends BaseData<String> {
     //开始结束时间
@@ -70,9 +67,18 @@ public class Task extends BaseData<String> {
     }
 
     //获取各个阶段耗费的时间
-    //ToDo:
     @JsonIgnore
-    public List<Pair<String, Integer>> getDurations() {
-        return new ArrayList<>();
+    public Map<String, Integer> getDurations() {
+        Map<String, Integer> result = new HashMap<>();
+
+        for (int i = 0; i < phaseItems.size() - 1; i++) {
+            result.put(phaseItems.get(i).phase, getDuration(i));
+        }
+
+        return result;
+    }
+
+    private int getDuration(int i) {
+        return (int) phaseItems.get(i).dateTime.until(phaseItems.get(i + 1).dateTime, ChronoUnit.MINUTES);
     }
 }

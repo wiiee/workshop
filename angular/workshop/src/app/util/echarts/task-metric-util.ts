@@ -40,6 +40,7 @@ export abstract class TaskMetricUtil {
     static getValueLine(points: TaskMetricPoint[], title: string): Line {
         let y: Map<string, number[]> = new Map();
         y.set("", points.map(o => o.value));
+
         return new Line(title, points.map(o => o.dateTime), y);
     }
 
@@ -57,14 +58,10 @@ export abstract class TaskMetricUtil {
     }
 
     static getPhasesPie(points: TaskMetricPoint[], title: string, name: string): Pie {
-        let phases = points.map(o => o.phases).reduce((prev, current) => prev.concat(current));
-        let groups = _.groupBy(phases, "key");
-
         let sections: Section[] = [];
 
-        for (let key in groups) {
-            sections.push(new Section(key, groups[key].map(o => o.value).reduce((p, c) => p + c)));
-        }
+        let phases = points.map(o => o.phases).reduce((p, v) => this.mergePhases(p, v));
+        Object.keys(phases).forEach(k => sections.push(new Section(k, phases[k])));
 
         return new Pie(title, name, sections);
     }
@@ -100,12 +97,12 @@ export abstract class TaskMetricUtil {
 
         for (let key in groups) {
             let items = <TaskMetricPoint[]>groups[key];
-            result.push(new TaskMetricPoint(null, null,
+            result.push(new TaskMetricPoint(items.map(o => o.id).join(','), items.map(o => o.userId).join(','),
                 key,
                 items.map(o => o.value).reduce((prev, current) => prev + current),
                 items.map(o => o.duration).reduce((prev, current) => prev + current),
                 null, null, null, null,
-                this.combinePhases(items.map(o => o.phases))
+                this.combinePhases(items.map(o => o.phases)), items.length
             ));
         }
 
@@ -127,12 +124,12 @@ export abstract class TaskMetricUtil {
             result.forEach((value, userId) => {
                 let item = userGroup[userId];
                 if (item) {
-                    value.push(new TaskMetricPoint(null, userId,
+                    value.push(new TaskMetricPoint(item.map(o => o.id).join(','), userId,
                         key,
                         item.map(o => o.value).reduce((prev, current) => prev + current),
                         item.map(o => o.duration).reduce((prev, current) => prev + current),
                         null, null, null, null,
-                        this.combinePhases(item.map(o => o.phases))
+                        this.combinePhases(item.map(o => o.phases)), item.length
                     ));
                 }
                 else {
@@ -140,7 +137,7 @@ export abstract class TaskMetricUtil {
                         key,
                         0,
                         0,
-                        null, null, null, null, null));
+                        null, null, null, null, null, 0));
                 }
             });
         }
@@ -149,37 +146,28 @@ export abstract class TaskMetricUtil {
     }
 
     //组合phases
-    private static combinePhases(data: Array<Pair<string, number>[]>): Pair<string, number>[] {
-        let phases = data.reduce((prev, current) => prev.concat(current));
-        let groups = _.groupBy(phases, 'key');
-        let result = [];
+    private static combinePhases(data: any[]): any {
+        return data.reduce((prev, current) => this.mergePhases(prev, current));
+    }
 
-        for (let key in groups) {
-            let total = groups[key].map(o => o.value).reduce((prev, current) => prev + current);
-            result.push({
-                key: key,
-                value: Math.round(total / data.length)
-            })
-        }
-
+    private static mergePhases(m1: any, m2: any): any {
+        let result: any = Object.assign({}, m1);
+        Object.keys(m2).forEach(k => result[k] = m1[k] ? m1[k] + m2[k] : m2[k]);
         return result;
     }
 
     private static getDuration(point: TaskMetricPoint, phasePairs: Pair<string, boolean>[]): number {
-        if(!point.phases){
+        if (!point.phases) {
             return 0;
         }
 
-        let phases = {};
-        point.phases.forEach(o => phases[o.key] = o.value);
-
         let result: number = 0;
         phasePairs.forEach(o => {
-            if (o.value) {
-                result += phases[o.key];
+            if (o.value && point.phases && point.phases[o.key]) {
+                result += point.phases[o.key];
             }
         });
 
-        return result;
+        return Math.round(result / 60);
     }
 }

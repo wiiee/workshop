@@ -20,6 +20,8 @@ export class AuthService {
     user: User;
     team: Team;
 
+    teamSeq: Observable<Team>;
+
     // store the URL so we can redirect after logging in
     redirectUrl: string;
 
@@ -27,7 +29,9 @@ export class AuthService {
         private router: Router,
         private userService: UserService,
         private teamService: TeamService,
-        private localStorageService: LocalStorageService) { }
+        private localStorageService: LocalStorageService) { 
+
+        }
 
     logIn(user: User): Observable<HttpResponse<Object>> {
         this.clearAuthorization();
@@ -124,8 +128,11 @@ export class AuthService {
     }
 
     reloadTeam(): Observable<Team> {
-        let seq = this.teamService.getTeamByUserId(this.getUserId()).share();
-        seq.subscribe(res => this.team = res);
-        return seq;
+        if(!this.teamSeq){
+            this.teamSeq = this.teamService.getTeamByUserId(this.getUserId()).share();
+            this.teamSeq.subscribe(res => this.team = res);
+        }
+
+        return this.teamSeq;
     }
 }

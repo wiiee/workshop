@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { SprintService } from './../../services/sprint.service';
 import { Sprint } from './../../entity/sprint';
 import { Component, OnInit } from '@angular/core';
@@ -12,8 +13,11 @@ import { AuthService } from '../../services/auth.service';
 export class SprintComponent extends BaseList<Sprint, SprintService> implements OnInit {
   containerId: string;
 
-  constructor(sprintService: SprintService, private authService: AuthService) {
-    super(sprintService, ['name', 'taskIds']);
+  constructor(
+    location: Location,
+    sprintService: SprintService, 
+    private authService: AuthService) {
+    super(sprintService, ['name', 'taskIds'], location);
   }
 
   ngOnInit() {

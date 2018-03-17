@@ -38,6 +38,7 @@ public class MetricService extends BaseService<Metric, String> {
 
         if (metric == null) {
             metric = new Metric(id);
+            create(metric);
         }
 
         //该结果没有加过

@@ -22,6 +22,6 @@ export class TeamService extends BaseService<Team> {
   }
 
   getTeamByUserId(userId: string): Observable<Team> {
-    return this.api.get("/api/team/user/" + userId);
+    return this.api.get<Team>("/api/team/user/" + userId);
   }
 }

@@ -50,7 +50,6 @@ public class TaskService extends BaseService<Task, String> {
 //        return super.update(entity);
 //    }
 
-    //当卡完成了，建一个点
     public ServiceResult<Task> updatePhase(Task entity) {
         if (entity == null) {
             return ServiceResult.getByException(CoreException.EXCEPTION_NULL_PARAMETERS);
@@ -63,17 +62,16 @@ public class TaskService extends BaseService<Task, String> {
     }
 
     @Override
-    public ServiceResult<Task> update(Task entity){
+    public ServiceResult<Task> update(Task entity) {
         if (entity == null) {
             return ServiceResult.getByException(CoreException.EXCEPTION_NULL_PARAMETERS);
         }
 
-        //ToDo: use queue instead in future'
+        //ToDo: use queue instead in future
         //ToDo: set phase to team's last phase
-        //如果卡完成了，需要建立metrics
-        if (entity.isReviewed && entity.getPhase() == Phase.Deployed.toString()) {
-            LocalDateTime now = LocalDateTime.now();
-            metricService.addPoint(MetricName.Task.value(), new TaskPoint(now, entity.value, entity.getId(), entity.assigneeId, entity.getDurations()));
+        //当卡完成了，建一个点
+        if (entity.isReviewed && entity.getPhase().equals(Phase.Deployed.name())) {
+            metricService.addPoint(MetricName.Task.value(), new TaskPoint(entity.endDate, entity.value, entity.getId(), entity.assigneeId, entity.getDurations()));
         }
 
         return super.update(entity);

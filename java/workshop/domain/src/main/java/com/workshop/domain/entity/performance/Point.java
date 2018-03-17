@@ -13,26 +13,30 @@ public abstract class Point {
     public LocalDateTime dateTime;
     public int value;
 
+    public Point() {
+
+    }
+
     public Point(LocalDateTime dateTime, int value, String id) {
         this.dateTime = dateTime;
         this.value = value;
         this.id = id;
     }
 
-    public String getDay(){
+    public String getDay() {
         return String.format("%d.%d.%d", dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth());
     }
 
-    public String getWeek(){
+    public String getWeek() {
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         return String.format("%d.%d", dateTime.getYear(), dateTime.get(weekFields.weekOfWeekBasedYear()));
     }
 
-    public String getMonth(){
+    public String getMonth() {
         return String.format("%d.%d", dateTime.getYear(), dateTime.getMonthValue());
     }
 
-    public String getYear(){
+    public String getYear() {
         return String.valueOf(dateTime.getYear());
     }
 }

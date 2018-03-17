@@ -32,6 +32,7 @@ export class PerformanceTeamComponent implements OnInit {
 
   source: TaskMetricPoint[];
   range: TaskMetricPoint[];
+  cardsNumber: number;
   data: Map<string, TaskMetricPoint[]>;
 
   phasePairs: Pair<string, boolean>[];
@@ -83,19 +84,22 @@ export class PerformanceTeamComponent implements OnInit {
 
   private rebuildData(): void {
     this.range = TaskMetricUtil.getRange(this.source, this.startDate, this.endDate);
+    this.cardsNumber = this.range.length;
     this.data = TaskMetricUtil.getUserPointsByInterval(this.range, this.interval);
     this.setOptions();
   }
 
   private setOptions(): void {
-    this.setOption1();
-    this.setOption2();
-    this.setOption3();
+    if (this.range.length > 0) {
+      this.setOption1();
+      this.setOption2();
+      this.setOption3();
+    }
   }
 
   private setOption1(): void {
-    let total:number = 0;
-    let length:number = 0;
+    let total: number = 0;
+    let length: number = 0;
     let average: number = 0;
 
     this.data.forEach((value, key) => {
@@ -105,7 +109,7 @@ export class PerformanceTeamComponent implements OnInit {
 
     average = length === 0 ? 0 : Math.round(total / length);
 
-    let title = 'Workload -> Length: ' + length
+    let title = 'Story Point -> Number: ' + length
       + ' | Total: ' + total
       + ' | Average: ' + average;
 
@@ -115,17 +119,34 @@ export class PerformanceTeamComponent implements OnInit {
   }
 
   private setOption2(): void {
-    let title = 'Phase';
+    let title = 'Phase(Hours)';
     let name = 'Phase';
 
-    this.option2 = EChartsUtil.buildPie(TaskMetricUtil.getPhasesPie(this.range, title, name));
+    let pie = TaskMetricUtil.getPhasesPie(this.range, title, name);
+    pie.points.forEach(o => o.value = Math.round(o.value / 60));
+    this.option2 = EChartsUtil.buildPie(pie);
   }
 
   private setOption3(): void {
-    console.log(this.phasePairs.map(o => o.key + "/" + o.value).join(","));
+    if (this.range.length > 0) {
+      let bar = TaskMetricUtil.getPhasesBar(this.data, this.phasePairs, null);
 
-    let title = 'Phases';
-    this.option3 = EChartsUtil.buildBarWithLine(TaskMetricUtil.getPhasesBar(this.data, this.phasePairs, title));
+      let total = 0;
+      bar.y.forEach((v, k) => total += v.reduce((p, c) => p + c));
+
+      let average = Math.round(total / this.cardsNumber);
+
+      bar.title = 'Elapsed Hours -> Cards Number: ' + this.cardsNumber
+        + ' | Total: ' + total
+        + ' | Average: ' + average;
+
+      this.option3 = EChartsUtil.buildBarWithLine(bar);
+    }
+
+    // console.log(this.phasePairs.map(o => o.key + "/" + o.value).join(","));
+
+    // let title = 'Phases';
+    // this.option3 = EChartsUtil.buildBarWithLine(TaskMetricUtil.getPhasesBar(this.data, this.phasePairs, title));
   }
 
   reloadPhases(): void {

@@ -12,7 +12,7 @@ public class Metric extends BaseData<String> {
     //Id为name
 
     public Metric() {
-
+        this.points = new ArrayList<>();
     }
 
     public Metric(String id) {

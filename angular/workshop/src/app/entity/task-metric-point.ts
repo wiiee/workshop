@@ -1,20 +1,40 @@
 import { Pair } from './pair';
 
 export class TaskMetricPoint {
+    // private phasePairs: Pair<string, number>[];
+
     constructor(
         public id: string,
         public userId: string,
         public dateTime: string,
+        //价值
         public value: number,
+        //持续时间，以分钟为单位
         public duration: number,
         public day: string,
         public week: string,
         public month: string,
         public year: string,
-        public phases: Pair<string, number>[]
+        public phases: any,
+        public size: number
     ) {
 
     }
+
+    // getPhasePairs(): Pair<string, number>[] {
+    //     if (!this.phasePairs) {
+
+    //         this.phasePairs = [];
+    //         Object.keys(this.phases).forEach(k => 
+    //             this.phasePairs.push({
+    //                 key: k,
+    //                 value: this.phases[k]
+    //             })
+    //         );
+    //     }
+
+    //     return this.phasePairs;
+    // }
 
     // private parseDate(dateTime: string): void {
     //     this.date = new Date(dateTime);

@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ServiceResult } from './../../entity/service-result';
@@ -15,8 +16,9 @@ export abstract class BaseList<T extends Entity, S extends BaseService<T>> exten
 
     constructor(
         private service: S,
-        public displayedColumns: string[]) {
-        super();
+        public displayedColumns: string[],
+        location: Location) {
+        super(location);
 
         this.service.getAll().subscribe(res => {
             this.entities = res.datum;

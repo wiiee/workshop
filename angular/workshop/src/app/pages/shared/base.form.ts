@@ -36,12 +36,12 @@ export abstract class BaseForm<T extends Entity, S extends BaseService<T>> exten
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private location: Location,
+        location: Location,
         private matDialog: MatDialog,
         public service: S,
         private urlPath: string,
         public entity: T) {
-        super();
+        super(location);
         this.route.queryParamMap.subscribe(params => {
             console.log("params: " + params);
             this.id = this.route.snapshot.paramMap.get('id');
@@ -58,11 +58,6 @@ export abstract class BaseForm<T extends Entity, S extends BaseService<T>> exten
         });
 
         this.entityName = this.getEntityName();
-    }
-
-    //后退
-    goBack(): void {
-        this.location.back();
     }
 
     resetForm(): void {

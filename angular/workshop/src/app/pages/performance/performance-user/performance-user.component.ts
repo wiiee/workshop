@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Pair } from './../../../entity/pair';
 import { TaskMetricPoint } from './../../../entity/task-metric-point';
 import { AuthService } from './../../../services/auth.service';
@@ -6,13 +7,14 @@ import { MetricService } from './../../../services/metric.service';
 import { Component, OnInit } from '@angular/core';
 import { TaskMetricUtil } from '../../../util/echarts/task-metric-util';
 import { EChartsUtil } from '../../../util/echarts/echarts-util';
+import { BasePage } from '../../shared/base.page';
 
 @Component({
   selector: 'app-performance-user',
   templateUrl: './performance-user.component.html',
   styleUrls: ['./performance-user.component.css']
 })
-export class PerformanceUserComponent implements OnInit {
+export class PerformanceUserComponent extends BasePage implements OnInit {
   option1: any;
   option2: any;
   option3: any;
@@ -24,6 +26,9 @@ export class PerformanceUserComponent implements OnInit {
   endDate: Date;
 
   source: TaskMetricPoint[];
+  //日期过滤后的数据
+  range: TaskMetricPoint[];
+  //interval后的数据
   data: TaskMetricPoint[];
 
   phasePairs: Pair<string, boolean>[];
@@ -32,7 +37,9 @@ export class PerformanceUserComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private metricService: MetricService,
-    private authService: AuthService) {
+    private authService: AuthService,
+    location: Location) {
+    super(location);
   }
 
   ngOnInit() {
@@ -65,41 +72,55 @@ export class PerformanceUserComponent implements OnInit {
   }
 
   private rebuildData(): void {
-    this.data = TaskMetricUtil.getRange(this.source, this.startDate, this.endDate);
-    this.data = TaskMetricUtil.getPointsByInterval(this.data, this.interval);
+    this.range = TaskMetricUtil.getRange(this.source, this.startDate, this.endDate);
+    this.data = TaskMetricUtil.getPointsByInterval(this.range, this.interval);
     this.setOptions();
   }
 
   private setOptions(): void {
-    this.setOption1();
-    this.setOption2();
-    this.setOption3();
+    if (this.range.length > 0) {
+      this.setOption1();
+      this.setOption2();
+      this.setOption3();
+    }
   }
 
   private setOption1(): void {
-    let total = this.data.map(o => o.value).reduce((p, v) => p + v);
+    let total = this.range.map(o => o.value).reduce((p, v) => p + v);
     let length = this.data.length;
     let average = length === 0 ? 0 : Math.round(total / length);
 
-    let title = 'Workload -> Length: ' + length
+    let title = 'Story Point -> Number: ' + length
       + ' | Total: ' + total
       + ' | Average: ' + average;
+
     this.option1 = EChartsUtil.buildLine(TaskMetricUtil.getValueLine(this.data, title));
   }
 
   private setOption2(): void {
-    let title = 'Phase';
+    let title = 'Phase(Hours)';
     let name = 'Phase';
 
-    this.option2 = EChartsUtil.buildPie(TaskMetricUtil.getPhasesPie(this.data, title, name));
+    let pie = TaskMetricUtil.getPhasesPie(this.data, title, name);
+    pie.points.forEach(o => o.value = Math.round(o.value / 60));
+    this.option2 = EChartsUtil.buildPie(pie);
   }
 
   private setOption3(): void {
-    console.log('Phases: ' + this.phasePairs.map(o => o.key + '/' + o.value).join(','));
+    if (this.range.length > 0) {
+      let line = TaskMetricUtil.getPhasesLine(this.data, this.phasePairs, null);
 
-    let title = 'Phases';
-    let data = TaskMetricUtil.getPhasesLine(this.data, this.phasePairs, title);
-    this.option3 = EChartsUtil.buildLine(TaskMetricUtil.getPhasesLine(this.data, this.phasePairs, title));
+      let total = 0;
+      line.y.forEach((v, k) => total += v.reduce((p, c) => p + c));
+
+      let average = Math.round(total / this.range.length);
+
+      line.title = 'Elapsed Hours -> Cards Number: ' + this.range.length
+        + ' | Total: ' + total
+        + ' | Average: ' + average;
+
+      this.option3 = EChartsUtil.buildLine(line);
+    }
   }
 
   reloadPhases(): void {
