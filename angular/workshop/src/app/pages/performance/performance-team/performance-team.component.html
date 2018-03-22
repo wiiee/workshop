@@ -55,19 +55,25 @@
     <div echarts [options]="option3"></div>
   </mat-tab>
   <mat-tab label="Table">
-    <mat-table [dataSource]="dataSource" matSort>
-      <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; let i = index">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</mat-header-cell>
-        <mat-cell *matCellDef="let row" class="text-truncate">
-          <ng-container *ngIf="i === 0 else text">
-            <a [routerLink]="['/team', row.id]">{{row[column]}}</a>
-          </ng-container>
-          <ng-template #text>{{row[column]}}</ng-template>
-        </mat-cell>
-      </ng-container>
-
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
+    <mat-card>
+      <table class="table table-bordered" *ngIf="data">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Story Point</th>
+            <th scope="col">Number</th>
+            <th scope="col">Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pair of getUserPairs()">
+            <td>{{pair.key}}</td>
+            <td>{{getStoryPoint(pair.value)}}</td>
+            <td>{{getNumber(pair.value)}}</td>
+            <td>{{getDuration(pair.value)}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card>
   </mat-tab>
 </mat-tab-group>

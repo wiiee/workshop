@@ -25,22 +25,7 @@ public class User extends BaseData<String> {
     //是否离职
     public boolean isOff;
 
-    public User(){
-
-    }
-
-    public User(String id, String password, String name, String nickName, String mobileNo, List<String> pics, Gender gender, Level level, Role role, boolean isOff) {
-        super(id);
-        this.password = password;
-        this.name = name;
-        this.nickName = nickName;
-        this.mobileNo = mobileNo;
-        this.pics = pics;
-        this.gender = gender;
-        this.level = level;
-        this.role = role;
-        this.isOff = isOff;
-    }
+    public String jiraUserName;
 
     @JsonIgnore
     public String getDisplayName(){

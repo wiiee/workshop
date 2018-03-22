@@ -13,7 +13,7 @@ export class UserComponent extends BaseList<User, UserService> implements OnInit
   constructor(
     userService: UserService,
     location: Location) {
-    super(userService, ['id', 'name', 'nickName', 'mobileNo', 'level', 'role'], location);
+    super(userService, ['id', 'name', 'nickName', 'jiraUserName', 'mobileNo', 'level', 'role'], location);
   }
 
   ngOnInit() {

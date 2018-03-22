@@ -58,7 +58,14 @@
 
             <mat-form-field>
                 <input matInput type="text" placeholder="MobileNo" [(ngModel)]="entity.mobileNo" name="mobileNo" required />
-                <mat-icon matSuffix>phone</mat-icon>
+                <button mat-button *ngIf="entity.jiraUserName" matSuffix mat-icon-button aria-label="Clear" (click)="entity.jiraUserName=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput type="text" placeholder="JiraUserName" [(ngModel)]="entity.jiraUserName" name="jiraUserName" required />
+                <mat-icon matSuffix></mat-icon>
             </mat-form-field>
 
             <mat-form-field>

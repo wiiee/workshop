@@ -6,6 +6,7 @@ export class User implements Entity {
         public password: string = null,
         public name: string = null,
         public nickName: string = null,
+        public jiraUserName: string = null,
         public mobileNo: string = null,
         public pics: string[] = null,
         public gender: string = null,

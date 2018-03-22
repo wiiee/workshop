@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { TaskMetricPoint } from './../../../entity/task-metric-point';
 import { AuthService } from './../../../services/auth.service';
 import { UserService } from './../../../services/user.service';
@@ -9,13 +10,14 @@ import { BaseMetric } from '../../shared/base.metric';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { TaskMetricUtil } from '../../../util/echarts/task-metric-util';
 import { EChartsUtil } from '../../../util/echarts/echarts-util';
+import { BasePage } from '../../shared/base.page';
 
 @Component({
   selector: 'app-performance-team',
   templateUrl: './performance-team.component.html',
   styleUrls: ['./performance-team.component.css']
 })
-export class PerformanceTeamComponent implements OnInit {
+export class PerformanceTeamComponent extends BasePage implements OnInit {
   userPairs: Pair<string, string>[];
 
   dataSource: MatTableDataSource<Performance>;
@@ -42,10 +44,11 @@ export class PerformanceTeamComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    location: Location,
     private userService: UserService,
     private metricService: MetricService,
     private authService: AuthService) {
-
+      super(location);
   }
 
   ngOnInit() {
@@ -159,5 +162,26 @@ export class PerformanceTeamComponent implements OnInit {
     this.phasePairs.forEach(o => o.value = this.isPhaseAll);
     this.setOption3();
   }
-}
 
+  getUserPairs(): Array<Pair<string, TaskMetricPoint[]>> {
+    let result: Array<Pair<string, TaskMetricPoint[]>> = [];
+    this.data.forEach((v, k) => result.push({
+      key: k,
+      value: v
+    }));
+
+    return result;
+  }
+
+  getStoryPoint(points: TaskMetricPoint[]): number{
+    return points.map(o => o.value).reduce((p, c) => p + c);
+  }
+
+  getNumber(points: TaskMetricPoint[]): number{
+    return points.map(o => o.size).reduce((p, c) => p + c);
+  }
+
+  getDuration(points: TaskMetricPoint[]): number{
+    return points.map(o => o.duration).reduce((p, c) => p + c);
+  }
+}

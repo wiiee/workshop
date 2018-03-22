@@ -27,16 +27,16 @@ public class TestController {
 
     @GetMapping
     public String test() {
-        List<Task> tasks = taskService.get().datum;
-
-        tasks.forEach(o -> {
-            if (Phase.Deployed.name().equals(o.getPhase())) {
-                o.isReviewed = true;
-                o.endDate = o.phaseItems.get(o.phaseItems.size() - 1).dateTime;
-                taskService.update(o);
-            }
-        });
-        //jiraService.exportTasks();
+//        List<Task> tasks = taskService.get().datum;
+//
+//        tasks.forEach(o -> {
+//            if (Phase.Deployed.name().equals(o.getPhase())) {
+//                o.isReviewed = true;
+//                o.endDate = o.phaseItems.get(o.phaseItems.size() - 1).dateTime;
+//                taskService.update(o);
+//            }
+//        });
+        jiraService.exportTasks();
         return "done";
     }
 
