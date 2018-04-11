@@ -27,22 +27,20 @@ public class TestController {
 
     @GetMapping
     public String test() {
-//        List<Task> tasks = taskService.get().datum;
-//
-//        tasks.forEach(o -> {
-//            if (Phase.Deployed.name().equals(o.getPhase())) {
-//                o.isReviewed = true;
-//                o.endDate = o.phaseItems.get(o.phaseItems.size() - 1).dateTime;
-//                taskService.update(o);
-//            }
-//        });
         jiraService.exportTasks();
         return "done";
     }
 
-    @GetMapping("/user")
-    public JiraUser test1() {
-        return jiraService.getJiraByUserName("brucewu");
+    @GetMapping("/test1")
+    public void test1() {
+        List<Task> tasks = taskService.get().datum;
+
+        tasks.forEach(o -> {
+            if (Phase.Done.name().equals(o.getPhase())) {
+                o.isReviewed = true;
+                taskService.update(o);
+            }
+        });
     }
 
     @GetMapping("/users")

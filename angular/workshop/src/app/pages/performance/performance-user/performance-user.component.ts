@@ -1,3 +1,4 @@
+import { UserService } from './../../../services/user.service';
 import { Location } from '@angular/common';
 import { Pair } from './../../../entity/pair';
 import { TaskMetricPoint } from './../../../entity/task-metric-point';
@@ -34,10 +35,13 @@ export class PerformanceUserComponent extends BasePage implements OnInit {
   phasePairs: Pair<string, boolean>[];
   isPhaseAll: boolean;
 
+  userName: string;
+
   constructor(
     private route: ActivatedRoute,
     private metricService: MetricService,
     private authService: AuthService,
+    private userService: UserService,
     location: Location) {
     super(location);
   }
@@ -59,6 +63,7 @@ export class PerformanceUserComponent extends BasePage implements OnInit {
 
       this.route.queryParamMap.subscribe(params => {
         let userId = this.route.snapshot.paramMap.get('id');
+        this.userName = this.userService.getDisplayNameByUserId(userId);
         this.metricService.getByUserId(userId).subscribe(res => {
           this.source = res;
           this.rebuildData();

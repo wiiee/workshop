@@ -45,10 +45,10 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     location: Location,
-    private userService: UserService,
     private metricService: MetricService,
-    private authService: AuthService) {
-      super(location);
+    private authService: AuthService,
+    public userService: UserService) {
+    super(location);
   }
 
   ngOnInit() {
@@ -173,15 +173,15 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
     return result;
   }
 
-  getStoryPoint(points: TaskMetricPoint[]): number{
+  getStoryPoint(points: TaskMetricPoint[]): number {
     return points.map(o => o.value).reduce((p, c) => p + c);
   }
 
-  getNumber(points: TaskMetricPoint[]): number{
+  getNumber(points: TaskMetricPoint[]): number {
     return points.map(o => o.size).reduce((p, c) => p + c);
   }
 
-  getDuration(points: TaskMetricPoint[]): number{
+  getDuration(points: TaskMetricPoint[]): number {
     return points.map(o => o.duration).reduce((p, c) => p + c);
   }
 }

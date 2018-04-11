@@ -8,12 +8,14 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.10.RELEASE")
+//        classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
     }
 }
 
 allprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
+//    apply plugin: 'com.palantir.docker'
 
     compileJava.options.encoding = 'UTF-8'
 
@@ -46,4 +48,10 @@ project(':domain') {
 
 project(':app') {
     apply plugin: 'org.springframework.boot'
+
+//    docker {
+//        name "${project.group}/${jar.baseName}"
+//        files jar.archivePath
+//        buildArgs(['JAR_FILE': "${jar.archiveName}"])
+//    }
 }

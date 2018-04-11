@@ -103,6 +103,15 @@ public class JiraService extends BaseService<Jira, String> {
         }
     }
 
+//    public Object getJiraIssueByScale(){
+//        String url = "https://gojira.skyscanner.net/rest/api/2/search?jql=" + "project = dbs AND type != Epic AND labels in (Live_Partner_Support) AND (component is EMPTY OR component not in (Commercial, Pre-Integrations)) AND issuetype != \"Sprint Goals\" AND (fixVersion is EMPTY OR fixVersion not in (dBook_Jazzberry_Jam, dBook_Design, dBook_Gold, dBook_green_flag, dBook_Silver, dBook_Aqua, dBook_scale_ndc)) AND status not in (Done, Canceled, Closed, Declined)";
+//        HttpEntity<String> entity = new HttpEntity<>(getAuthHeaders());
+//
+//        ResponseEntity<Object> response = restTemplate.exchange(url, HttpMethod.GET, entity, Object.class);
+//
+//        return response.getBody();
+//    }
+
     private void buildTask(IssueInfo info, String userId) {
         try {
             Task task = new Task();
@@ -141,17 +150,18 @@ public class JiraService extends BaseService<Jira, String> {
             for (Item item : o.items) {
                 System.out.println(String.format("item: %s", GsonUtil.toJson(item)));
                 if (item.field.equals("status") && item.fieldtype.equals("jira") && item.toString.equals("Analysis")) {
-                    phases.add(new PhaseItem(Phase.Analysis.name(), getUserId(o.author.name), convertFromString(o.created)));
+                    phases.add(new PhaseItem(Phase.ToDo.name(), getUserId(o.author.name), convertFromString(o.created)));
                 } else if (item.field.equals("status") && item.fieldtype.equals("jira") && item.toString.toLowerCase().equals("in progress")) {
                     phases.add(new PhaseItem(Phase.InProgress.name(), getUserId(o.author.name), convertFromString(o.created)));
                 } else if (item.field.equals("status") && item.fieldtype.equals("jira") && item.toString.toLowerCase().equals("waiting for review")) {
                     phases.add(new PhaseItem(Phase.Reviewing.name(), getUserId(o.author.name), convertFromString(o.created)));
                 } else if (item.field.equals("status") && item.fieldtype.equals("jira") && item.toString.toLowerCase().equals("waiting for customer")) {
                     phases.add(new PhaseItem(Phase.Blocked.name(), getUserId(o.author.name), convertFromString(o.created)));
-                } else if (item.field.equals("status") && item.fieldtype.equals("jira") && item.toString.equals("Done")) {
-                    phases.add(new PhaseItem(Phase.Deployed.name(), getUserId(o.author.name), convertFromString(o.created)));
                 } else if (item.field.equals("status") && item.fieldtype.equals("jira") && item.toString.toLowerCase().equals("ready for deployment")) {
                     phases.add(new PhaseItem(Phase.Deployed.name(), getUserId(o.author.name), convertFromString(o.created)));
+                } else if (item.field.equals("status") && item.fieldtype.equals("jira") && item.toString.equals("Done")) {
+                    task.endDate = convertFromString(o.created);
+                    phases.add(new PhaseItem(Phase.Done.name(), getUserId(o.author.name), task.endDate));
                 } else if (item.field.equals("Story Points") && item.fieldtype.equals("custom")) {
                     try {
                         task.value = Integer.parseInt(item.toString);
@@ -198,7 +208,7 @@ public class JiraService extends BaseService<Jira, String> {
 
         @Override
         public void run() {
-            if (!StringUtils.isEmpty(issueId) && StringUtils.isEmpty(userId)) {
+            if (!StringUtils.isEmpty(issueId) && !StringUtils.isEmpty(userId)) {
                 buildTask(getJiraIssue(issueId), userId);
             }
         }
@@ -215,7 +225,7 @@ public class JiraService extends BaseService<Jira, String> {
 
         @Override
         public void run() {
-            if (!StringUtils.isEmpty(userName) && StringUtils.isEmpty(userId)) {
+            if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(userId)) {
                 getJiraByUserName(userName).issues.forEach(o -> taskExecutor.execute(new JiraIssueTask(o.key, userId)));
             }
         }

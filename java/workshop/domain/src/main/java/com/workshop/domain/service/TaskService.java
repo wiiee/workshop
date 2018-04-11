@@ -32,7 +32,9 @@ public class TaskService extends BaseService<Task, String> {
             return ServiceResult.getByException(CoreException.EXCEPTION_NULL_PARAMETERS);
         }
 
-        entity.startDate = LocalDateTime.now();
+        if(entity.startDate == null){
+            entity.startDate = LocalDateTime.now();
+        }
 
         if (StringUtils.isEmpty(entity.reporterId)) {
             entity.reporterId = SecurityUtil.getUserId();
@@ -70,7 +72,7 @@ public class TaskService extends BaseService<Task, String> {
         //ToDo: use queue instead in future
         //ToDo: set phase to team's last phase
         //当卡完成了，建一个点
-        if (entity.isReviewed && entity.getPhase().equals(Phase.Deployed.name())) {
+        if (entity.isReviewed && entity.getPhase().equals(Phase.Done.name())) {
             metricService.addPoint(MetricName.Task.value(), new TaskPoint(entity.endDate, entity.value, entity.getId(), entity.assigneeId, entity.getDurations()));
         }
 

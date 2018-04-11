@@ -8,6 +8,8 @@ export class Task implements Entity {
         public description: string = null,
         public reporterId: string = null,
         public assigneeId: string = null,
+        public startDate: Date = null,
+        public endDate: Date = null,
         public value: number = null,
         public teamId: string = null,
         public phaseItems: PhaseItem[] = null,

@@ -10,7 +10,18 @@
 
 <app-header-message></app-header-message>
 
-<mat-card>
+<mat-toolbar>
+  <span class="spacer"></span>
+  <button mat-mini-fab (click)="isList = !isList">
+    <mat-icon>list</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-card *ngIf="!isList">
+
+</mat-card>
+
+<mat-card *ngIf="isList">
   <mat-form-field>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
@@ -19,10 +30,13 @@
     <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; let i = index">
       <mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</mat-header-cell>
       <mat-cell *matCellDef="let row" class="text-truncate">
-        <ng-container *ngIf="i === 0 else text">
+        <ng-container *ngIf="i === 0">
           <a [routerLink]="['/task', row.id]">{{row[column]}}</a>
         </ng-container>
-        <ng-template #text>{{row[column]}}</ng-template>
+        <ng-container *ngIf="i > 0 && column === 'assigneeId'">
+          {{userService.getDisplayNameByUserId(row[column])}}
+        </ng-container>
+        <ng-container *ngIf="i > 0 && column !== 'assigneeId'">{{row[column]}}</ng-container>
       </mat-cell>
     </ng-container>
 

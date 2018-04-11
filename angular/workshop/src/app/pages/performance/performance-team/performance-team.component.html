@@ -67,7 +67,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let pair of getUserPairs()">
-            <td>{{pair.key}}</td>
+            <td>{{userService.getDisplayNameByUserId(pair.key)}}</td>
             <td>{{getStoryPoint(pair.value)}}</td>
             <td>{{getNumber(pair.value)}}</td>
             <td>{{getDuration(pair.value)}}</td>
