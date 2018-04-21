@@ -1,6 +1,5 @@
 package com.workshop.app.api;
 
-import com.workshop.domain.constant.Phase;
 import com.workshop.domain.entity.performance.Metric;
 import com.workshop.domain.entity.performance.MetricName;
 import com.workshop.domain.entity.performance.Point;
@@ -8,16 +7,14 @@ import com.workshop.domain.entity.performance.TaskPoint;
 import com.workshop.domain.entity.user.Team;
 import com.workshop.domain.service.MetricService;
 import com.workshop.domain.service.TeamService;
-import org.apache.commons.lang3.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**

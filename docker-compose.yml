@@ -2,6 +2,7 @@ version: '3'
 services:
   mongodb:
     image: mongo
+    container_name: workshop_mongo
     volumes:
       - ~/data/db:/data/db
     ports:
@@ -9,6 +10,7 @@ services:
 
   elasticsearch:
     image: elasticsearch
+    container_name: workshop_elasticsearch
     volumes:
       - ~/esdata:/usr/share/elasticsearch/data
       - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
@@ -26,12 +28,13 @@ services:
   redis:
     image: redis
 
-  # workshop:
-  #   image: com.workshop/app
-  #   ports: 
-  #     - 8080:8080
-  #   depends_on:
-  #     - mongodb
-  #     - elasticsearch
-  #   environment:
-  #     JAVA_OPTS: "-Xmx4096m -Xms1024m"
+  workshop:
+    image: com.workshop/app
+    ports: 
+      - 8080:8080
+    depends_on:
+      - mongodb
+      - elasticsearch
+    environment:
+      # - spring.data.mongodb.uri: mongodb://workshop-mongo
+      JAVA_OPTS: "-Xmx4096m -Xms1024m"
