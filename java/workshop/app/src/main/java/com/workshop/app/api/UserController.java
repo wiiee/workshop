@@ -8,7 +8,6 @@ import com.workshop.domain.entity.user.User;
 import com.workshop.domain.helper.AuthHelper;
 import com.workshop.domain.service.TeamService;
 import com.workshop.domain.service.UserService;
-import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -49,26 +50,26 @@ public class UserController extends BaseController<String, User, UserService> {
     }
 
     @GetMapping("/ownerPairs")
-    public List<Pair<String, String>> getOwners() {
+    public List<Map.Entry<String, String>> getOwners() {
         return getService().get().datum.stream()
                 .filter(o -> o.role.value() > 0)
-                .map(o -> new Pair<>(o.getId(), o.getDisplayName())).collect(Collectors.toList());
+                .map(o -> new AbstractMap.SimpleEntry<>(o.getId(), o.getDisplayName())).collect(Collectors.toList());
     }
 
     @GetMapping("/userPairs")
-    public List<Pair<String, String>> getUsers() {
+    public List<Map.Entry<String, String>> getUsers() {
         return getService().get().datum.stream()
                 .filter(o -> !o.isOff && o.role != Role.Admin)
-                .map(o -> new Pair<>(o.getId(), o.getDisplayName()))
+                .map(o -> new AbstractMap.SimpleEntry<>(o.getId(), o.getDisplayName()))
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/userPairs/{teamId}")
-    public List<Pair<String, String>> getTeamUsers(@PathVariable String teamId) {
+    public List<Map.Entry<String, String>> getTeamUsers(@PathVariable String teamId) {
         Collection<String> userIds = teamService.get(teamId).data.userIds;
         return getService().getByIds(userIds).datum.stream()
                 .filter(o -> !o.isOff && o.role != Role.Admin)
-                .map(o -> new Pair<>(o.getId(), o.getDisplayName()))
+                .map(o -> new AbstractMap.SimpleEntry<>(o.getId(), o.getDisplayName()))
                 .collect(Collectors.toList());
     }
 

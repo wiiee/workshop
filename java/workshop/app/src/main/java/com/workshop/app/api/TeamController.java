@@ -3,15 +3,15 @@ package com.workshop.app.api;
 import com.wiiee.core.domain.security.SecurityUtil;
 import com.workshop.domain.entity.user.Team;
 import com.workshop.domain.service.TeamService;
-import javafx.util.Pair;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.AbstractMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,9 +22,9 @@ public class TeamController extends BaseController<String, Team, TeamService> {
     }
 
     @GetMapping("/teamPairs")
-    public List<Pair<String, String>> getTeams() {
+    public List<Map.Entry<String, String>> getTeams() {
         return getService().get().datum.stream()
-                .map(o -> new Pair<>(o.getId(), o.name)).collect(Collectors.toList());
+                .map(o -> new AbstractMap.SimpleEntry<>(o.getId(), o.name)).collect(Collectors.toList());
     }
 
     @GetMapping("/user/{userId}")

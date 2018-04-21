@@ -13,8 +13,8 @@ services:
       - ~/esdata:/usr/share/elasticsearch/data
       - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - 9200:9200
+      - 9300:9300
     environment:
       ES_JAVA_OPTS: "-Xmx4096m -Xms1024m"
 
@@ -25,3 +25,13 @@ services:
 
   redis:
     image: redis
+
+  # workshop:
+  #   image: com.workshop/app
+  #   ports: 
+  #     - 8080:8080
+  #   depends_on:
+  #     - mongodb
+  #     - elasticsearch
+  #   environment:
+  #     JAVA_OPTS: "-Xmx4096m -Xms1024m"
