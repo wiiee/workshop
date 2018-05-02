@@ -29,12 +29,12 @@ public class WorkshopMongoConfig extends AbstractMongoConfiguration {
     }
 
     @Override
-    public Mongo mongo() {
+    public MongoClient mongoClient() {
         return new MongoClient(new MongoClientURI(mongoProperties.determineUri()));
     }
 
     @Bean
     public MongoTemplate workshopMongoTemplate() {
-        return new MongoTemplate(mongo(), getDatabaseName());
+        return new MongoTemplate(mongoClient(), getDatabaseName());
     }
 }

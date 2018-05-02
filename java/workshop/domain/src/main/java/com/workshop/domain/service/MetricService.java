@@ -2,8 +2,6 @@ package com.workshop.domain.service;
 
 import com.wiiee.core.domain.service.BaseService;
 import com.wiiee.core.platform.log.LoggerFacade;
-import com.wiiee.core.platform.log.other.OtherLogEntry;
-import com.wiiee.core.platform.log.other.OtherLogEntryPool;
 import com.workshop.domain.entity.performance.Metric;
 import com.workshop.domain.entity.performance.Point;
 import com.workshop.domain.exception.WorkshopException;
@@ -22,8 +20,6 @@ public class MetricService extends BaseService<Metric, String> {
     @Autowired
     private LoggerFacade loggerFacade;
 
-    @Autowired
-    private OtherLogEntryPool otherLogEntryPool;
 
     public MetricService(MongoRepository<Metric, String> repository) {
         super(repository);
@@ -47,8 +43,6 @@ public class MetricService extends BaseService<Metric, String> {
         }
         //记录异常
         else {
-            OtherLogEntry entry = otherLogEntryPool.allocate().build(WorkshopException.METRIC_DUPLICATE, point);
-            loggerFacade.log(entry, otherLogEntryPool);
         }
 
         update(metric);

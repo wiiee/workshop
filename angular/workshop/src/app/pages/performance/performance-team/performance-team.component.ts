@@ -18,7 +18,7 @@ import { BasePage } from '../../shared/base.page';
   styleUrls: ['./performance-team.component.css']
 })
 export class PerformanceTeamComponent extends BasePage implements OnInit {
-  userPairs: Pair<string, string>[];
+  userPairs: Pair<string, string>[] = [];
 
   dataSource: MatTableDataSource<Performance>;
 
@@ -76,7 +76,17 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
           console.log(res);
         });
 
-        this.userService.getUserPairsByTeamId(teamId).subscribe(res => this.userPairs = res);
+        this.userService.getUserPairsByTeamId(teamId).subscribe(res => {
+          res.forEach(item => {
+            let key = Object.keys(item)[0];
+            this.userPairs.push(
+              {
+                key: key,
+                value: item[key]
+              }
+            );
+          });
+        });
       });
     });
   }

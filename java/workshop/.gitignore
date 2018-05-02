@@ -7,6 +7,7 @@
 .settings
 bin
 build
+data
 target
 out/
 *.ipr
