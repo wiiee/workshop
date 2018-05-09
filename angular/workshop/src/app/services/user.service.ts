@@ -14,17 +14,7 @@ export class UserService extends BaseService<User> {
     constructor(api: Api) {
         super(api, "/api/user");
         this.userPairs = [];
-        this.getUserPairs().subscribe(res => {
-            res.forEach(item => {
-                let key = Object.keys(item)[0];
-                this.userPairs.push(
-                    {
-                        key: key,
-                        value: item[key]
-                    }
-                );
-            });
-        });
+        this.getUserPairs().subscribe(res => this.userPairs = res);
     }
 
     getOwnerPairs(): Observable<Pair<string, string>[]> {

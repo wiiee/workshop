@@ -1,6 +1,7 @@
 package com.workshop.app.api;
 
 import com.wiiee.core.domain.security.SecurityUtil;
+import com.wiiee.core.platform.model.KeyValuePair;
 import com.workshop.domain.entity.user.Team;
 import com.workshop.domain.service.TeamService;
 import org.springframework.util.StringUtils;
@@ -22,9 +23,9 @@ public class TeamController extends BaseController<String, Team, TeamService> {
     }
 
     @GetMapping("/teamPairs")
-    public List<Map.Entry<String, String>> getTeams() {
+    public List<KeyValuePair> getTeams() {
         return getService().get().datum.stream()
-                .map(o -> new AbstractMap.SimpleEntry<>(o.getId(), o.name)).collect(Collectors.toList());
+                .map(o -> new KeyValuePair(o.getId(), o.name)).collect(Collectors.toList());
     }
 
     @GetMapping("/user/{userId}")

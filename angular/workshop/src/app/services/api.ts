@@ -8,7 +8,8 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
  */
 @Injectable()
 export class Api {
-  public static readonly SERVER_URL: string = 'http://localhost:8080';
+  public static readonly SERVER_URL: string = 'http://10.209.122.47:9000';
+  // public static readonly SERVER_URL: string = 'http://localhost:9000';
 
   constructor(public httpClient: HttpClient) {
   }

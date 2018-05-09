@@ -87,6 +87,7 @@ export class AuthService {
         this.localStorageService.clear();
         this.isLoggedIn = false;
         this.user = null;
+        this.team = null;
     }
 
     private redirect(): void {

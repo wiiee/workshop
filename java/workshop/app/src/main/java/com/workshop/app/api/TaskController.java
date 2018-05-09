@@ -1,15 +1,14 @@
 package com.workshop.app.api;
 
 import com.wiiee.core.domain.service.ServiceResult;
+import com.wiiee.core.platform.model.KeyValuePair;
 import com.workshop.domain.entity.project.Task;
 import com.workshop.domain.service.TaskService;
 import com.workshop.domain.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.AbstractMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,7 +22,7 @@ public class TaskController extends BaseController<String, Task, TaskService> {
     }
 
     @GetMapping("/taskPairs/{teamId}")
-    public List<Map.Entry<String, String>> getTaskPairs(@PathVariable String teamId) {
+    public List<KeyValuePair> getTaskPairs(@PathVariable String teamId) {
 //        try {
 //            String searchTeamId = teamId == null ? teamService.getTeamId(SecurityUtil.getUserId()) : teamId;
 //            return getService().get().datum.stream()
@@ -33,7 +32,7 @@ public class TaskController extends BaseController<String, Task, TaskService> {
 //            return null;
 //        }
         return getService().get().datum.stream()
-                .map(o -> new AbstractMap.SimpleEntry<>(o.getId(), o.title))
+                .map(o -> new KeyValuePair(o.getId(), o.title))
                 .collect(Collectors.toList());
     }
 

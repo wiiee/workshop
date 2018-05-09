@@ -10,7 +10,6 @@ services:
 
   elasticsearch:
     image: elasticsearch
-    container_name: workshop_elasticsearch
     volumes:
       - ~/esdata:/usr/share/elasticsearch/data
       - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml

@@ -2,6 +2,7 @@ package com.workshop.app.api;
 
 import com.wiiee.core.domain.security.SecurityUtil;
 import com.wiiee.core.domain.service.ServiceResult;
+import com.wiiee.core.platform.model.KeyValuePair;
 import com.wiiee.core.web.security.WebSecurityUtil;
 import com.workshop.domain.constant.Role;
 import com.workshop.domain.entity.user.User;
@@ -15,10 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -50,26 +49,26 @@ public class UserController extends BaseController<String, User, UserService> {
     }
 
     @GetMapping("/ownerPairs")
-    public List<Map.Entry<String, String>> getOwners() {
+    public List<KeyValuePair> getOwners() {
         return getService().get().datum.stream()
                 .filter(o -> o.role.value() > 0)
-                .map(o -> new AbstractMap.SimpleEntry<>(o.getId(), o.getDisplayName())).collect(Collectors.toList());
+                .map(o -> new KeyValuePair(o.getId(), o.getDisplayName())).collect(Collectors.toList());
     }
 
     @GetMapping("/userPairs")
-    public List<Map.Entry<String, String>> getUsers() {
+    public List<KeyValuePair> getUsers() {
         return getService().get().datum.stream()
                 .filter(o -> !o.isOff && o.role != Role.Admin)
-                .map(o -> new AbstractMap.SimpleEntry<>(o.getId(), o.getDisplayName()))
+                .map(o -> new KeyValuePair(o.getId(), o.getDisplayName()))
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/userPairs/{teamId}")
-    public List<Map.Entry<String, String>> getTeamUsers(@PathVariable String teamId) {
+    public List<KeyValuePair> getTeamUsers(@PathVariable String teamId) {
         Collection<String> userIds = teamService.get(teamId).data.userIds;
         return getService().getByIds(userIds).datum.stream()
                 .filter(o -> !o.isOff && o.role != Role.Admin)
-                .map(o -> new AbstractMap.SimpleEntry<>(o.getId(), o.getDisplayName()))
+                .map(o -> new KeyValuePair(o.getId(), o.getDisplayName()))
                 .collect(Collectors.toList());
     }
 
@@ -81,7 +80,7 @@ public class UserController extends BaseController<String, User, UserService> {
         //排除掉Admin和离职人员
         List<String> authorities = SecurityUtil.getAuthorities();
         if (authorities != null && !authorities.contains(Role.Admin.toString())) {
-            result.datum.stream().filter(o -> o.role != Role.Admin && o.isOff).collect(Collectors.toList());
+            result.datum = result.datum.stream().filter(o -> o.role != Role.Admin || o.isOff).collect(Collectors.toList());
         }
 
         return result;
