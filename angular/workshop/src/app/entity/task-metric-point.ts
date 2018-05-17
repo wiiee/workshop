@@ -4,6 +4,7 @@ export class TaskMetricPoint {
     // private phasePairs: Pair<string, number>[];
 
     constructor(
+        //id列表
         public id: string,
         public userId: string,
         public dateTime: string,
@@ -16,6 +17,7 @@ export class TaskMetricPoint {
         public month: string,
         public year: string,
         public phases: any,
+        //个数
         public size: number
     ) {
 

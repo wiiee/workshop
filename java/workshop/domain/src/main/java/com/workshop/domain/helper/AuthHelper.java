@@ -14,7 +14,7 @@ public class AuthHelper {
     @Autowired
     private UserService userService;
 
-    public List<GrantedAuthority> getAuthorities(String id){
+    public List<GrantedAuthority> getAuthorities(String id) {
         List<GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(userService.get(id).data.role.name()));
         //List<GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(String.valueOf(teamService.getHeight(id))));
         return authorities;

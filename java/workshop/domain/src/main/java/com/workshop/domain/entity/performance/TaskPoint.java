@@ -10,6 +10,8 @@ import java.util.Map;
 public class TaskPoint extends Point {
     public String userId;
 
+    public String jiraId;
+
     //各个阶段花费的时间
     public Map<String, Integer> phases;
 
@@ -29,9 +31,10 @@ public class TaskPoint extends Point {
         this.phases = new HashMap<>();
     }
 
-    public TaskPoint(LocalDateTime dateTime, int value, String id, String userId, Map<String, Integer> phases) {
+    public TaskPoint(LocalDateTime dateTime, int value, String id, String userId, String jiraId, Map<String, Integer> phases) {
         super(dateTime, value, id);
         this.userId = userId;
+        this.jiraId = jiraId;
         this.phases = phases;
         this.phases.forEach((k, v) -> {
             this.duration += v;

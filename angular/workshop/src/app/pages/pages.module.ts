@@ -26,6 +26,7 @@ import { HeaderMessageComponent } from './header-message/header-message.componen
 import { WeeklyComponent } from './report/weekly/weekly.component';
 import { PerformanceUserComponent } from './performance/performance-user/performance-user.component';
 import { PerformanceTeamComponent } from './performance/performance-team/performance-team.component';
+import { UtilComponent } from './util/util.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { PerformanceTeamComponent } from './performance/performance-team/perform
     HeaderMessageComponent,
     WeeklyComponent,
     PerformanceUserComponent,
-    PerformanceTeamComponent
+    PerformanceTeamComponent,
+    UtilComponent
   ],
   imports: [
     BrowserAnimationsModule,

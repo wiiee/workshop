@@ -1,5 +1,7 @@
 package com.workshop.domain.entity.performance;
 
+import com.workshop.domain.entity.project.Task;
+
 import java.util.Map;
 
 /**
@@ -7,5 +9,5 @@ import java.util.Map;
  */
 public class Performance {
     //
-    Map<String, Metric> metrics;
+    Map<String, TaskMetric> metrics;
 }

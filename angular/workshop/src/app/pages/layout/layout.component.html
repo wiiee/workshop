@@ -6,18 +6,18 @@
       </a>
       <button mat-button [matMenuTriggerFor]="orgMenu" class="ml-2">Organization</button>
       <button mat-button [matMenuTriggerFor]="workMenu">Work</button>
-      <button mat-button [matMenuTriggerFor]="performanceMenu">Performance</button>
-      <button mat-button [matMenuTriggerFor]="reportMenu">Report</button>
+      <!-- <button mat-button [matMenuTriggerFor]="performanceMenu">Performance</button>
+      <button mat-button [matMenuTriggerFor]="reportMenu">Report</button> -->
       <span class="spacer"></span>
       <button mat-button (click)="isDark = !isDark">{{isDark ? 'Light' : 'Dark'}}</button>
-      <ng-container *ngIf="!authService.isLoggedIn else welcome">
+      <!-- <ng-container *ngIf="!authService.isLoggedIn else welcome">
         <a mat-mini-fab routerLink="/logIn" routerLinkActive="active">Log In</a>
         <a mat-mini-fab routerLink="/signUp" routerLinkActive="active">Sign Up</a>
       </ng-container>
       <ng-template #welcome>
         <button mat-button class="welcome" disabled>Welcome, {{authService.getUserId()}}</button>
         <button mat-mini-fab (click)="logOut()">Log Out</button>
-      </ng-template>
+      </ng-template> -->
     </mat-toolbar>
 
     <mat-menu [overlapTrigger]="false" #orgMenu="matMenu">
@@ -33,28 +33,28 @@
       <a routerLink="/task" routerLinkActive="active">
         <button mat-menu-item>Task</button>
       </a>
-      <a routerLink="/sprint" routerLinkActive="active">
+      <!-- <a routerLink="/sprint" routerLinkActive="active">
         <button mat-menu-item>Sprint</button>
-      </a>
+      </a> -->
     </mat-menu>
 
-    <mat-menu [overlapTrigger]="false" #performanceMenu="matMenu">
+    <!-- <mat-menu [overlapTrigger]="false" #performanceMenu="matMenu">
       <a [routerLink]="['/performance/user', authService.getUserId()]" routerLinkActive="active" *ngIf="authService.getUserId()">
         <button mat-menu-item>User</button>
       </a>
       <a [routerLink]="['/performance/team', authService.team.id]" routerLinkActive="active" *ngIf="authService.team">
         <button mat-menu-item>Team</button>
       </a>
-    </mat-menu>
+    </mat-menu> -->
 
-    <mat-menu [overlapTrigger]="false" #reportMenu="matMenu">
+    <!-- <mat-menu [overlapTrigger]="false" #reportMenu="matMenu">
       <a routerLink="/report/weekly" routerLinkActive="active">
         <button mat-menu-item>Weekly</button>
       </a>
       <a routerLink="/report/scale" routerLinkActive="active">
         <button mat-menu-item>Scale</button>
       </a>
-    </mat-menu>
+    </mat-menu> -->
 
     <div class="divider"></div>
 

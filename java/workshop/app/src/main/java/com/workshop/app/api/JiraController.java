@@ -1,13 +1,7 @@
 package com.workshop.app.api;
 
-import com.workshop.domain.constant.Gender;
-import com.workshop.domain.constant.Level;
 import com.workshop.domain.constant.Phase;
-import com.workshop.domain.constant.Role;
-import com.workshop.domain.entity.jira.IssueInfo;
-import com.workshop.domain.entity.jira.JiraUser;
 import com.workshop.domain.entity.project.Task;
-import com.workshop.domain.entity.user.User;
 import com.workshop.domain.service.JiraService;
 import com.workshop.domain.service.TaskService;
 import com.workshop.domain.service.UserService;
@@ -22,8 +16,8 @@ import java.util.List;
  * Created by bill.wang on 3/16/18
  */
 @RestController
-@RequestMapping("/api/test")
-public class TestController {
+@RequestMapping("/api/jira")
+public class JiraController {
     @Autowired
     private JiraService jiraService;
 
@@ -33,14 +27,13 @@ public class TestController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public String test() {
+    @GetMapping("/export")
+    public void export() {
         jiraService.exportTasks();
-        return "done";
     }
 
-    @GetMapping("/test1")
-    public void test1() {
+    @GetMapping("/metric")
+    public void metric() {
         List<Task> tasks = taskService.get().datum;
 
         tasks.forEach(o -> {
@@ -51,7 +44,7 @@ public class TestController {
         });
     }
 
-    @GetMapping("/users")
+    @GetMapping("/test")
     public String test2() {
 //        return jiraService.getJiraIssuesByUserName("brucewu");
 

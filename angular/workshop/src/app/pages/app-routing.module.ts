@@ -1,3 +1,4 @@
+import { UtilComponent } from './util/util.component';
 import { PerformanceTeamComponent } from './performance/performance-team/performance-team.component';
 import { PerformanceUserComponent } from './performance/performance-user/performance-user.component';
 import { SprintDetailComponent } from './sprint-detail/sprint-detail.component';
@@ -53,6 +54,7 @@ const routes: Routes = [
   { path: 'report/weekly', component: WeeklyComponent },
   { path: 'performance/user/:id', component: PerformanceUserComponent }, 
   { path: 'performance/team/:id', component: PerformanceTeamComponent }, 
+  { path: 'util', component: UtilComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 

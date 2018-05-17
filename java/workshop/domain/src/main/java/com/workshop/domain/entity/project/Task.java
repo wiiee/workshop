@@ -9,6 +9,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Task extends BaseData<String> {
+    //Id为jiraId
+
     //开始结束时间
     public LocalDateTime startDate;
     public LocalDateTime endDate;

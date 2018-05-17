@@ -1,3 +1,5 @@
+import { TaskService } from './../../../services/task.service';
+import { TeamService } from './../../../services/team.service';
 import { Location } from '@angular/common';
 import { TaskMetricPoint } from './../../../entity/task-metric-point';
 import { AuthService } from './../../../services/auth.service';
@@ -11,6 +13,7 @@ import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { TaskMetricUtil } from '../../../util/echarts/task-metric-util';
 import { EChartsUtil } from '../../../util/echarts/echarts-util';
 import { BasePage } from '../../shared/base.page';
+import { Task } from '../../../entity/task';
 
 @Component({
   selector: 'app-performance-team',
@@ -40,6 +43,12 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
   phasePairs: Pair<string, boolean>[];
   isPhaseAll: boolean;
 
+  teamId: string;
+
+  tasks: Task[];
+
+  selectedId: string;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
@@ -47,38 +56,50 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
     location: Location,
     private metricService: MetricService,
     private authService: AuthService,
+    private teamService: TeamService,
+    public taskService: TaskService,
     public userService: UserService) {
     super(location);
   }
 
   ngOnInit() {
+    this.tasks = [];
+    this.teamId = this.route.snapshot.paramMap.get('id');
+
     this.interval = "week";
     this.intervals = TaskMetricUtil.INTERVALS.filter(
       o => o.key === "Weekly" || o.key === "Monthly" || o.key === "Yearly");
 
     this.phasePairs = [];
-    this.authService.reloadTeam().subscribe(res => {
-      res.teamSetting.phases.forEach(o => {
+
+    this.teamService.getOne(this.teamId).subscribe(res =>
+      res.data.teamSetting.phases.forEach(o => {
         this.phasePairs.push({
           key: o,
           value: true
         });
+
+        this.isPhaseAll = this.phasePairs.map(o => o.value).reduce((p, c) => p && c);
+      })
+    );
+
+    this.route.queryParamMap.subscribe(params => {
+      console.log("params: " + params);
+      this.metricService.getByTeamId(this.teamId).subscribe(res => {
+        this.source = res;
+        this.rebuildData();
+        console.log(res);
+        
+        this.buildTasks();
       });
 
-      this.isPhaseAll = this.phasePairs.map(o => o.value).reduce((p, c) => p && c);
-
-      this.route.queryParamMap.subscribe(params => {
-        console.log("params: " + params);
-        let teamId = this.route.snapshot.paramMap.get('id');
-        this.metricService.getByTeamId(teamId).subscribe(res => {
-          this.source = res;
-          this.rebuildData();
-          console.log(res);
-        });
-
-        this.userService.getUserPairsByTeamId(teamId).subscribe(res => this.userPairs = res);
-      });
+      this.userService.getUserPairsByTeamId(this.teamId).subscribe(res => this.userPairs = res);
     });
+  }
+
+  private buildTasks(): void {
+    let taskIds = this.source.map(o => o.id);
+    this.taskService.getByIds(taskIds).subscribe(res => this.tasks = res.datum);
   }
 
   calculate(): void {
@@ -163,7 +184,7 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
     this.setOption3();
   }
 
-  getUserPairs(): Array<Pair<string, TaskMetricPoint[]>> {
+  getUserMetricPairs(): Array<Pair<string, TaskMetricPoint[]>> {
     let result: Array<Pair<string, TaskMetricPoint[]>> = [];
     this.data.forEach((v, k) => result.push({
       key: k,
@@ -181,7 +202,22 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
     return points.map(o => o.size).reduce((p, c) => p + c);
   }
 
+  getIds(points: TaskMetricPoint[]): string[] {
+    let jiraIds = points.map(o => o.id).join(",");
+    return jiraIds.split(",").filter(o => o);
+  }
+
   getDuration(points: TaskMetricPoint[]): number {
     return points.map(o => o.duration).reduce((p, c) => p + c);
+  }
+
+  getTask(id: string): Task {
+    let task = this.tasks.find(o => o.id === id);
+
+    if(!task){
+      task = new Task();
+    }
+
+    return task;
   }
 }

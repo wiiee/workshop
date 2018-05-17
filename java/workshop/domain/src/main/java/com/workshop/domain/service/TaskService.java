@@ -6,6 +6,7 @@ import com.wiiee.core.domain.service.ServiceResult;
 import com.wiiee.core.platform.exception.CoreException;
 import com.workshop.domain.constant.Phase;
 import com.workshop.domain.entity.performance.MetricName;
+import com.workshop.domain.entity.performance.TaskMetric;
 import com.workshop.domain.entity.performance.TaskPoint;
 import com.workshop.domain.entity.project.PhaseItem;
 import com.workshop.domain.entity.project.Task;
@@ -14,13 +15,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Service
 public class TaskService extends BaseService<Task, String> {
     @Autowired
-    private MetricService metricService;
+    private TaskMetricService taskMetricService;
 
     public TaskService(MongoRepository<Task, String> repository) {
         super(repository);
@@ -73,7 +73,7 @@ public class TaskService extends BaseService<Task, String> {
         //ToDo: set phase to team's last phase
         //当卡完成了，建一个点
         if (entity.isReviewed && entity.getPhase().equals(Phase.Done.name())) {
-            metricService.addPoint(MetricName.Task.value(), new TaskPoint(entity.endDate, entity.value, entity.getId(), entity.assigneeId, entity.getDurations()));
+            taskMetricService.create(new TaskMetric(entity.getId(), new TaskPoint(entity.endDate, entity.value, entity.getId(), entity.assigneeId, entity.getId(), entity.getDurations())));
         }
 
         return super.update(entity);

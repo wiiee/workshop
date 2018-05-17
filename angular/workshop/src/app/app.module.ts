@@ -1,3 +1,4 @@
+import { JiraService } from './services/jira.service';
 import { MetricService } from './services/metric.service';
 import { SprintService } from './services/sprint.service';
 import { LocalStorageService } from './services/local-storage.service';
@@ -36,6 +37,7 @@ import { AuthService } from './services/auth.service';
     EnumService,
     SprintService,
     MetricService,
+    JiraService,
     LocalStorageService,
     { provide: RequestCache, useClass: RequestCacheWithMap },
     httpInterceptorProviders],

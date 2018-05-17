@@ -1,11 +1,10 @@
 package com.workshop.app.api;
 
-import com.workshop.domain.entity.performance.Metric;
-import com.workshop.domain.entity.performance.MetricName;
 import com.workshop.domain.entity.performance.Point;
+import com.workshop.domain.entity.performance.TaskMetric;
 import com.workshop.domain.entity.performance.TaskPoint;
 import com.workshop.domain.entity.user.Team;
-import com.workshop.domain.service.MetricService;
+import com.workshop.domain.service.TaskMetricService;
 import com.workshop.domain.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,19 +21,20 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/metric")
-public class MetricController extends BaseController<String, Metric, MetricService> {
+public class MetricController extends BaseController<String, TaskMetric, TaskMetricService> {
     @Autowired
     private TeamService teamService;
 
-    public MetricController(MetricService service) {
+    public MetricController(TaskMetricService service) {
         super(service);
     }
 
     //单个成员
     @GetMapping("/user/{userId}")
     public List<Point> getByUserId(@PathVariable String userId) {
-        Metric metric = getService().get(MetricName.Task.value()).data;
-        return metric.points.stream()
+        List<TaskMetric> metrics = getService().get().datum;
+        return metrics.stream()
+                .map(o -> o.point)
                 .filter(o -> ((TaskPoint)o).userId.equals(userId))
                 .sorted(Comparator.comparing(p -> p.dateTime))
                 .collect(Collectors.toList());
@@ -45,8 +45,9 @@ public class MetricController extends BaseController<String, Metric, MetricServi
     public List<Point> getByTeamId(@PathVariable String teamId) {
         Team team = teamService.getTeam(teamId);
 
-        Metric metric = getService().get(MetricName.Task.value()).data;
-        return metric.points.stream()
+        List<TaskMetric> metrics = getService().get().datum;
+        return metrics.stream()
+                .map(o -> o.point)
                 .filter(o -> team.userIds.contains(((TaskPoint)o).userId))
                 .sorted(Comparator.comparing(p -> p.dateTime))
                 .collect(Collectors.toList());

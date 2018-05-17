@@ -1,3 +1,4 @@
+import { UserService } from './../../services/user.service';
 import { AuthService } from './../../services/auth.service';
 import { LocalStorageService } from './../../services/local-storage.service';
 import { Component, OnInit, ElementRef } from '@angular/core';
@@ -14,6 +15,7 @@ export class LayoutComponent implements OnInit {
   isDark: boolean;
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     private localStorageService: LocalStorageService,
     private _element: ElementRef,
     private _overlayContainer: OverlayContainer) { }

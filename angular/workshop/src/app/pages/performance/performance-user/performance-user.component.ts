@@ -1,3 +1,4 @@
+import { TeamService } from './../../../services/team.service';
 import { UserService } from './../../../services/user.service';
 import { Location } from '@angular/common';
 import { Pair } from './../../../entity/pair';
@@ -37,37 +38,41 @@ export class PerformanceUserComponent extends BasePage implements OnInit {
 
   userName: string;
 
+  userId: string;
+
   constructor(
     private route: ActivatedRoute,
     private metricService: MetricService,
     private authService: AuthService,
     private userService: UserService,
+    private teamService: TeamService,
     location: Location) {
     super(location);
   }
 
   ngOnInit() {
+    this.userId = this.route.snapshot.paramMap.get('id');
     this.interval = "all";
     this.intervals = TaskMetricUtil.INTERVALS;
 
     this.phasePairs = [];
-    this.authService.reloadTeam().subscribe(res => {
+
+    this.teamService.getTeamByUserId(this.userId).subscribe(res => 
       res.teamSetting.phases.forEach(o => {
         this.phasePairs.push({
           key: o,
           value: true
         });
-      });
 
-      this.isPhaseAll = this.phasePairs.map(o => o.value).reduce((p, c) => p && c);
+        this.isPhaseAll = this.phasePairs.map(o => o.value).reduce((p, c) => p && c);
+      })
+    );
 
-      this.route.queryParamMap.subscribe(params => {
-        let userId = this.route.snapshot.paramMap.get('id');
-        this.userName = this.userService.getDisplayNameByUserId(userId);
-        this.metricService.getByUserId(userId).subscribe(res => {
-          this.source = res;
-          this.rebuildData();
-        });
+    this.route.queryParamMap.subscribe(params => {
+      this.userName = this.userService.getDisplayNameByUserId(this.userId);
+      this.metricService.getByUserId(this.userId).subscribe(res => {
+        this.source = res;
+        this.rebuildData();
       });
     });
   }

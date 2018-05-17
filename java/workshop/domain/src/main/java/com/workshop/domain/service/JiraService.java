@@ -38,6 +38,7 @@ public class JiraService extends BaseService<Jira, String> {
 
 
     private static final String SILVER_TEAM_ID = "5aaa3e7d8b23b7d0764c72d0";
+    private static final Set<String> SILVER_USER_IDS = new HashSet<>(Arrays.asList("G10459", "G11084", "G11826", "G11086", "G10485"));
 
     public JiraService(
             MongoRepository<Jira, String> repository,
@@ -146,6 +147,8 @@ public class JiraService extends BaseService<Jira, String> {
     private void buildPhases(IssueInfo info, Task task) {
         List<PhaseItem> phases = new ArrayList<>();
 
+        final String[] storyDate = {""};
+
         info.changelog.histories.forEach(o -> {
             for (Item item : o.items) {
                 System.out.println(String.format("item: %s", GsonUtil.toJson(item)));
@@ -164,7 +167,21 @@ public class JiraService extends BaseService<Jira, String> {
                     phases.add(new PhaseItem(Phase.Done.name(), getUserId(o.author.name), task.endDate));
                 } else if (item.field.equals("Story Points") && item.fieldtype.equals("custom")) {
                     try {
-                        task.value = Integer.parseInt(item.toString);
+                        if(SILVER_USER_IDS.contains(task.assigneeId)){
+                            if (o.author.name.equals("billwang") || o.author.name.equals("kelleyue")){
+                                if(StringUtils.isEmpty(storyDate[0])){
+                                    storyDate[0] = o.created;
+                                    task.value = Integer.parseInt(item.toString);
+                                }
+                                else if(o.created.compareTo(storyDate[0]) > 0){
+                                    task.value = Integer.parseInt(item.toString);
+                                }
+                            }
+                        }
+                        else {
+                            task.value = Integer.parseInt(item.toString);
+                        }
+
                     } catch (Exception ex) {
                         task.value = 0;
                     }
@@ -196,6 +213,48 @@ public class JiraService extends BaseService<Jira, String> {
         //users.forEach((k, v) -> taskExecutor.execute(new JiraUserTask(k, v)));
         userService.get().datum.forEach(o -> taskExecutor.execute(new JiraUserTask(o.jiraUserName, o.getId())));
     }
+
+//    public void test(){
+//        Map<String, String> issues = new HashMap<>();
+//        teamService.get(SILVER_TEAM_ID).data.userIds.forEach(userId -> {
+//            String jiraUserName = userService.get(userId).data.jiraUserName;
+//            JiraUser jiraUser = getJiraByUserName(jiraUserName);
+//
+//            jiraUser.issues.forEach(issue -> {
+//                IssueInfo info = getJiraIssue(issue.id);
+//                info.changelog.histories.forEach(history -> {
+////                    System.out.println(String.format("history: %s", GsonUtil.toJson(history)));
+//                    for (Item item : history.items) {
+//                        if (item.field.equals("Story Points") && item.fieldtype.equals("custom")) {
+//                            String text = String.format("name: %s; jira: %s, id: https://gojira.skyscanner.net/rest/api/2/issue/%s?expand=changelog", history.author.name, issue.key, issue.id);
+//                            if(history.created.compareTo("2018-04-01T00:46:49.369+0000") > 0)
+//                                issues.put(issue.id, text);
+////                            if(!history.author.name.equals("kelleyue") && !history.author.name.equals("billwang"))
+////                            {
+////                                String text = String.format("name: %s; jira: %s, id: https://gojira.skyscanner.net/rest/api/2/issue/%s?expand=changelog", history.author.name, issue.key, issue.id);
+////                                System.out.println(text);
+////                                issues.put(issue.id, text);
+////                            }
+//                        }
+//                    }
+//                });
+//            });
+//        });
+//
+//        System.out.println("billwang");
+//        issues.forEach((k, v) -> {
+//            if(v.contains("billwang")){
+//                System.out.println(v);
+//            }
+//        });
+//
+//        System.out.println("other");
+//        issues.forEach((k, v) -> {
+//            if(!v.contains("kelleyue") && !v.contains("billwang"))
+//                System.out.println(v);
+//        });
+//
+//    }
 
     public class JiraIssueTask implements Runnable {
         String issueId;

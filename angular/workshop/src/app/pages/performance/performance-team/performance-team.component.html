@@ -66,7 +66,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let pair of getUserPairs()">
+          <tr *ngFor="let pair of getUserMetricPairs()">
             <td>{{userService.getDisplayNameByUserId(pair.key)}}</td>
             <td>{{getStoryPoint(pair.value)}}</td>
             <td>{{getNumber(pair.value)}}</td>
@@ -75,5 +75,39 @@
         </tbody>
       </table>
     </mat-card>
+    <ng-container *ngIf="data">
+      <mat-card>
+        <mat-radio-group [(ngModel)]="selectedId">
+          <mat-radio-button class="ml-2" *ngFor="let pair of userPairs" [value]="pair.key">
+            {{pair.value}}
+          </mat-radio-button>
+        </mat-radio-group>
+      </mat-card>
+      <mat-card *ngFor="let pair of getUserMetricPairs()" [hidden]="pair.key !== selectedId">
+        <h3 mat-subheader>{{userService.getDisplayNameByUserId(pair.key)}}</h3>
+        <table class="table table-bordered" *ngIf="data">
+          <thead>
+            <tr>
+              <th scope="col">id</th>
+              <th scope="col">sp</th>
+              <!-- <th scope="col">title</th> -->
+              <th scope="col">startDate</th>
+              <th scope="col">endDate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let id of getIds(pair.value)">
+              <td>
+                <a target="_blank" href="https://gojira.skyscanner.net/browse/{{id}}">{{id}}</a>
+              </td>
+              <td>{{getTask(id).value}}</td>
+              <!-- <td>{{getTask(id).title}}</td> -->
+              <td>{{getTask(id).startDate}}</td>
+              <td>{{getTask(id).endDate}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card>
+    </ng-container>
   </mat-tab>
 </mat-tab-group>

@@ -102,7 +102,8 @@ export abstract class TaskMetricUtil {
                 items.map(o => o.value).reduce((prev, current) => prev + current),
                 items.map(o => o.duration).reduce((prev, current) => prev + current),
                 null, null, null, null,
-                this.combinePhases(items.map(o => o.phases)), items.length
+                this.combinePhases(items.map(o => o.phases)), 
+                items.length
             ));
         }
 
@@ -129,7 +130,8 @@ export abstract class TaskMetricUtil {
                         item.map(o => o.value).reduce((prev, current) => prev + current),
                         item.map(o => o.duration).reduce((prev, current) => prev + current),
                         null, null, null, null,
-                        this.combinePhases(item.map(o => o.phases)), item.length
+                        this.combinePhases(item.map(o => o.phases)), 
+                        item.length
                     ));
                 }
                 else {
@@ -137,7 +139,8 @@ export abstract class TaskMetricUtil {
                         key,
                         0,
                         0,
-                        null, null, null, null, null, 0));
+                        null, null, null, null, null, 
+                        0));
                 }
             });
         }

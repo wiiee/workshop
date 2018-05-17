@@ -52,8 +52,7 @@
             </mat-form-field>
 
             <mat-form-field>
-                <textarea matInput matTextareaAutosize type="text" placeholder="Description" [(ngModel)]="entity.description" name="description"
-                    required></textarea>
+                <textarea matInput matTextareaAutosize type="text" placeholder="Description" [(ngModel)]="entity.description" name="description"></textarea>
                 <button mat-button *ngIf="entity.name" matSuffix mat-icon-button aria-label="Clear" (click)="entity.description=''">
                     <mat-icon>close</mat-icon>
                 </button>
