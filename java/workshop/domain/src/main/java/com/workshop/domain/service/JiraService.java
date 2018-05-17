@@ -115,6 +115,13 @@ public class JiraService extends BaseService<Jira, String> {
 
     private void buildTask(IssueInfo info, String userId) {
         try {
+            Task dbTask = taskService.get(info.key).data;
+
+            //检查是否被Review过了，review过了就直接返回
+            if (dbTask != null && dbTask.isReviewed && Phase.Done.toString().equals(dbTask.getPhase())) {
+                return;
+            }
+
             Task task = new Task();
 
             task.setId(info.key);
@@ -130,14 +137,11 @@ public class JiraService extends BaseService<Jira, String> {
             task.teamId = SILVER_TEAM_ID;
 
             // 如果Task没有就新建
-            // 如果Task已经有了，检查是否被Review过了，没有review过才更新
-            Task dbTask = taskService.get(task.getId()).data;
+            // 如果Task已经有了,就更新
             if (dbTask == null) {
                 taskService.create(task);
             } else {
-                if (!dbTask.isReviewed) {
-                    taskService.update(task);
-                }
+                taskService.update(task);
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -167,18 +171,16 @@ public class JiraService extends BaseService<Jira, String> {
                     phases.add(new PhaseItem(Phase.Done.name(), getUserId(o.author.name), task.endDate));
                 } else if (item.field.equals("Story Points") && item.fieldtype.equals("custom")) {
                     try {
-                        if(SILVER_USER_IDS.contains(task.assigneeId)){
-                            if (o.author.name.equals("billwang") || o.author.name.equals("kelleyue")){
-                                if(StringUtils.isEmpty(storyDate[0])){
+                        if (SILVER_USER_IDS.contains(task.assigneeId)) {
+                            if (o.author.name.equals("billwang") || o.author.name.equals("kelleyue")) {
+                                if (StringUtils.isEmpty(storyDate[0])) {
                                     storyDate[0] = o.created;
                                     task.value = Integer.parseInt(item.toString);
-                                }
-                                else if(o.created.compareTo(storyDate[0]) > 0){
+                                } else if (o.created.compareTo(storyDate[0]) > 0) {
                                     task.value = Integer.parseInt(item.toString);
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             task.value = Integer.parseInt(item.toString);
                         }
 
@@ -204,57 +206,33 @@ public class JiraService extends BaseService<Jira, String> {
 
     // 导出数据到Task数据库里面
     public void exportTasks() {
-//        users.forEach((k, v) -> {
-//            getJiraIssuesByUserName(k).forEach(o -> {
-//                buildTask(o, v);
-//            });
-//        });
-
-        //users.forEach((k, v) -> taskExecutor.execute(new JiraUserTask(k, v)));
         userService.get().datum.forEach(o -> taskExecutor.execute(new JiraUserTask(o.jiraUserName, o.getId())));
+
+        while (true){
+            try {
+                if(taskExecutor.getActiveCount() == 0){
+                    generateMetrics();
+                    break;
+                }
+
+                Thread.sleep(5 * 60 * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                break;
+            }
+        }
     }
 
-//    public void test(){
-//        Map<String, String> issues = new HashMap<>();
-//        teamService.get(SILVER_TEAM_ID).data.userIds.forEach(userId -> {
-//            String jiraUserName = userService.get(userId).data.jiraUserName;
-//            JiraUser jiraUser = getJiraByUserName(jiraUserName);
-//
-//            jiraUser.issues.forEach(issue -> {
-//                IssueInfo info = getJiraIssue(issue.id);
-//                info.changelog.histories.forEach(history -> {
-////                    System.out.println(String.format("history: %s", GsonUtil.toJson(history)));
-//                    for (Item item : history.items) {
-//                        if (item.field.equals("Story Points") && item.fieldtype.equals("custom")) {
-//                            String text = String.format("name: %s; jira: %s, id: https://gojira.skyscanner.net/rest/api/2/issue/%s?expand=changelog", history.author.name, issue.key, issue.id);
-//                            if(history.created.compareTo("2018-04-01T00:46:49.369+0000") > 0)
-//                                issues.put(issue.id, text);
-////                            if(!history.author.name.equals("kelleyue") && !history.author.name.equals("billwang"))
-////                            {
-////                                String text = String.format("name: %s; jira: %s, id: https://gojira.skyscanner.net/rest/api/2/issue/%s?expand=changelog", history.author.name, issue.key, issue.id);
-////                                System.out.println(text);
-////                                issues.put(issue.id, text);
-////                            }
-//                        }
-//                    }
-//                });
-//            });
-//        });
-//
-//        System.out.println("billwang");
-//        issues.forEach((k, v) -> {
-//            if(v.contains("billwang")){
-//                System.out.println(v);
-//            }
-//        });
-//
-//        System.out.println("other");
-//        issues.forEach((k, v) -> {
-//            if(!v.contains("kelleyue") && !v.contains("billwang"))
-//                System.out.println(v);
-//        });
-//
-//    }
+    private void generateMetrics() {
+        List<Task> tasks = taskService.get().datum;
+
+        tasks.forEach(o -> {
+            if (Phase.Done.name().equals(o.getPhase())) {
+                o.isReviewed = true;
+                taskService.update(o);
+            }
+        });
+    }
 
     public class JiraIssueTask implements Runnable {
         String issueId;

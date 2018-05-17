@@ -90,11 +90,9 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
     );
 
     this.route.queryParamMap.subscribe(params => {
-      console.log("params: " + params);
       this.metricService.getByTeamId(this.teamId).subscribe(res => {
         this.source = res;
         this.rebuildData();
-        console.log(res);
         
         this.buildTasks();
       });
@@ -173,16 +171,10 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
 
       this.option3 = EChartsUtil.buildBarWithLine(bar);
     }
-
-    // console.log(this.phasePairs.map(o => o.key + "/" + o.value).join(","));
-
-    // let title = 'Phases';
-    // this.option3 = EChartsUtil.buildBarWithLine(TaskMetricUtil.getPhasesBar(this.data, this.phasePairs, title));
   }
 
   reloadPhases(): void {
     this.isPhaseAll = this.phasePairs.map(o => o.value).reduce((p, c) => p && c);
-    console.log("all: " + this.isPhaseAll);
     this.setOption3();
   }
 
@@ -217,7 +209,6 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
     let phases = points.map(o => o.phases);
     let result = 0;
     phases.forEach(o => {
-      console.log(o);
       if(o && o["Blocked"]){
         result += o["Blocked"];
       }

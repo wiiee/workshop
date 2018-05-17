@@ -16,9 +16,4 @@ export class UtilComponent implements OnInit {
   export() {
     this.jiraService.export().subscribe();
   }
-
-  metric() {
-    this.jiraService.metric().subscribe();
-  }
-
 }

@@ -32,18 +32,6 @@ public class JiraController {
         jiraService.exportTasks();
     }
 
-    @GetMapping("/metric")
-    public void metric() {
-        List<Task> tasks = taskService.get().datum;
-
-        tasks.forEach(o -> {
-            if (Phase.Done.name().equals(o.getPhase())) {
-                o.isReviewed = true;
-                taskService.update(o);
-            }
-        });
-    }
-
     @GetMapping("/test")
     public String test2() {
 //        return jiraService.getJiraIssuesByUserName("brucewu");

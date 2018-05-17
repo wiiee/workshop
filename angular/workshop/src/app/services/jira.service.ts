@@ -10,8 +10,4 @@ export class JiraService {
   export(): Observable<void> {
     return this.api.get("/api/jira/export");
   }
-
-  metric(): Observable<void> {
-    return this.api.get("/api/jira/metric");
-  }
 }
