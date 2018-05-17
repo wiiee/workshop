@@ -3,13 +3,13 @@ package com.workshop.app.config;
 import com.workshop.app.job.JiraJob;
 import org.quartz.*;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
-@Component
+@Configuration
 public class JiraJobConfig {
     @Bean
     public JobDetail jiraJobDetail(){
-        return JobBuilder.newJob(JiraJob.class).withIdentity("jiraJob").build();
+        return JobBuilder.newJob(JiraJob.class).withIdentity("jiraJob").storeDurably().build();
     }
 
     @Bean

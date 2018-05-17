@@ -17,11 +17,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by bill.wang on 3/16/18
@@ -36,6 +38,7 @@ public class JiraService extends BaseService<Jira, String> {
 
     private final ThreadPoolTaskExecutor taskExecutor;
 
+    private AtomicInteger count;
 
     private static final String SILVER_TEAM_ID = "5aaa3e7d8b23b7d0764c72d0";
     private static final Set<String> SILVER_USER_IDS = new HashSet<>(Arrays.asList("G10459", "G11084", "G11826", "G11086", "G10485"));
@@ -56,6 +59,8 @@ public class JiraService extends BaseService<Jira, String> {
         this.userService = userService;
 
         this.taskExecutor = taskExecutor;
+
+        this.count = new AtomicInteger();
     }
 
     public JiraUser getJiraByUserName(String userName) {
@@ -134,7 +139,7 @@ public class JiraService extends BaseService<Jira, String> {
 
             buildPhases(info, task);
 
-            task.teamId = SILVER_TEAM_ID;
+            task.teamId = teamService.getTeamByUserId(userId).getId();
 
             // 如果Task没有就新建
             // 如果Task已经有了,就更新
@@ -155,7 +160,7 @@ public class JiraService extends BaseService<Jira, String> {
 
         info.changelog.histories.forEach(o -> {
             for (Item item : o.items) {
-                System.out.println(String.format("item: %s", GsonUtil.toJson(item)));
+//                System.out.println(String.format("item: %s", GsonUtil.toJson(item)));
                 if (item.field.equals("status") && item.fieldtype.equals("jira") && item.toString.equals("Analysis")) {
                     phases.add(new PhaseItem(Phase.ToDo.name(), getUserId(o.author.name), convertFromString(o.created)));
                 } else if (item.field.equals("status") && item.fieldtype.equals("jira") && item.toString.toLowerCase().equals("in progress")) {
@@ -206,21 +211,8 @@ public class JiraService extends BaseService<Jira, String> {
 
     // 导出数据到Task数据库里面
     public void exportTasks() {
+        System.out.println("*** Active count: " + taskExecutor.getActiveCount() + "***");
         userService.get().datum.forEach(o -> taskExecutor.execute(new JiraUserTask(o.jiraUserName, o.getId())));
-
-        while (true){
-            try {
-                if(taskExecutor.getActiveCount() == 0){
-                    generateMetrics();
-                    break;
-                }
-
-                Thread.sleep(5 * 60 * 1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                break;
-            }
-        }
     }
 
     private void generateMetrics() {
@@ -247,6 +239,10 @@ public class JiraService extends BaseService<Jira, String> {
         public void run() {
             if (!StringUtils.isEmpty(issueId) && !StringUtils.isEmpty(userId)) {
                 buildTask(getJiraIssue(issueId), userId);
+
+                if(count.decrementAndGet() == 0){
+                    generateMetrics();
+                }
             }
         }
     }
@@ -263,7 +259,12 @@ public class JiraService extends BaseService<Jira, String> {
         @Override
         public void run() {
             if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(userId)) {
-                getJiraByUserName(userName).issues.forEach(o -> taskExecutor.execute(new JiraIssueTask(o.key, userId)));
+                JiraUser jiraUser = getJiraByUserName(userName);
+
+                if (jiraUser != null && !CollectionUtils.isEmpty(jiraUser.issues)) {
+                    count.addAndGet(jiraUser.issues.size());
+                    jiraUser.issues.forEach(o -> taskExecutor.execute(new JiraIssueTask(o.key, userId)));
+                }
             }
         }
     }

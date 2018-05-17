@@ -17,7 +17,7 @@ export class TaskComponent extends BaseList<Task, TaskService> implements OnInit
     location: Location,
     taskService: TaskService,
     public userService: UserService) {
-    super(taskService, ['title', 'assigneeId', 'startDate', 'endDate', 'phase'], location);
+    super(taskService, ['title', 'assigneeId', 'startDate', 'endDate', 'phase', 'teamId'], location);
   }
 
   ngOnInit() {
