@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MetricService } from './../../../services/metric.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BaseMetric } from '../../shared/base.metric';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, MatRadioChange } from '@angular/material';
 import { TaskMetricUtil } from '../../../util/echarts/task-metric-util';
 import { EChartsUtil } from '../../../util/echarts/echarts-util';
 import { BasePage } from '../../shared/base.page';
@@ -22,8 +22,6 @@ import { Task } from '../../../entity/task';
 })
 export class PerformanceTeamComponent extends BasePage implements OnInit {
   userPairs: Pair<string, string>[] = [];
-
-  dataSource: MatTableDataSource<Performance>;
 
   option1: any;
   option2: any;
@@ -49,6 +47,11 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
 
   selectedId: string;
 
+  dataSource: MatTableDataSource<Task>;
+  entities: Task[];
+  displayedColumns: string[];
+
+  @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
@@ -60,9 +63,9 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
     public taskService: TaskService,
     public userService: UserService) {
     super(location);
-  }
 
-  ngOnInit() {
+    this.entities = [];
+    this.displayedColumns = ["id", "value", "startDate", "endDate"];
     this.tasks = [];
     this.teamId = this.route.snapshot.paramMap.get('id');
 
@@ -71,7 +74,9 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
       o => o.key === "Weekly" || o.key === "Monthly" || o.key === "Yearly");
 
     this.phasePairs = [];
+  }
 
+  ngOnInit() {
     this.teamService.getOne(this.teamId).subscribe(res =>
       res.data.teamSetting.phases.forEach(o => {
         this.phasePairs.push({
@@ -111,6 +116,7 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
     this.cardsNumber = this.range.length;
     this.data = TaskMetricUtil.getUserPointsByInterval(this.range, this.interval);
     this.setOptions();
+    this.buildUserTable(this.selectedId);
   }
 
   private setOptions(): void {
@@ -202,22 +208,28 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
     return points.map(o => o.size).reduce((p, c) => p + c);
   }
 
-  getIds(points: TaskMetricPoint[]): string[] {
-    let jiraIds = points.map(o => o.id).join(",");
-    return jiraIds.split(",").filter(o => o);
-  }
-
   getDuration(points: TaskMetricPoint[]): number {
     return points.map(o => o.duration).reduce((p, c) => p + c);
   }
 
-  getTask(id: string): Task {
-    let task = this.tasks.find(o => o.id === id);
 
-    if(!task){
-      task = new Task();
+  radioChange(event: MatRadioChange): void {
+    this.buildUserTable(event.value);
+  }
+
+  buildUserTable(value: string): void {
+    let points: TaskMetricPoint[] = this.data.get(value);
+
+    this.entities = [];
+
+    if(points){
+      points.map(o => o.id).join(",").split(",").filter(o => o).forEach(o => {
+        this.entities.push(this.tasks.find(p => p.id === o));
+      });
+  
+      this.dataSource = new MatTableDataSource(this.entities);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     }
-
-    return task;
   }
 }

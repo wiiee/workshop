@@ -75,22 +75,38 @@
         </tbody>
       </table>
     </mat-card>
-    <ng-container *ngIf="data">
-      <mat-card>
-        <mat-radio-group [(ngModel)]="selectedId">
-          <mat-radio-button class="ml-2" *ngFor="let pair of userPairs" [value]="pair.key">
-            {{pair.value}}
-          </mat-radio-button>
-        </mat-radio-group>
-      </mat-card>
-      <mat-card *ngFor="let pair of getUserMetricPairs()" [hidden]="pair.key !== selectedId">
+    <mat-card>
+      <mat-radio-group [(ngModel)]="selectedId">
+        <mat-radio-button class="ml-2" *ngFor="let pair of userPairs" [value]="pair.key" (change)="radioChange($event)">
+          {{pair.value}}
+        </mat-radio-button>
+      </mat-radio-group>
+    </mat-card>
+    <mat-card *ngIf="entities.length > 0">
+      <mat-table [dataSource]="dataSource" matSort>
+        <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; let i = index">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</mat-header-cell>
+          <mat-cell *matCellDef="let row" class="text-truncate">
+              <ng-container *ngIf="i === 0 else text">
+                <a target="_blank" href="https://gojira.skyscanner.net/browse/{{row[column]}}">{{row[column]}}</a>
+              </ng-container>
+              <ng-template #text>{{row[column]}}</ng-template>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
+      <mat-paginator #paginator [pageSizeOptions]="[25, 50, 100]" [showFirstLastButtons]="true"></mat-paginator>
+    </mat-card>
+    <!-- <mat-card *ngFor="let pair of getUserMetricPairs()" [hidden]="pair.key !== selectedId">
         <h3 mat-subheader>{{userService.getDisplayNameByUserId(pair.key)}}</h3>
         <table class="table table-bordered" *ngIf="data">
           <thead>
             <tr>
               <th scope="col">id</th>
               <th scope="col">sp</th>
-              <!-- <th scope="col">title</th> -->
               <th scope="col">startDate</th>
               <th scope="col">endDate</th>
             </tr>
@@ -101,13 +117,11 @@
                 <a target="_blank" href="https://gojira.skyscanner.net/browse/{{id}}">{{id}}</a>
               </td>
               <td>{{getTask(id).value}}</td>
-              <!-- <td>{{getTask(id).title}}</td> -->
               <td>{{getTask(id).startDate}}</td>
               <td>{{getTask(id).endDate}}</td>
             </tr>
           </tbody>
         </table>
-      </mat-card>
-    </ng-container>
+      </mat-card> -->
   </mat-tab>
 </mat-tab-group>
