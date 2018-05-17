@@ -1,3 +1,4 @@
+import { Phase } from './../../../entity/phase';
 import { TaskService } from './../../../services/task.service';
 import { TeamService } from './../../../services/team.service';
 import { Location } from '@angular/common';
@@ -210,6 +211,18 @@ export class PerformanceTeamComponent extends BasePage implements OnInit {
 
   getDuration(points: TaskMetricPoint[]): number {
     return points.map(o => o.duration).reduce((p, c) => p + c);
+  }
+
+  getBlock(points: TaskMetricPoint[]): number {
+    let phases = points.map(o => o.phases);
+    let result = 0;
+    phases.forEach(o => {
+      console.log(o);
+      if(o && o["Blocked"]){
+        result += o["Blocked"];
+      }
+    });
+    return result;
   }
 
 

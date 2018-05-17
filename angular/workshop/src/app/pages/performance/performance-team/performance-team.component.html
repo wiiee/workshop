@@ -63,6 +63,7 @@
             <th scope="col">Story Point</th>
             <th scope="col">Number</th>
             <th scope="col">Duration</th>
+            <th scope="col">Block</th>
           </tr>
         </thead>
         <tbody>
@@ -71,6 +72,7 @@
             <td>{{getStoryPoint(pair.value)}}</td>
             <td>{{getNumber(pair.value)}}</td>
             <td>{{getDuration(pair.value)}}</td>
+            <td>{{getBlock(pair.value)}}</td>
           </tr>
         </tbody>
       </table>
@@ -100,28 +102,5 @@
 
       <mat-paginator #paginator [pageSizeOptions]="[25, 50, 100]" [showFirstLastButtons]="true"></mat-paginator>
     </mat-card>
-    <!-- <mat-card *ngFor="let pair of getUserMetricPairs()" [hidden]="pair.key !== selectedId">
-        <h3 mat-subheader>{{userService.getDisplayNameByUserId(pair.key)}}</h3>
-        <table class="table table-bordered" *ngIf="data">
-          <thead>
-            <tr>
-              <th scope="col">id</th>
-              <th scope="col">sp</th>
-              <th scope="col">startDate</th>
-              <th scope="col">endDate</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let id of getIds(pair.value)">
-              <td>
-                <a target="_blank" href="https://gojira.skyscanner.net/browse/{{id}}">{{id}}</a>
-              </td>
-              <td>{{getTask(id).value}}</td>
-              <td>{{getTask(id).startDate}}</td>
-              <td>{{getTask(id).endDate}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </mat-card> -->
   </mat-tab>
 </mat-tab-group>
