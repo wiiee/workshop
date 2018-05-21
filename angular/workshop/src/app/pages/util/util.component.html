@@ -3,3 +3,26 @@
     <span class="spacer"></span>
     <button mat-raised-button color="accent" (click)="export()">Export</button>
   </mat-toolbar>
+
+<div class="divider"></div>
+
+<mat-card>{{projectsText}}</mat-card>
+<mat-form-field>
+    <textarea matInput matTextareaAutosize type="text" placeholder="Projects" [(ngModel)]="projectIds" name="projectIds"></textarea>
+</mat-form-field>
+<button mat-raised-button color="accent" (click)="updateProjectIds()">UpdateProjectIds</button>
+
+
+<div class="divider"></div>
+
+<mat-toolbar>
+  <span class="spacer"></span>
+  <mat-form-field class="ml-2">
+    <input matInput [matDatepicker]="startDatePicker" [matDatepickerFilter]="myFilter" [(ngModel)]="startDate" placeholder="Start date">
+    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #startDatePicker></mat-datepicker>
+  </mat-form-field>
+  <button type="button" class="ml-2" mat-raised-button (click)="timeSheet()">TimeSheet</button>
+</mat-toolbar>
+<mat-card>{{timeSheetText}}</mat-card>
+

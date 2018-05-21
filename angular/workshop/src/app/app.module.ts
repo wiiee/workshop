@@ -1,3 +1,4 @@
+import { TimeSheetService } from './services/timeSheet.service';
 import { JiraService } from './services/jira.service';
 import { MetricService } from './services/metric.service';
 import { SprintService } from './services/sprint.service';
@@ -38,6 +39,7 @@ import { AuthService } from './services/auth.service';
     SprintService,
     MetricService,
     JiraService,
+    TimeSheetService,
     LocalStorageService,
     { provide: RequestCache, useClass: RequestCacheWithMap },
     httpInterceptorProviders],

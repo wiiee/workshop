@@ -31,7 +31,7 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header>{{column}}</mat-header-cell>
       <mat-cell *matCellDef="let row" class="text-truncate">
         <ng-container *ngIf="i === 0">
-          <a [routerLink]="['/task', row.id]">{{row[column]}}</a>
+          <a [routerLink]="['/task', row.id]"><span matTooltip="{{row[column]}}">{{row[column]}}</span></a>
         </ng-container>
         <ng-container *ngIf="i > 0 && column === 'assigneeId'">
           {{userService.getDisplayNameByUserId(row[column])}}
