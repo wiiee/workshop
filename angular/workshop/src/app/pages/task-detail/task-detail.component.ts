@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { TeamService } from './../../services/team.service';
 import { UserService } from './../../services/user.service';
 import { AuthService } from './../../services/auth.service';

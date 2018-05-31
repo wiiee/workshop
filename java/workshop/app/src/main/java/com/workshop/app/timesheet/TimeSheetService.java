@@ -193,6 +193,11 @@ public class TimeSheetService {
             }
         });
 
+        result.forEach(o -> {
+            o.taskIndex += 10;
+            projectService.update(o);
+        });
+
         return result;
     }
 

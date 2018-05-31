@@ -1,6 +1,6 @@
 import { TaskMetricPoint } from './../entity/task-metric-point';
 import { Pair } from './../entity/pair';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 import { Api } from './api';

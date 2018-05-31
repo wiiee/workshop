@@ -1,11 +1,9 @@
+import { Observable } from 'rxjs';
 import { Entity } from "../entity/entity";
 import { Injectable } from '@angular/core';
 
 import { Api } from './api';
 import { ServiceResult } from './../entity/service-result';
-
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
 
 export abstract class BaseService<T extends Entity>{
     constructor(public api: Api, public endpoint: string) {

@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { ViewChild } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ServiceResult } from './../../entity/service-result';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Entity } from './../../entity/entity';

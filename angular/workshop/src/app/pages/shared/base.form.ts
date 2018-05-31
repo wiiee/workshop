@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ServiceResult } from './../../entity/service-result';
 import { ConfirmationDialogComponent } from './../confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
@@ -48,7 +48,7 @@ export abstract class BaseForm<T extends Entity, S extends BaseService<T>> exten
             this.id === Constant.INVALID_ID ? this.isNew = true : this.isNew = false;
             this.containerId = params.get("containerId");
             if (!this.isNew) {
-                this.seq = this.service.getOne(this.id, this.containerId).share();
+                this.seq = this.service.getOne(this.id, this.containerId);
                 this.seq.subscribe(res => {
                     console.log(JSON.stringify(res));
                     this.entity = res.data;

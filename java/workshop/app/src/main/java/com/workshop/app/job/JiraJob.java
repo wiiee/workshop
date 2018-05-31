@@ -21,6 +21,6 @@ public class JiraJob extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         System.out.println("Start Jira Job: " + LocalDateTime.now());
-//        jiraService.exportTasks();
+        jiraService.exportTasks();
     }
 }

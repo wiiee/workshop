@@ -9,8 +9,8 @@ import { Api } from './api';
 import { Injectable } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/share';
+import { Observable } from 'rxjs';
+
 import { Constant } from '../entity/constant';
 import { Role } from '../entity/role';
 
@@ -39,7 +39,7 @@ export class AuthService {
         let seq = this.api.httpClient.post(Api.SERVER_URL + '/api/user/logIn', {
             username: user.id,
             password: user.password
-        }, { observe: "response" }).share();
+        }, { observe: "response" });
 
         seq.subscribe(res => {
             if (res.status === 200) {
@@ -62,7 +62,7 @@ export class AuthService {
         let seq = this.api.httpClient.post<ServiceResult<User>>(
             Api.SERVER_URL + '/api/user/signUp',
             user,
-            { observe: "response" }).share();
+            { observe: "response" });
 
         seq.subscribe(res => {
             if (res.body.isSuccessful) {
@@ -130,7 +130,7 @@ export class AuthService {
 
     reloadTeam(): Observable<Team> {
         if(!this.teamSeq){
-            this.teamSeq = this.teamService.getTeamByUserId(this.getUserId()).share();
+            this.teamSeq = this.teamService.getTeamByUserId(this.getUserId());
             this.teamSeq.subscribe(res => this.team = res);
         }
 

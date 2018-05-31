@@ -1,6 +1,6 @@
 import { ServiceResult } from './../entity/service-result';
 import { Pair } from './../entity/pair';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Api } from './api';
 import { Injectable } from '@angular/core';
 

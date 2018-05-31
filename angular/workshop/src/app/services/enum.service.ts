@@ -1,9 +1,8 @@
+import { Observable } from 'rxjs';
 import { Pair } from './../entity/pair';
 import { Api } from './api';
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
 import { Task } from '../entity/task';
 
 @Injectable()
